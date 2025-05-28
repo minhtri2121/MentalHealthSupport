@@ -149,7 +149,7 @@ namespace MentalHealthSupport.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult ManageAccount()
+        public IActionResult Manage()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -186,8 +186,8 @@ namespace MentalHealthSupport.Controllers
                 // Nếu là Consultant thì lấy thêm thông tin
                 if (model.Role == "Consultant")
                 {
-                    string consultantQuery = @"SELECT ConsultantId, Specialization, Certificate, ApprovalStatus, ExperienceYears 
-                                            FROM ConsultantProfiles WHERE UserId = @UserId AND UserID = ConsultantId";
+                    string consultantQuery = @"SELECT ConsultantId, Specialty, CertificateUrl, ApprovalStatus, ExperienceYears 
+                                            FROM ConsultantProfiles WHERE ConsultantId = @UserId";
                     using (SqlCommand cmd = new SqlCommand(consultantQuery, connection))
                     {
                         cmd.Parameters.AddWithValue("@UserId", userId);
@@ -196,8 +196,8 @@ namespace MentalHealthSupport.Controllers
                             if (reader.Read())
                             {
                                 model.ConsultantId = reader.GetInt32(0);
-                                model.Specialization = reader.GetString(1);
-                                model.Certificate = reader.GetString(2);
+                                model.Specialty = reader.GetString(1);
+                                model.CertificateUrl = reader.GetString(2);
                                 model.ApprovalStatus = reader.GetString(3);
                                 model.ExperienceYears = reader.GetInt32(4);
                             }
@@ -206,7 +206,7 @@ namespace MentalHealthSupport.Controllers
                 }
             }
 
-            return View(model);
+            return View("Manage",model);
         }
 
         [HttpPost]
@@ -235,12 +235,12 @@ namespace MentalHealthSupport.Controllers
                 if (model.Role == "Consultant")
                 {
                     string updateConsultant = @"UPDATE ConsultantProfiles 
-                                                SET Specialization = @Specialization, Certificate = @Certificate, ExperienceYears = @ExperienceYears 
+                                                SET Specialty = @Specialty, CertificateUrl = @CertificateUrl, ExperienceYears = @ExperienceYears 
                                                 WHERE ConsultantId = @ConsultantId";
                     using (SqlCommand cmd = new SqlCommand(updateConsultant, connection))
                     {
-                        cmd.Parameters.AddWithValue("@Specialization", model.Specialization);
-                        cmd.Parameters.AddWithValue("@Certificate", model.Certificate);
+                        cmd.Parameters.AddWithValue("@Specialty", model.Specialty);
+                        cmd.Parameters.AddWithValue("@Certificate", model.CertificateUrl);
                         cmd.Parameters.AddWithValue("@ExperienceYears", model.ExperienceYears);
                         cmd.Parameters.AddWithValue("@ConsultantId", model.ConsultantId);
                         cmd.ExecuteNonQuery();

@@ -63,6 +63,7 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\Mental
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.MvcApplicationPartsAssemblyInfo.cache
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.RazorAssemblyInfo.cache
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.RazorAssemblyInfo.cs
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.sourcelink.json
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\bundle\MentalHealthSupport.styles.css
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\projectbundle\MentalHealthSupport.bundle.scp.css
