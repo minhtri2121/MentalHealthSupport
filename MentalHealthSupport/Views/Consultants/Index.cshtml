@@ -1,0 +1,116 @@
+@model List<MentalHealthSupport.Models.ViewModel.ConsultantViewModel>
+
+@{
+    ViewData["Title"] = "Đội Ngũ Chuyên Gia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="text-primary mb-4">Đội Ngũ Chuyên Gia Tâm Lý</h1>
+
+    <!-- Filter and Sort -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" class="form-inline">
+                <div class="input-group">
+                    <select name="specialty" class="form-control">
+                        <option value="">Tất cả chuyên môn</option>
+                        @foreach (var spec in ViewBag.Specialties ?? new List<string>())
+                        {
+                            <option value="@spec" selected="@(Context.Request.Query["specialty"] == spec)">@spec</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 text-md-right">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sắp xếp theo
+                </button>
+                <div class="dropdown-menu" aria-labelledby="sortDropdown">
+                    <a class="dropdown-item" href="@Url.Action("Index", new { specialty = Context.Request.Query["specialty"], sortOrder = "experience_desc" })">Kinh nghiệm nhiều nhất</a>
+                    <a class="dropdown-item" href="@Url.Action("Index", new { specialty = Context.Request.Query["specialty"], sortOrder = "status_asc" })">Trạng thái hoạt động</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consultant List -->
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center text-secondary py-10 bg-light rounded">
+            <svg class="mx-auto h-12 w-12 text-secondary mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p class="text-lg">Hiện chưa có chuyên gia nào được hiển thị.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var consultant in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 line-clamp-1">@consultant.FullName</h5>
+                            @if (consultant.IsVerified)
+                            {
+                                <span class="badge badge-light">Đã xác minh</span>
+                            }
+                        </div>
+                        <div class="card-body text-center">
+                            <img 
+                                src="@(string.IsNullOrEmpty(consultant.AvatarUrl) ? "/images/default-avatar.png" : Url.Content("~/images/" + consultant.AvatarUrl))"
+                                alt="Ảnh đại diện của @consultant.FullName"
+                                class="rounded-circle img-thumbnail mb-3"
+                                style="width: 120px; height: 120px; object-fit: cover;"
+                                loading="lazy"
+                            />
+                            <h6 class="card-subtitle mb-2 text-muted line-clamp-1">@consultant.Specialty</h6>
+                            <p class="text-sm"><strong>Kinh nghiệm:</strong> @consultant.ExperienceYears năm</p>
+                            <p class="text-sm"><strong>Bằng cấp:</strong> @consultant.CertificateUrl</p>
+                            <p class="text-sm"><i>@(consultant.Description?.Length > 150 ? consultant.Description.Substring(0, 100) + "..." : consultant.Description)</i></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <div class="d-flex gap-2">
+                                <a 
+                                    href="#" 
+                                    class="btn btn-primary flex-grow"
+                                    aria-label="Liên hệ với @consultant.FullName"
+                                >
+                                    Liên Hệ
+                                </a>
+                                <a 
+                                    href="@Url.Action("Details", "Consultants", new { id = consultant.ConsultantId})" 
+                                    class="btn btn-outline-primary flex-grow"
+                                    aria-label="Xem hồ sơ của @consultant.FullName"
+                                >
+                                    Chi Tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4 flex justify-center">
+            <nav aria-label="Phân trang chuyên gia">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">Trước</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>

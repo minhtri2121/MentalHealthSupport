@@ -1,0 +1,172 @@
+@model MentalHealthSupport.Models.ViewModel.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg-gray-200 d-flex align-items-center justify-content-center py-5 px-3 px-sm-4 px-lg-5">
+    <div class="w-100" style="max-width: 35rem;">
+        <div class="text-center mb-5">
+            <h1 class="fs-2 fw-bold text-gray-900">Tạo tài khoản</h1>
+            <p class="mt-2 text-gray-600">Tham gia MentalHealthSupport để được hỗ trợ sức khỏe tâm lý ẩn danh</p>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3 p-4">
+            <!-- Card Header -->
+            <div class="card-header border-0 bg-transparent text-center">
+                <h5 class="card-title mb-0 text-primary">Đăng ký</h5>
+            </div>
+
+            <!-- Card Content -->
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                        @ViewData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form asp-action="Register" asp-controller="Account" method="post" class="space-y-4">
+                    <!-- Full Name Field -->
+                    <div class="mb-3 position-relative">
+                        <label asp-for="@Model.FullName" class="form-label">Họ và tên</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                </svg>
+                            </span>
+                            <input asp-for="@Model.FullName" class="form-control" placeholder="Nguyễn Văn A" required />
+                        </div>
+                        <span asp-validation-for="@Model.FullName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-3 position-relative">
+                        <label asp-for="@Model.Email" class="form-label">Địa chỉ Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.022V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.022l4.708-2.814L1 5.383v5.639Z"/>
+                                </svg>
+                            </span>
+                            <input asp-for="@Model.Email" class="form-control" placeholder="your.email@example.com" required />
+                        </div>
+                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-3 position-relative">
+                        <label asp-for="@Model.PasswordHash" class="form-label">Mật khẩu</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                                </svg>
+                            </span>
+                            <input asp-for="@Model.PasswordHash" type="password" class="form-control" id="passwordInput" placeholder="••••••••" required />
+                            <button type="button" id="togglePassword" class="input-group-text">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 ​8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">Mật khẩu phải có ít nhất 8 ký tự</small>
+                        <span asp-validation-for="@Model.PasswordHash" class="text-danger"></span>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="mb-3 position-relative">
+                        <label asp-for="@Model.ConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                                </svg>
+                            </span>
+                            <input asp-for="@Model.ConfirmPassword" type="password" class="form-control" id="confirmPasswordInput" placeholder="••••••••" required />
+                        </div>
+                        <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="mb-3 position-relative">
+                        <label asp-for="@Model.Phone" class="form-label">Số điện thoại</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                                    <path d="M3.654 1.328a.678.678 0 0 0-.678.678v12.316a.678.678 0 0 0 .678.678h8.692a.678.678 0 0 0 .678-.678V1.986a.678.678 0 0 0-.678-.678H3.654zm.678 1.356h7.692v11.308H4.332V2.684z"/>
+                                </svg>
+                            </span>
+                            <input asp-for="@Model.Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                        </div>
+                        <span asp-validation-for="@Model.Phone" class="text-danger"></span>
+                    </div>
+
+                    <!-- Gender Field -->
+                    <div class="mb-3">
+                        <label asp-for="@Model.Sex" class="form-label">Giới tính</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input asp-for="@Model.Sex" type="radio" class="form-check-input" value="true" id="male" required />
+                                <label class="form-check-label" for="male">Nam</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="@Model.Sex" type="radio" class="form-check-input" value="false" id="female" required />
+                                <label class="form-check-label" for="female">Nữ</label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="@Model.Sex" class="text-danger"></span>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="d-flex align-items-center mb-3">
+                        <input type="checkbox" id="terms" name="terms" class="form-check-input" required />
+                        <label for="terms" class="form-check-label text-gray-700 ms-2">
+                            Tôi đồng ý với
+                            <a href="@Url.Action("Terms", "Home")" class="text-primary text-decoration-underline">Điều khoản dịch vụ</a>
+                            và
+                            <a href="@Url.Action("Privacy", "Home")" class="text-primary text-decoration-underline">Chính sách bảo mật</a>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100">Tạo tài khoản</button>
+                </form>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer border-0 bg-transparent text-center">
+                <p class="text-gray-600">
+                    Đã có tài khoản?
+                    <a href="@Url.Action("Login", "Account")" class="text-primary text-decoration-none ms-1">Đăng nhập</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('passwordInput');
+            const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                confirmPasswordInput.type = 'text';
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                confirmPasswordInput.type = 'password';
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');
+            }
+        });
+    </script>
+}

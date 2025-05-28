@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<MentalHealthSupport.Models.ViewModel.ConsultantViewModel>
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 py-5 text-center text-lg-start">
+                <h1 class="display-4 fw-bold text-primary animate__animated animate__fadeInUp">Chăm Sóc Sức Khỏe Tâm Lý Của Bạn</h1>
+                <p class="lead mt-4 mb-5 animate__animated animate__fadeInUp animate__delay-1s">
+                    Kết nối với các chuyên gia tâm lý hàng đầu Việt Nam để được tư vấn và hỗ trợ chuyên nghiệp, mọi lúc, mọi nơi.
+                </p>
+                <div class="animate__animated animate__fadeInUp animate__delay-2s">
+                    <a asp-controller="Consultant" asp-action="Index" class="btn btn-primary btn-lg me-3 mb-3 mb-md-0">Tìm Chuyên Gia</a>
+                    <a asp-controller="PsychologicalTest" asp-action="Index" class="btn btn-outline-primary btn-lg">Kiểm Tra Tâm Lý</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-center animate__animated animate__fadeInRight">
+                <img src="~/images/empathy-Photoroom.png" asp-append-version="true" alt="Hình ảnh hỗ trợ tâm lý - Kết nối chuyên gia" class="img-fluid" loading="lazy" />
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Tại Sao Chọn MentalHealthSupport</h2>
+            <p class="lead text-muted">Chúng tôi mang đến giải pháp chăm sóc sức khỏe tâm lý toàn diện</p>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-user-md fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Chuyên Gia Hàng Đầu</h5>
+                        <p class="card-text">Đội ngũ chuyên gia có trình độ chuyên môn cao và nhiều năm kinh nghiệm trong lĩnh vực tâm lý.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-laptop-medical fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Tư Vấn Trực Tuyến</h5>
+                        <p class="card-text">Nhận tư vấn mọi lúc, mọi nơi thông qua video call, audio call hoặc chat trực tiếp.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-lock fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Bảo Mật Thông Tin</h5>
+                        <p class="card-text">Thông tin cá nhân và nội dung tư vấn của bạn luôn được bảo mật tuyệt đối.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Quy Trình Làm Việc</h2>
+            <p class="lead text-muted">Chỉ với 3 bước đơn giản để bắt đầu hành trình chăm sóc sức khỏe tâm lý</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="step-card text-center">
+                    <div class="step-number">1</div>
+                    <h4 class="mt-4">Tìm Chuyên Gia</h4>
+                    <p class="text-muted">Tìm và chọn chuyên gia phù hợp với nhu cầu của bạn từ danh sách chuyên gia.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="step-card text-center">
+                    <div class="step-number">2</div>
+                    <h4 class="mt-4">Đặt Lịch Hẹn</h4>
+                    <p class="text-muted">Chọn thời gian và phương thức tư vấn phù hợp nhất với lịch trình của bạn.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="step-card text-center">
+                    <div class="step-number">3</div>
+                    <h4 class="mt-4">Bắt Đầu Tư Vấn</h4>
+                    <p class="text-muted">Tham gia buổi tư vấn và nhận hỗ trợ chuyên nghiệp từ chuyên gia.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a asp-controller="Consultants" asp-action="Index" class="btn btn-primary btn-lg">Bắt Đầu Ngay</a>
+        </div>
+    </div>
+</section>
+<!-- Featured Consultants Section -->
+<section class="consultants-section py-5 bg-light">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold">Chuyên Gia Nổi Bật</h2>
+                <p class="lead text-muted mb-0">Đội ngũ chuyên gia tâm lý hàng đầu của chúng tôi</p>
+            </div>
+            <a asp-controller="Consultant" asp-action="Index" class="btn btn-outline-primary">Xem Tất Cả</a>
+        </div>
+        <div class="row g-3">
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var consultant in Model)
+                {
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card consultant-card border-0 shadow-sm h-100">
+                            <img src="@Url.Content("~/images/" + consultant.AvatarUrl)" class="card-img-top consultant-img" alt="Chuyên gia" loading="lazy" />
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-0">@consultant.FullName</h5>
+                                <p class="text-muted">
+                                    Kinh nghiệm: @consultant.ExperienceYears năm<br />
+                                    Chuyên ngành: @consultant.Specialty
+                                </p>
+                            </div>
+                            <div class="card-footer bg-white border-0 p-4 pt-0">
+                                <a href="@Url.Action("Details", "Consultants", new { id = consultant.ConsultantId})" 
+                                    class="btn btn-outline-primary flex-grow"
+                                    aria-label="Xem hồ sơ của @consultant.FullName">Xem Hồ Sơ</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center text-muted">Không có chuyên gia nào.</div>
+            }
+        </div>
+    </div>
+</section>
+
+
+<!-- Back to Top Button -->
+<a href="#" class="back-to-top btn btn-primary rounded-circle" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</a>

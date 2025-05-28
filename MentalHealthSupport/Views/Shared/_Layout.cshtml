@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MentalHealthSupport</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+    <!-- Pre-loader -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="heart" viewBox="0 0 32 32">
+                <path d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
+                    C30,20.335,16,28.261,16,28.261z" />
+            </svg>
+            <p>Đang tải...</p>
+        </div>
+    </div>
+
+    @functions {
+        bool IsActive(string controller, string? action = null)
+        {
+            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+            return currentController == controller && (action == null || currentAction == action);
+        }
+    }
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="@Url.Content("~/images/Logo.png")" alt="Logo" height="40" />
+                    <span class="ms-2 fw-bold text-primary">MentalHealthSupport</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link @(IsActive("Home") ? "active" : "")"
+                               href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(IsActive("Consultants") ? "active" : "")"
+                                href="@Url.Action("Index", "Consultants")">Chuyên gia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(IsActive("Baikiemtra") ? "active" : "")"
+                               href="@Url.Action("Index", "Baikiemtra")">Bài kiểm tra</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(IsActive("Article") ? "active" : "")"
+                               asp-controller="Article" asp-action="Index">Bài viết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(IsActive("Home", "About") ? "active" : "")"
+                               asp-controller="Home" asp-action="About">Về chúng tôi</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        @if (Context.Session.GetInt32("UserId") == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link btn px-3" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @Context.Session.GetString("FullName")
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManageAccount">Hồ sơ</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="flex-grow-1 pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-5">
+        <div class="container py-5">
+            <div class="row d-flex flex-wrap justify-content-between">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="fw-bold mb-4">MentalHealthSupport</h4>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4">Liên Kết Nhanh</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Trang Chủ</a></li>
+                        коти class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Về Chúng Tôi</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Dịch Vụ</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Chuyên Gia</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Liên Hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4">Dịch Vụ</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Tư Vấn Trực Tuyến</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Tư Vấn Trực Tiếp</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Kiểm Tra Tâm Lý</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Khóa Học</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Seminar</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4">Liên Hệ</h5>
+                    <ul class="list-unstyled footer-contact">
+                        <li class="d-flex mb-3">
+                            <i class="fas fa-map-marker-alt text-primary me-3 mt-1"></i>
+                            <span class="text-white-50">123 Đường Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh</span>
+                        </li>
+                        <li class="d-flex mb-3">
+                            <i class="fas fa-phone-alt text-primary me-3 mt-1"></i>
+                            <span class="text-white-50">+84 28 1234 5678</span>
+                        </li>
+                        <li class="d-flex mb-3">
+                            <i class="fas fa-envelope text-primary me-3 mt-1"></i>
+                            <span class="text-white-50">info@tamlyvn.com</span>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-clock text-primary me-3 mt-1"></i>
+                            <span class="text-white-50">Hỗ trợ: 24/7</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-top border-secondary mt-4">
+            <div class="container">
+                <div class="row py-4">
+                    <div class="col-md-6 text-center text-md-start">
+                        <p class="mb-md-0 text-white-50">© 2025 MentalHealthSupport. Tất cả quyền được bảo lưu.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <a href="#" class="text-white-50 text-decoration-none me-4">Điều Khoản Sử Dụng</a>
+                        <a href="#" class="text-white-50 text-decoration-none">Chính Sách Bảo Mật</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // Preloader
+        $(window).on('load', function () {
+            $('#preloader').fadeOut(1000);
+        });
+
+        // Chat dialog
+        $(document).ready(function() {
+            $('#chatButton').on('click', function() {
+                $('#chatDialog').toggleClass('open');
+            });
+
+            $('#closeChatDialog').on('click', function() {
+                $('#chatDialog').removeClass('open');
+            });
+
+            $('#sendMessage').on('click', function() {
+                const message = $('#messageInput').val().trim();
+                if (message) {
+                    $('#chatMessages').append(`
+                        <div class="user-message">
+                            ${message}
+                        </div>
+                    `);
+                    $('#messageInput').val('');
+                    // Scroll to bottom
+                    $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+
+                    // Simulating response
+                    setTimeout(function() {
+                        $('#chatMessages').append(`
+                            <div class="system-message">
+                                Cảm ơn bạn đã liên hệ. Vui lòng đợi trong giây lát để được kết nối với chuyên gia tư vấn.
+                            </div>
+                        `);
+                        // Scroll to bottom
+                        $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+                    }, 1000);
+                }
+            });
+
+            // Enter key to send
+            $('#messageInput').on('keypress', function(e) {
+                if (e.which === 13) {
+                    $('#sendMessage').click();
+                }
+            });
+        });
+
+        // Navbar scroll
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 50) {
+                $('.navbar').addClass('navbar-scrolled');
+            } else {
+                $('.navbar').removeClass('navbar-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

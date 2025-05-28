@@ -1,0 +1,78 @@
+@model MentalHealthSupport.Models.ViewModel.ManageViewModel
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Thông tin tài khoản</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Họ và tên</dt>
+                <dd class="col-sm-8">@Model.FullName</dd>
+
+                <dt class="col-sm-4">Email</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">Số điện thoại</dt>
+                <dd class="col-sm-8">@Model.Phone</dd>
+
+                <dt class="col-sm-4">Vai trò</dt>
+                <dd class="col-sm-8">@Model.Role</dd>
+
+                <dt class="col-sm-4">Tài khoản xác minh</dt>
+                <dd class="col-sm-8">
+                    @if (Model.IsVerified)
+                    {
+                        <span class="badge bg-success">Đã xác minh</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Chưa xác minh</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Ngày tạo</dt>
+                <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy")</dd>
+            </dl>
+
+            @if (Model.Role == "Consultant")
+            {
+                <hr />
+                <h5 class="text-primary">Thông tin chuyên gia</h5>
+                <dl class="row">
+                    <dt class="col-sm-4">Chuyên ngành</dt>
+                    <dd class="col-sm-8">@Model.Specialization</dd>
+
+                    <dt class="col-sm-4">Bằng cấp</dt>
+                    <dd class="col-sm-8">@Model.Certificate</dd>
+
+                    <dt class="col-sm-4">Trạng thái duyệt</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.ApprovalStatus == "Approved")
+                        {
+                            <span class="badge bg-success">Đã duyệt</span>
+                        }
+                        else if (Model.ApprovalStatus == "Rejected")
+                        {
+                            <span class="badge bg-danger">Từ chối</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Số năm kinh nghiệm</dt>
+                    <dd class="col-sm-8">@Model.ExperienceYears năm</dd>
+                </dl>
+            }
+
+            <div class="mt-4 text-end">
+                <a href="@Url.Action("Edit", "Account")" class="btn btn-outline-primary">Chỉnh sửa</a>
+            </div>
+        </div>
+    </div>
+</div>
