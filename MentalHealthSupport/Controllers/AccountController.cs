@@ -24,9 +24,14 @@ namespace MentalHealthSupport.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
+            if (HttpContext.Session.GetInt32("UserId") != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
             if (ModelState.IsValid)
             {
-                try
+                try            
                 {
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
@@ -39,31 +44,34 @@ namespace MentalHealthSupport.Controllers
                             command.Parameters.AddWithValue("@Email", model.Email);
                             using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                if (reader.Read())
+                                if (!reader.Read())
                                 {
-                                    int userId = reader.GetInt32(0);
-                                    string storedHash = reader.GetString(1);
-                                    string fullName = reader.GetString(2);
-                                    string role = reader.GetString(3);
-
-                                    bool isValidPassword = BCrypt.Net.BCrypt.Verify(model.PasswordHash, storedHash);
-                                    if (isValidPassword)
-                                    {
-                                        // Lưu thông tin vào session, bao gồm UserId
-                                        HttpContext.Session.SetInt32("UserId", userId);
-                                        HttpContext.Session.SetString("UserEmail", model.Email);
-                                        HttpContext.Session.SetString("FullName", fullName);
-                                        HttpContext.Session.SetString("UserRole", role);
-
-                                        return RedirectToAction("Index", "Home");
-                                    }
+                                    ViewData["ErrorMessage"] = "Email không tồn tại.";
+                                    return View(model);
                                 }
+
+                                int userId = reader.GetInt32(0);
+                                string storedHash = reader.GetString(1);
+                                string fullName = reader.GetString(2);
+                                string role = reader.GetString(3);
+
+                                bool isValidPassword = BCrypt.Net.BCrypt.Verify(model.PasswordHash, storedHash);
+                                if (!isValidPassword)
+                                {
+                                    ViewData["ErrorMessage"] = "Mật khẩu không đúng.";
+                                    return View(model);
+                                }
+
+                                // Lưu thông tin vào session, bao gồm UserId
+                                HttpContext.Session.SetInt32("UserId", userId);
+                                HttpContext.Session.SetString("UserEmail", model.Email);
+                                HttpContext.Session.SetString("FullName", fullName);
+                                HttpContext.Session.SetString("UserRole", role);
+
+                                return RedirectToAction("Index", "Home");
                             }
                         }
                     }
-
-                    ViewData["ErrorMessage"] = "Email hoặc mật khẩu không đúng.";
-                    return View(model);
                 }
                 catch (Exception ex)
                 {

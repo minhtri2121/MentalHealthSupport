@@ -1,0 +1,314 @@
+/* About Us Page Styles - MentalHealthSupport */
+
+/* Keyframe Animations */
+@keyframes pulse {
+    0% { 
+        transform: scale(1); 
+    }
+    50% { 
+        transform: scale(1.1); 
+    }
+    100% { 
+        transform: scale(1); 
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero Section Styles */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: float 20s infinite linear;
+    z-index: 1;
+}
+
+@keyframes float {
+    0% { 
+        transform: translate(-50%, -50%) rotate(0deg); 
+    }
+    100% { 
+        transform: translate(-50%, -50%) rotate(360deg); 
+    }
+}
+
+.brain-icon {
+    animation: pulse 2s infinite;
+}
+
+/* Mission Cards */
+.mission-card {
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2) !important;
+}
+
+.mission-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mission card decorative element */
+.mission-card .position-absolute {
+    transition: all 0.3s ease;
+}
+
+.mission-card:hover .position-absolute {
+    transform: translate(25px, -25px) scale(1.1);
+}
+
+/* Stats Section */
+.stats-section {
+    position: relative;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    opacity: 0.3;
+}
+
+.stat-number {
+    transition: all 0.3s ease;
+}
+
+.stat-number:hover {
+    transform: scale(1.1);
+}
+
+.btn-white{
+    color: #fff;
+    border-color: #fff;
+}
+
+/* Value Cards */
+.value-card {
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.value-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.value-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Value card emoji animation */
+.value-card .mb-3 {
+    transition: all 0.3s ease;
+}
+
+.value-card:hover .mb-3 {
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* Section Titles */
+.section-title-underline {
+    position: relative;
+}
+
+.section-title-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+    border-radius: 2px;
+    animation: pulse-underline 2s infinite;
+}
+
+@keyframes pulse-underline {
+    0%, 100% { 
+        opacity: 1; 
+        transform: translateX(-50%) scaleX(1); 
+    }
+    50% { 
+        opacity: 0.7; 
+        transform: translateX(-50%) scaleX(1.1); 
+    }
+}
+
+/* CTA Section */
+.cta-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { 
+        transform: translateX(-100%); 
+    }
+    100% { 
+        transform: translateX(100%); 
+    }
+}
+
+/* Button Enhancements */
+.btn-enhanced {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: all 0.5s ease;
+}
+
+.btn-enhanced:hover::before {
+    left: 100%;
+}
+
+.btn-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Gradient Backgrounds */
+.gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-mission-card {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+}
+
+.gradient-decoration {
+    background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 107, 0.1));
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .mission-card,
+    .value-card {
+        margin-bottom: 1rem;
+    }
+    
+    .hero-section {
+        padding: 3rem 0 !important;
+    }
+    
+    .section-title-underline {
+        font-size: 1.8rem !important;
+    }
+    
+    .display-3 {
+        font-size: 2.5rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .brain-icon {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 2rem !important;
+    }
+    
+    .display-4 {
+        font-size: 2rem !important;
+    }
+    
+    .display-5 {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Loading State */
+.loading {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s ease;
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus States */
+.mission-card:focus-within,
+.value-card:focus-within {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .hero-section,
+    .cta-section {
+        background: none !important;
+        color: black !important;
+    }
+    
+    .mission-card,
+    .value-card {
+        break-inside: avoid;
+        border: 1px solid #ccc !important;
+    }
+}

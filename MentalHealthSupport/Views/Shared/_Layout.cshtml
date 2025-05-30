@@ -75,11 +75,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(IsActive("Article") ? "active" : "")"
-                               asp-controller="Article" asp-action="Index">Bài viết</a>
+                               asp-controller="About" asp-action="Index">Bài viết</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(IsActive("Home", "About") ? "active" : "")"
-                               asp-controller="Home" asp-action="About">Về chúng tôi</a>
+                            <a class="nav-link @(IsActive("About", "Index") ? "active" : "")"
+                               asp-controller="About" asp-action="Index">Về chúng tôi</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto align-items-center">

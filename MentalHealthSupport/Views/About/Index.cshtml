@@ -1,0 +1,265 @@
+@model MentalHealthSupport.Models.ViewModel.LoginViewModel
+@{
+    ViewData["Title"] = "Về chúng tôi";
+}
+<link rel="stylesheet" href="~/css/about-us.css" />
+
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5 position-relative overflow-hidden">
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 1;"></div>
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <div class="brain-icon d-inline-flex align-items-center justify-content-center rounded-circle mb-4" 
+                     style="width: 80px; height: 80px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); font-size: 2.5rem; animation: pulse 2s infinite;">
+                    🧠
+                </div>
+                <h1 class="display-4 fw-bold mb-4">Về Chúng Tôi</h1>
+                <p class="lead fs-5 opacity-90">
+                    Chúng tôi tin rằng mọi người đều xứng đáng có được sức khỏe tinh thần tốt và sự hỗ trợ chuyên nghiệp khi cần thiết
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold text-primary position-relative d-inline-block">
+                    Sứ Mệnh Của Chúng Tôi
+                    <span class="position-absolute start-50 translate-middle-x" 
+                          style="bottom: -15px; width: 80px; height: 4px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4); border-radius: 2px;"></span>
+                </h2>
+            </div>
+        </div>
+        <div class="row g-2">
+            <div class="col-lg-2 col-md-6">
+                <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden mission-card" 
+                     style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%); border-left: 5px solid #667eea !important;">
+                    <div class="position-absolute top-0 end-0 rounded-circle" 
+                         style="width: 100px; height: 100px; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 107, 0.1)); transform: translate(30px, -30px);"></div>
+                    <div class="card-body p-4 position-relative">
+                        <div class="text-primary mb-3" style="font-size: 3rem;">🤝</div>
+                        <h4 class="card-title fw-bold mb-3">Kết Nối & Hỗ Trợ</h4>
+                        <p class="card-text text-muted">
+                            Tạo cầu nối giữa những người có nhu cầu tâm lý với các chuyên gia hàng đầu Việt Nam, 
+                            mang đến sự hỗ trợ kịp thời và chuyên nghiệp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden mission-card" 
+                     style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%); border-left: 5px solid #667eea !important;">
+                    <div class="position-absolute top-0 end-0 rounded-circle" 
+                         style="width: 100px; height: 100px; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 107, 0.1)); transform: translate(30px, -30px);"></div>
+                    <div class="card-body p-4 position-relative">
+                        <div class="text-primary mb-3" style="font-size: 3rem;">🔒</div>
+                        <h4 class="card-title fw-bold mb-3">Bảo Mật & Ẩn Danh</h4>
+                        <p class="card-text text-muted">
+                            Đảm bảo tính riêng tư tuyệt đối cho người dùng với hệ thống tư vấn ẩn danh, 
+                            giúp bạn thoải mái chia sẻ mà không lo lắng.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Tác Động Của Chúng Tôi</h2>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 text-center">
+            <!-- 1 -->
+            <div class="col">
+                <div class="p-4 h-100 bg-dark bg-opacity-25 rounded-4 shadow-sm">
+                    <div class="display-3 fw-bold mb-2" style="color: #4ecdc4;" data-stat="24/7">24/7</div>
+                    <div class="fs-5">Hỗ trợ liên tục</div>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="col">
+                <div class="p-4 h-100 bg-dark bg-opacity-25 rounded-4 shadow-sm">
+                    <div class="display-3 fw-bold mb-2" style="color: #4ecdc4;" data-stat="99,9%">99,9%</div>
+                    <div class="fs-5">Bảo mật thông tin</div>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="col">
+                <div class="p-4 h-100 bg-dark bg-opacity-25 rounded-4 shadow-sm">
+                    <div class="display-3 fw-bold mb-2" style="color: #4ecdc4;" data-stat="30+">30+</div>
+                    <div class="fs-5">Chuyên gia tâm lý</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold text-primary position-relative d-inline-block">
+                    Giá Trị Cốt Lõi
+                    <span class="position-absolute start-50 translate-middle-x" 
+                          style="bottom: -15px; width: 80px; height: 4px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4); border-radius: 2px;"></span>
+                </h2>
+            </div>
+        </div>
+        <div class="row row-cols-lg-4 g-3">
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #ff6b6b !important;">
+                    <div class="card-body p-4">
+                        <div class="mb-3" style="font-size: 3rem;">❤️</div>
+                        <h5 class="card-title fw-bold mb-3">Tính Nhân Văn</h5>
+                        <p class="card-text text-muted small">
+                            Đặt con người là trung tâm, thấu hiểu và đồng cảm với mọi khó khăn tâm lý
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #4ecdc4 !important;">
+                    <div class="card-body p-4">
+                        <div class="mb-3" style="font-size: 3rem;">🛡️</div>
+                        <h5 class="card-title fw-bold mb-3">Chuyên Nghiệp</h5>
+                        <p class="card-text text-muted small">
+                            Đội ngũ chuyên gia tâm lý được đào tạo bài bản, có chứng chỉ hành nghề
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #45b7d1 !important;">
+                    <div class="card-body p-4">
+                        <div class="mb-3" style="font-size: 3rem;">🔐</div>
+                        <h5 class="card-title fw-bold mb-3">Bảo Mật</h5>
+                        <p class="card-text text-muted small">
+                            Cam kết bảo vệ thông tin cá nhân và quyền riêng tư của người dùng
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #f9ca24 !important;">
+                    <div class="card-body p-4">
+                        <div class="mb-3" style="font-size: 3rem;">🚀</div>
+                        <h5 class="card-title fw-bold mb-3">Đổi Mới</h5>
+                        <p class="card-text text-muted small">
+                            Không ngừng cập nhật công nghệ và phương pháp tư vấn hiện đại
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h2 class="display-5 fw-bold mb-4">Bắt Đầu Hành Trình Chăm Sóc Tâm Lý</h2>
+                <p class="lead fs-5 mb-4 opacity-90">
+                    Đừng để những khó khăn tâm lý cản trở cuộc sống của bạn. 
+                    Hãy để chúng tôi đồng hành cùng bạn trên con đường tìm lại sự cân bằng và hạnh phúc.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="#" class="btn btn-white btn-lg px-4 py-3 rounded-pill fw-bold">
+                        Tìm Chuyên Gia
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill fw-bold">
+                        Kiểm Tra Tâm Lý
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Animate mission cards
+    const missionCards = document.querySelectorAll('.mission-card');
+    missionCards.forEach((card, index) => {
+        card.style.transitionDelay = `${index * 0.2}s`;
+        observer.observe(card);
+    });
+
+    // Animate value cards
+    const valueCards = document.querySelectorAll('.value-card');
+    valueCards.forEach((card, index) => {
+        card.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(card);
+    });
+
+    // Stats counter animation
+    const statsObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const finalText = entry.target.getAttribute('data-stat');
+                entry.target.textContent = '0';
+                
+                let current = 0;
+                const increment = () => {
+                    if (current < 100) {
+                        current += Math.ceil((100 - current) / 10);
+                        if (finalText.includes('%')) {
+                            entry.target.textContent = current + '%';
+                        } else if (finalText.includes('+')) {
+                            entry.target.textContent = current + '+';
+                        } else if (finalText.includes('/')) {
+                            entry.target.textContent = finalText;
+                        } else {
+                            entry.target.textContent = current;
+                        }
+                        setTimeout(increment, 50);
+                    } else {
+                        entry.target.textContent = finalText;
+                    }
+                };
+                increment();
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statNumbers = document.querySelectorAll('[data-stat]');
+    statNumbers.forEach(stat => {
+        statsObserver.observe(stat);
+    });
+});
+</script>
+
+<style>
+.col {
+    padding-left: 50%px;
+    padding-right: 50%px;
+}
+</style>

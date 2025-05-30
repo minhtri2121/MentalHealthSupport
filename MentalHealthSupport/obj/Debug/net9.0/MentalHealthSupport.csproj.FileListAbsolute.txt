@@ -67,7 +67,7 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\Mental
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\bundle\MentalHealthSupport.styles.css
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\projectbundle\MentalHealthSupport.bundle.scp.css
-D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\7c99p8r8co-36l2dasxnb.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\7c99p8r8co-l2c5llhz30.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\s3d5ieebpl-61n19gt1b8.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\skdgkx5wrr-8fbct2shbo.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\upvy7w7kiv-bqjiyaj88i.gz
@@ -146,3 +146,4 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\refint
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.pdb
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.genruntimeconfig.cache
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\ref\MentalHealthSupport.dll
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\kjzz3xrw8u-3g1nuc1yad.gz
