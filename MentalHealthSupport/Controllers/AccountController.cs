@@ -28,10 +28,10 @@ namespace MentalHealthSupport.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
             if (ModelState.IsValid)
             {
-                try            
+                try
                 {
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
@@ -214,7 +214,7 @@ namespace MentalHealthSupport.Controllers
                 }
             }
 
-            return View("Manage",model);
+            return View("Manage", model);
         }
 
         [HttpPost]
@@ -258,6 +258,31 @@ namespace MentalHealthSupport.Controllers
 
             TempData["SuccessMessage"] = "Cập nhật thông tin thành công.";
             return RedirectToAction("ManageAccount");
+        }
+
+        [HttpPost("AssignConsultant")]
+        public IActionResult AssignConsultant(int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT TOP 1 ConsultantId FROM Consultants WHERE IsAvailable = 1";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        object result = command.ExecuteScalar();
+                        if (result == null) return BadRequest("No consultants available.");
+
+                        int consultantId = Convert.ToInt32(result);
+                        return Ok(new { ConsultantId = consultantId });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
     }
 }

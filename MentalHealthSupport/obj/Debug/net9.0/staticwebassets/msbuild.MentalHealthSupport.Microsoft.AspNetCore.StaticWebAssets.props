@@ -1242,23 +1242,23 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\jquery\LICENSE.txt'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.l9rcpi7bqr.bundle.scp.css'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.h9q4htllpf.bundle.scp.css'))">
       <SourceType>Package</SourceType>
       <SourceId>MentalHealthSupport</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/MentalHealthSupport</BasePath>
-      <RelativePath>MentalHealthSupport.l9rcpi7bqr.bundle.scp.css</RelativePath>
+      <RelativePath>MentalHealthSupport.h9q4htllpf.bundle.scp.css</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>Reference</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName>ScopedCss</AssetTraitName>
       <AssetTraitValue>ProjectBundle</AssetTraitValue>
-      <Fingerprint>l9rcpi7bqr</Fingerprint>
-      <Integrity>93kqx5sL3yugjkX79I6cmaaMoUlGVC3b0d9K4iHyagk=</Integrity>
+      <Fingerprint>h9q4htllpf</Fingerprint>
+      <Integrity>9TIYs/HpSCQvdXaMzx6xo5as7Sqrs2EIoMNkJIXzCy4=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.l9rcpi7bqr.bundle.scp.css'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.h9q4htllpf.bundle.scp.css'))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>

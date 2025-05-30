@@ -1187,3 +1187,27 @@ table {
       transform: translate3d(0, 0, 0);
   }
 }
+
+/* Chat box */
+.chat-user { text-align: right; }
+        .chat-expert { text-align: left; }
+        .message-bubble-user { 
+            background: #0d6efd; 
+            color: white; 
+            display: inline-block; 
+            max-width: 70%; 
+        }
+        .message-bubble-expert { 
+            background: #198754; 
+            color: white; 
+            display: inline-block; 
+            max-width: 70%; 
+        }
+        .status-dot { 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%; 
+            display: inline-block; 
+        }
+        .online { background: #198754; }
+        .offline { background: #dc3545; }

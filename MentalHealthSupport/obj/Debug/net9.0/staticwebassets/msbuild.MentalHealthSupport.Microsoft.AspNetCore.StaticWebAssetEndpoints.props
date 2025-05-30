@@ -829,16 +829,16 @@
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1117"},{"Name":"Content-Type","Value":"text/plain"},{"Name":"ETag","Value":"\u0022hjIBkvmgxQXbNXK3B9YQ3t06RwLuQSQzC/dpvuB/lMk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 09 May 2025 08:29:17 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/MentalHealthSupport.bundle.scp.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.l9rcpi7bqr.bundle.scp.css'))</AssetFile>
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.h9q4htllpf.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-93kqx5sL3yugjkX79I6cmaaMoUlGVC3b0d9K4iHyagk="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1137"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u002293kqx5sL3yugjkX79I6cmaaMoUlGVC3b0d9K4iHyagk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 30 May 2025 15:22:18 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-9TIYs/HpSCQvdXaMzx6xo5as7Sqrs2EIoMNkJIXzCy4="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"940"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00229TIYs/HpSCQvdXaMzx6xo5as7Sqrs2EIoMNkJIXzCy4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 30 May 2025 19:04:51 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/MentalHealthSupport.l9rcpi7bqr.bundle.scp.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.l9rcpi7bqr.bundle.scp.css'))</AssetFile>
+    <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/MentalHealthSupport.h9q4htllpf.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\MentalHealthSupport.h9q4htllpf.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"l9rcpi7bqr"},{"Name":"integrity","Value":"sha256-93kqx5sL3yugjkX79I6cmaaMoUlGVC3b0d9K4iHyagk="},{"Name":"label","Value":"_content/MentalHealthSupport/MentalHealthSupport.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1137"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u002293kqx5sL3yugjkX79I6cmaaMoUlGVC3b0d9K4iHyagk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 30 May 2025 15:22:18 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"h9q4htllpf"},{"Name":"integrity","Value":"sha256-9TIYs/HpSCQvdXaMzx6xo5as7Sqrs2EIoMNkJIXzCy4="},{"Name":"label","Value":"_content/MentalHealthSupport/MentalHealthSupport.bundle.scp.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"940"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00229TIYs/HpSCQvdXaMzx6xo5as7Sqrs2EIoMNkJIXzCy4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 30 May 2025 19:04:51 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>
