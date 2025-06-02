@@ -47,57 +47,6 @@
         }
     }
 
-    <!-- Nút mở popup chat -->
-    <button type="button" class="btn btn-primary position-fixed bottom-1 end-0 m-4" id="openChatModal">
-        <i class="fas fa-comment"></i> Chat
-    </button>
-
-    <!-- Chat Modal -->
-    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="chatModalLabel">
-                        <i class="fas fa-user-tie me-2"></i>Chat với Chuyên gia
-                        <span class="badge bg-danger ms-3" id="statusBadge">
-                            <span class="status-dot offline me-1"></span>Offline
-                        </span>
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <div class="modal-body p-0">
-                    <!-- Chat Box -->
-                    <div id="chatBox" class="p-3 bg-light" style="height: 400px; overflow-y: auto;">
-                        <div class="text-center text-muted" id="emptyState">
-                            <i class="fas fa-comments fa-3x mb-3 text-secondary"></i>
-                            <p>Chưa có tin nhắn nào. Bắt đầu cuộc trò chuyện!</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Input Area -->
-                    <div class="p-3 border-top">
-                        <div class="input-group mb-3">
-                            <input type="text" id="messageInput" class="form-control" placeholder="Nhập tin nhắn..." disabled>
-                            <button class="btn btn-primary" type="button" id="sendButton" disabled>
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                            <button class="btn btn-success me-md-2" type="button" id="startChat">
-                                <i class="fas fa-play me-1"></i>Bắt đầu Chat
-                            </button>
-                            <button class="btn btn-danger" type="button" id="endChat" disabled>
-                                <i class="fas fa-stop me-1"></i>Kết thúc Chat
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Header -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
@@ -163,6 +112,48 @@
             @RenderBody()
         </main>
     </div>
+
+    <!-- Scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+        <script src="~/js/chat.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Chat Icon và Modal -->
+    @if (Context.Session.GetInt32("UserId") != null)
+    {
+        <div class="chat-icon" id="openChatModal">
+            <i class="fas fa-comments"></i>
+        </div>
+
+    <!-- Chat Modal -->
+        <div class="modal fade chat-modal" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="chatModalLabel">Chat với Chuyên gia</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <partial name="_SimpleChat" model="@Context.Session.GetInt32("UserId")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            console.log("Rendering chat icon with UserId:", @Context.Session.GetInt32("UserId")?.ToString() ?? "null");
+        </script>
+    }
+    else
+    {
+        <script>
+            console.log("UserId not found in session, chat icon not rendered.");
+        </script>
+    }
 
     <!-- Footer -->
     <footer class="footer bg-dark text-white py-5">
@@ -237,15 +228,6 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
-    @await RenderSectionAsync("Scripts", required: false)
-
     <script>
         // Preloader
         $(window).on('load', function () {
@@ -261,246 +243,9 @@
             }
         });
 
-        //CHAT
-        class SignalRChat {
-            constructor() {
-                this.connection = null;
-                this.chatSessionId = null;
-                this.userId = 1; // Replace with actual user ID from session
-                this.isActive = false;
-                this.init();
-            }
-
-            init() {
-                this.initSignalR();
-                this.bindEvents();
-            }
-
-            initSignalR() {
-                // Initialize SignalR connection
-                this.connection = new signalR.HubConnectionBuilder()
-                    .withUrl("/chatHub")
-                    .build();
-
-                // Handle receiving messages
-                this.connection.on("ReceiveMessage", (senderId, message) => {
-                    this.addMessage(message, senderId === this.userId ? 'user' : 'expert');
-                });
-
-                // Handle chat started
-                this.connection.on("ChatStarted", (chatSessionId) => {
-                    console.log("Chat started with session ID: ", chatSessionId);
-                    this.chatSessionId = chatSessionId;
-                    this.updateStatus(true);
-                    this.addSystemMessage("Đã kết nối với chuyên gia. Bạn có thể bắt đầu trò chuyện!");
-                });
-
-                // Handle chat ended
-                this.connection.on("ChatEnded", () => {
-                    console.log("Chat ended");
-                    this.updateStatus(false);
-                    this.addSystemMessage("Cuộc trò chuyện đã kết thúc.");
-                    setTimeout(() => {
-                        $('#chatModal').modal('hide');
-                    }, 2000);
-                });
-
-                // Start connection
-                this.connection.start()
-                    .then(() => {
-                        console.log("SignalR Connected");
-                    })
-                    .catch(err => {
-                        console.error("SignalR Connection Error:", err);
-                        this.addSystemMessage("Lỗi kết nối. Vui lòng thử lại sau.");
-                    });
-            }
-
-            bindEvents() {
-                // Open modal
-                document.getElementById("openChatModal").addEventListener("click", () => {
-                    $('#chatModal').modal('show');
-                });
-
-                // Send message
-                document.getElementById("sendButton").addEventListener("click", () => {
-                    this.sendMessage();
-                });
-
-                // Start chat
-                document.getElementById("startChat").addEventListener("click", async () => {
-                    await this.startChat();
-                });
-
-                // End chat
-                document.getElementById("endChat").addEventListener("click", () => {
-                    this.endChat();
-                });
-
-                // Enter key to send
-                document.getElementById("messageInput").addEventListener("keypress", (e) => {
-                    if (e.which === 13 || e.key === 'Enter') {
-                        this.sendMessage();
-                    }
-                });
-            }
-
-            async sendMessage() {
-                const messageInput = document.getElementById("messageInput");
-                const message = messageInput.value.trim();
-                
-                if (!message || !this.isActive || !this.chatSessionId) {
-                    return;
-                }
-
-                try {
-                    await this.connection.invoke("SendMessage", this.chatSessionId, this.userId, message);
-                    messageInput.value = "";
-                } catch (err) {
-                    console.error("Send message error:", err);
-                    this.addSystemMessage("Lỗi gửi tin nhắn. Vui lòng thử lại.");
-                }
-            }
-
-            async startChat() {
-                try {
-                    this.addSystemMessage("Đang tìm chuyên gia...", "info");
-                    
-                    // Call API to assign consultant
-                    const response = await fetch('/Account/AssignConsultant', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userId: this.userId })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to assign consultant');
-                    }
-
-                    const data = await response.json();
-                    const consultantId = data.consultantId;
-
-                    // Start chat via SignalR
-                    await this.connection.invoke("StartChat", this.userId, consultantId);
-                    
-                } catch (err) {
-                    console.error("Start chat error:", err);
-                    this.addSystemMessage("Không thể bắt đầu chat. Vui lòng thử lại.", "error");
-                }
-            }
-
-            endChat() {
-                if (!this.chatSessionId) return;
-
-                try {
-                    this.connection.invoke("EndChat", this.chatSessionId);
-                } catch (err) {
-                    console.error("End chat error:", err);
-                }
-            }
-
-            updateStatus(isOnline) {
-                this.isActive = isOnline;
-                const startBtn = document.getElementById('startChat');
-                const endBtn = document.getElementById('endChat');
-                const sendBtn = document.getElementById('sendButton');
-                const messageInput = document.getElementById('messageInput');
-                const statusBadge = document.getElementById('statusBadge');
-
-                if (isOnline) {
-                    startBtn.disabled = true;
-                    endBtn.disabled = false;
-                    sendBtn.disabled = false;
-                    messageInput.disabled = false;
-                    statusBadge.className = 'badge bg-success ms-3';
-                    statusBadge.innerHTML = '<span class="status-dot online me-1"></span>Online';
-                    messageInput.focus();
-                } else {
-                    startBtn.disabled = false;
-                    endBtn.disabled = true;
-                    sendBtn.disabled = true;
-                    messageInput.disabled = true;
-                    statusBadge.className = 'badge bg-danger ms-3';
-                    statusBadge.innerHTML = '<span class="status-dot offline me-1"></span>Offline';
-                    this.chatSessionId = null;
-                }
-            }
-
-            addMessage(text, sender) {
-                const chatBox = document.getElementById('chatBox');
-                const emptyState = document.getElementById('emptyState');
-                
-                if (emptyState) {
-                    emptyState.remove();
-                }
-
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `mb-3 chat-${sender}`;
-                
-                const time = new Date().toLocaleTimeString('vi-VN', {
-                    hour: '2-digit', 
-                    minute: '2-digit'
-                });
-                
-                messageDiv.innerHTML = `
-                    <div class="message-bubble-${sender} p-2 rounded">
-                        ${text}
-                    </div>
-                    <small class="text-muted d-block mt-1">${time}</small>
-                `;
-
-                chatBox.appendChild(messageDiv);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-
-            addSystemMessage(text, type = "info") {
-                const chatBox = document.getElementById('chatBox');
-                const emptyState = document.getElementById('emptyState');
-                
-                if (emptyState) {
-                    emptyState.remove();
-                }
-
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'mb-3 text-center';
-                
-                const badgeClass = type === "error" ? "bg-danger" : 
-                                 type === "info" ? "bg-info" : "bg-secondary";
-                
-                messageDiv.innerHTML = `
-                    <span class="badge ${badgeClass}">
-                        <i class="fas fa-info-circle me-1"></i>
-                        ${text}
-                    </span>
-                `;
-
-                chatBox.appendChild(messageDiv);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-
-            clearChat() {
-                const chatBox = document.getElementById('chatBox');
-                chatBox.innerHTML = `
-                    <div class="text-center text-muted" id="emptyState">
-                        <i class="fas fa-comments fa-3x mb-3 text-secondary"></i>
-                        <p>Chưa có tin nhắn nào. Bắt đầu cuộc trò chuyện!</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            // Note: Make sure SignalR library is loaded before this
-            if (typeof signalR !== 'undefined') {
-                new SignalRChat();
-            } else {
-                console.error('SignalR library not found. Please include SignalR script.');
-                // Fallback: Show error message
-                document.getElementById('openChatModal').addEventListener('click', () => {
-                    alert('SignalR chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
-                });
-            }
+        // Open Chat Modal
+        document.getElementById("openChatModal").addEventListener("click", () => {
+            $('#chatModal').modal('show');
         });
     </script>
 </body>

@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = Context.Session.GetInt32("UserId");
 }
 @model List<MentalHealthSupport.Models.ViewModel.ConsultantViewModel>
 <section class="hero-section">

@@ -3,9 +3,11 @@ using MentalHealthSupport.Models.ViewModel;
 using Microsoft.Data.SqlClient;
 using BCrypt.Net;
 using System.Data;
+using System.Text.Json.Serialization;
 
 namespace MentalHealthSupport.Controllers
 {
+    [Route("Account")] // Định nghĩa prefix route cho toàn bộ controller
     public class AccountController : Controller
     {
         private readonly string? connectionString;
@@ -15,20 +17,15 @@ namespace MentalHealthSupport.Controllers
             connectionString = config.GetConnectionString("DefaultConnection");
         }
 
-        [HttpGet]
+        [HttpGet("Login")] // Route cụ thể cho Login
         public IActionResult Login()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public IActionResult Login(LoginViewModel model)
         {
-            if (HttpContext.Session.GetInt32("UserId") != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -36,8 +33,6 @@ namespace MentalHealthSupport.Controllers
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
-
-                        // Thêm UserId vào truy vấn
                         string query = "SELECT UserId, PasswordHash, FullName, Role FROM Users WHERE Email = @Email";
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
@@ -62,12 +57,11 @@ namespace MentalHealthSupport.Controllers
                                     return View(model);
                                 }
 
-                                // Lưu thông tin vào session, bao gồm UserId
                                 HttpContext.Session.SetInt32("UserId", userId);
                                 HttpContext.Session.SetString("UserEmail", model.Email);
                                 HttpContext.Session.SetString("FullName", fullName);
                                 HttpContext.Session.SetString("UserRole", role);
-
+                                Console.WriteLine($"Login successful for UserId: {userId}, Email: {model.Email}");
                                 return RedirectToAction("Index", "Home");
                             }
                         }
@@ -84,13 +78,13 @@ namespace MentalHealthSupport.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet("Register")] // Route cụ thể cho Register
         public IActionResult Register()
         {
             return View(new RegisterViewModel());
         }
 
-        [HttpPost]
+        [HttpPost("Register")] // Route cụ thể cho Register POST
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel model)
         {
@@ -101,8 +95,6 @@ namespace MentalHealthSupport.Controllers
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
-
-                        // Kiểm tra email đã tồn tại
                         var checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
                         using (var checkCommand = new SqlCommand(checkEmailQuery, connection))
                         {
@@ -115,10 +107,7 @@ namespace MentalHealthSupport.Controllers
                             }
                         }
 
-                        // Mã hóa mật khẩu
                         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
-
-                        // Thêm người dùng vào bảng Users với vai trò mặc định là "User"
                         var query = @"
                             INSERT INTO Users (FullName, Email, PasswordHash, Role, Phone, Sex)
                             VALUES (@FullName, @Email, @PasswordHash, @Role, @Phone, @Sex)";
@@ -128,10 +117,9 @@ namespace MentalHealthSupport.Controllers
                             command.Parameters.AddWithValue("@FullName", model.FullName);
                             command.Parameters.AddWithValue("@Email", model.Email);
                             command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
-                            command.Parameters.AddWithValue("@Role", "User"); // Mặc định là User
+                            command.Parameters.AddWithValue("@Role", "User");
                             command.Parameters.AddWithValue("@Phone", (object?)model.Phone ?? DBNull.Value);
-                            command.Parameters.AddWithValue("@Sex", model.Sex); // Lưu true (Nam) hoặc false (Nữ) vào cột bit
-
+                            command.Parameters.AddWithValue("@Sex", model.Sex);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -151,12 +139,14 @@ namespace MentalHealthSupport.Controllers
             return View(model);
         }
 
+        [HttpGet("Logout")] // Route cụ thể cho Logout
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet("Manage")] // Route cụ thể cho Manage
         public IActionResult Manage()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -166,11 +156,9 @@ namespace MentalHealthSupport.Controllers
             }
 
             ManageViewModel model = new ManageViewModel();
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
                 string userQuery = @"SELECT UserId, FullName, Email, Phone, Role, IsVerified, CreatedAt 
                                     FROM Users WHERE UserId = @UserId";
                 using (SqlCommand cmd = new SqlCommand(userQuery, connection))
@@ -191,7 +179,6 @@ namespace MentalHealthSupport.Controllers
                     }
                 }
 
-                // Nếu là Consultant thì lấy thêm thông tin
                 if (model.Role == "Consultant")
                 {
                     string consultantQuery = @"SELECT ConsultantId, Specialty, CertificateUrl, ApprovalStatus, ExperienceYears 
@@ -217,7 +204,7 @@ namespace MentalHealthSupport.Controllers
             return View("Manage", model);
         }
 
-        [HttpPost]
+        [HttpPost("UpdateAccount")] // Route cụ thể cho UpdateAccount
         public IActionResult UpdateAccount(ManageViewModel model)
         {
             if (!ModelState.IsValid)
@@ -226,8 +213,6 @@ namespace MentalHealthSupport.Controllers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Cập nhật bảng Users
                 string updateUser = @"UPDATE Users 
                                     SET FullName = @FullName, Phone = @Phone 
                                     WHERE UserId = @UserId";
@@ -239,7 +224,6 @@ namespace MentalHealthSupport.Controllers
                     cmd.ExecuteNonQuery();
                 }
 
-                // Nếu là Consultant thì cập nhật thêm
                 if (model.Role == "Consultant")
                 {
                     string updateConsultant = @"UPDATE ConsultantProfiles 
@@ -248,7 +232,7 @@ namespace MentalHealthSupport.Controllers
                     using (SqlCommand cmd = new SqlCommand(updateConsultant, connection))
                     {
                         cmd.Parameters.AddWithValue("@Specialty", model.Specialty);
-                        cmd.Parameters.AddWithValue("@Certificate", model.CertificateUrl);
+                        cmd.Parameters.AddWithValue("@CertificateUrl", model.CertificateUrl);
                         cmd.Parameters.AddWithValue("@ExperienceYears", model.ExperienceYears);
                         cmd.Parameters.AddWithValue("@ConsultantId", model.ConsultantId);
                         cmd.ExecuteNonQuery();
@@ -261,28 +245,72 @@ namespace MentalHealthSupport.Controllers
         }
 
         [HttpPost("AssignConsultant")]
-        public IActionResult AssignConsultant(int userId)
+        public IActionResult AssignConsultant([FromBody] AssignConsultantRequest request)
         {
+            Console.WriteLine($"AssignConsultant called with request: {System.Text.Json.JsonSerializer.Serialize(request)}");
             try
             {
+                if (request == null || request.UserId <= 0)
+                {
+                    Console.WriteLine("Validation failed: Invalid userId");
+                    return BadRequest(new { error = "Invalid userId provided." });
+                }
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT TOP 1 ConsultantId FROM Consultants WHERE IsAvailable = 1";
+                    string query = "SELECT TOP 1 ConsultantId FROM ConsultantProfiles WHERE ApprovalStatus = @ApprovalStatus ORDER BY NEWID()";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@ApprovalStatus", "Approved");
                         object result = command.ExecuteScalar();
-                        if (result == null) return BadRequest("No consultants available.");
+                        if (result == null)
+                        {
+                            string countQuery = "SELECT COUNT(*) FROM ConsultantProfiles WHERE ApprovalStatus = @ApprovalStatus";
+                            using (SqlCommand countCommand = new SqlCommand(countQuery, connection))
+                            {
+                                countCommand.Parameters.AddWithValue("@ApprovalStatus", "Approved");
+                                int totalConsultants = (int)countCommand.ExecuteScalar();
+                                Console.WriteLine($"No approved consultants found. Total approved consultants: {totalConsultants}");
+                            }
+                            return BadRequest(new { error = "No consultants available." });
+                        }
 
                         int consultantId = Convert.ToInt32(result);
+                        Console.WriteLine($"Assigned consultantId: {consultantId} from available consultants: {GetAvailableConsultants(connection)}");
                         return Ok(new { ConsultantId = consultantId });
                     }
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                Console.WriteLine($"Error in AssignConsultant: {ex.Message}");
+                return StatusCode(500, new { error = $"Error: {ex.Message}" });
             }
         }
+
+        private string GetAvailableConsultants(SqlConnection connection)
+        {
+            string query = "SELECT ConsultantId FROM ConsultantProfiles WHERE ApprovalStatus = @ApprovalStatus";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@ApprovalStatus", "Approved");
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    var ids = new List<int>();
+                    while (reader.Read())
+                    {
+                        ids.Add(reader.GetInt32(0));
+                    }
+                    return string.Join(", ", ids);
+                }
+            }
+        }
+    }
+
+    public class AssignConsultantRequest
+    {
+        [JsonPropertyName("userId")]
+        public int UserId { get; set; }
     }
 }

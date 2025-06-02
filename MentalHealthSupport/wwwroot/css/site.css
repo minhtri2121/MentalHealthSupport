@@ -1188,26 +1188,64 @@ table {
   }
 }
 
-/* Chat box */
-.chat-user { text-align: right; }
-        .chat-expert { text-align: left; }
-        .message-bubble-user { 
-            background: #0d6efd; 
-            color: white; 
-            display: inline-block; 
-            max-width: 70%; 
+        /* Chat Icon */
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
-        .message-bubble-expert { 
-            background: #198754; 
-            color: white; 
-            display: inline-block; 
-            max-width: 70%; 
+        .chat-icon:hover {
+            transform: scale(1.1);
+            background-color: #0056b3;
         }
-        .status-dot { 
-            width: 8px; 
-            height: 8px; 
-            border-radius: 50%; 
-            display: inline-block; 
+        .chat-icon i {
+            font-size: 24px;
         }
-        .online { background: #198754; }
-        .offline { background: #dc3545; }
+
+/* Chat Icon */
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+.chat-icon:hover {
+    transform: scale(1.1);
+    background-color: #0056b3;
+}
+.chat-icon i {
+    font-size: 24px;
+}
+
+/* Modal Chat */
+.chat-modal .modal-dialog {
+    max-width: 800px;
+    margin: 30px auto;
+}
+.chat-modal .modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+}
