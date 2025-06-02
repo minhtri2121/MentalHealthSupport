@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "4A7UGyX/cPSq0NzviF+3z+A1fwSlKxPD74nmvrFJ3h4=",
+  "Hash": "KVMMm86nlvjbPKvieXWo2P/SMHWpn1dL1IsVr3luw1o=",
   "Source": "MentalHealthSupport",
   "BasePath": "_content/MentalHealthSupport",
   "Mode": "Default",
@@ -668,12 +668,12 @@
       "OriginalItemSpec": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-dv9fi4aixe.gz",
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-c7sdg3kol8.gz",
       "SourceId": "MentalHealthSupport",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/MentalHealthSupport",
-      "RelativePath": "js/chat#[.{fingerprint=dv9fi4aixe}]?.js.gz",
+      "RelativePath": "js/chat#[.{fingerprint=c7sdg3kol8}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -682,8 +682,8 @@
       "RelatedAsset": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chat.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "mkk8glgk4k",
-      "Integrity": "Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA=",
+      "Fingerprint": "rarklotuvl",
+      "Integrity": "zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chat.js"
@@ -1669,8 +1669,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "dv9fi4aixe",
-      "Integrity": "Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI=",
+      "Fingerprint": "c7sdg3kol8",
+      "Integrity": "+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\chat.js"
@@ -4561,13 +4561,13 @@
       ]
     },
     {
-      "Route": "js/chat.dv9fi4aixe.js",
-      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-dv9fi4aixe.gz",
+      "Route": "js/chat.c7sdg3kol8.js",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-c7sdg3kol8.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000383141762"
+          "Quality": "0.000356379187"
         }
       ],
       "ResponseHeaders": [
@@ -4577,15 +4577,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2609"
+          "Value": "2805"
         },
         {
           "Name": "ETag",
-          "Value": "\"Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA=\""
+          "Value": "\"zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 20:21:48 GMT"
+          "Value": "Mon, 02 Jun 2025 22:13:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4605,13 +4605,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI=\""
+          "Value": "W/\"+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "dv9fi4aixe"
+          "Value": "c7sdg3kol8"
         },
         {
           "Name": "label",
@@ -4619,12 +4619,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI="
+          "Value": "sha256-+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM="
         }
       ]
     },
     {
-      "Route": "js/chat.dv9fi4aixe.js",
+      "Route": "js/chat.c7sdg3kol8.js",
       "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chat.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -4634,7 +4634,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10813"
+          "Value": "11852"
         },
         {
           "Name": "Content-Type",
@@ -4642,11 +4642,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI=\""
+          "Value": "\"+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 20:21:48 GMT"
+          "Value": "Mon, 02 Jun 2025 22:13:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4656,7 +4656,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "dv9fi4aixe"
+          "Value": "c7sdg3kol8"
         },
         {
           "Name": "label",
@@ -4664,13 +4664,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI="
+          "Value": "sha256-+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM="
         }
       ]
     },
     {
-      "Route": "js/chat.dv9fi4aixe.js.gz",
-      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-dv9fi4aixe.gz",
+      "Route": "js/chat.c7sdg3kol8.js.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-c7sdg3kol8.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4679,7 +4679,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2609"
+          "Value": "2805"
         },
         {
           "Name": "Content-Type",
@@ -4687,11 +4687,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA=\""
+          "Value": "\"zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 20:21:48 GMT"
+          "Value": "Mon, 02 Jun 2025 22:13:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4709,7 +4709,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "dv9fi4aixe"
+          "Value": "c7sdg3kol8"
         },
         {
           "Name": "label",
@@ -4717,18 +4717,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA="
+          "Value": "sha256-zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI="
         }
       ]
     },
     {
       "Route": "js/chat.js",
-      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-dv9fi4aixe.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-c7sdg3kol8.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000383141762"
+          "Quality": "0.000356379187"
         }
       ],
       "ResponseHeaders": [
@@ -4738,15 +4738,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2609"
+          "Value": "2805"
         },
         {
           "Name": "ETag",
-          "Value": "\"Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA=\""
+          "Value": "\"zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 20:21:48 GMT"
+          "Value": "Mon, 02 Jun 2025 22:13:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4766,13 +4766,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI=\""
+          "Value": "W/\"+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI="
+          "Value": "sha256-+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM="
         }
       ]
     },
@@ -4787,7 +4787,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10813"
+          "Value": "11852"
         },
         {
           "Name": "Content-Type",
@@ -4795,11 +4795,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI=\""
+          "Value": "\"+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 20:21:48 GMT"
+          "Value": "Mon, 02 Jun 2025 22:13:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4809,13 +4809,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Rx5NtlTaso/3ffpUZcZCeIjvy3jSotBcTVdpXmA1vMI="
+          "Value": "sha256-+PMzHB4gRvDiw9utdtlSt3IZ+f9edaB2vL77RCdi8KM="
         }
       ]
     },
     {
       "Route": "js/chat.js.gz",
-      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-dv9fi4aixe.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\h5v5i3nyk3-c7sdg3kol8.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4824,7 +4824,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2609"
+          "Value": "2805"
         },
         {
           "Name": "Content-Type",
@@ -4832,11 +4832,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA=\""
+          "Value": "\"zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 20:21:48 GMT"
+          "Value": "Mon, 02 Jun 2025 22:13:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4854,7 +4854,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Jp7hsx4jsndoBqITJWLmrdmaihWCwtPt2GIPbfsvxmA="
+          "Value": "sha256-zVMkRG4kyvS4bKOykVgIbUeFLlE0fCwK80HjP8wF7GI="
         }
       ]
     },

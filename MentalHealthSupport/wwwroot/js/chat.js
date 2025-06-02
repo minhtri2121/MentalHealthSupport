@@ -58,6 +58,7 @@ if (typeof window.signalRChatInstance === 'undefined') {
                 })
                 .catch(err => {
                     console.error("SignalR Connection Error:", err);
+                    this.addSystemMessage("Không thể kết nối SignalR: " + err.message, "error");
                 });
         }
 
@@ -73,8 +74,11 @@ if (typeof window.signalRChatInstance === 'undefined') {
                 return;
             }
 
-            startChatBtn.addEventListener("click", async () => {
-                console.log("Start chat button clicked");
+            console.log("Binding events to StartChat button...");
+            startChatBtn.onclick = null; // Xóa sự kiện cũ
+            startChatBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                console.log("Start chat button clicked at:", new Date().toISOString());
                 await this.startChat();
             });
             endChatBtn.addEventListener("click", () => this.endChat());
@@ -96,7 +100,11 @@ if (typeof window.signalRChatInstance === 'undefined') {
 
                 if (!response.ok) {
                     const text = await response.text();
-                    console.error("AssignConsultant failed:", text);
+                    console.error("AssignConsultant failed:", {
+                        status: response.status,
+                        statusText: response.statusText,
+                        text: text
+                    });
                     throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
                 }
 
@@ -105,13 +113,16 @@ if (typeof window.signalRChatInstance === 'undefined') {
                 const consultantId = data.ConsultantId || data.consultantId;
 
                 if (!consultantId) {
-                    throw new Error("ConsultantId not found in response");
+                    throw new Error("ConsultantId not found in response: ", data);
                 }
 
                 console.log("Starting chat with userId:", this.userId, "and consultantId:", consultantId);
+                if (!this.connection) {
+                    throw new Error("SignalR connection is not initialized.");
+                }
                 await this.connection.invoke("StartChat", this.userId, consultantId);
             } catch (err) {
-                console.error("Start chat error:", err.message);
+                console.error("Start chat error:", err.message, err.stack);
                 this.addSystemMessage("Không thể bắt đầu chat: " + err.message, "error");
             }
         }
@@ -212,27 +223,31 @@ if (typeof window.signalRChatInstance === 'undefined') {
     }
 
     // Trì hoãn khởi tạo để đảm bảo modal đã hiển thị
-    $('#chatModal').on('shown.bs.modal', function () {
-        console.log("Chat modal shown, initializing SignalRChat...");
-        const modalBody = document.querySelector('#chatModal .modal-body');
-        if (!modalBody) {
-            console.error("Modal body not found in DOM.");
-            return;
-        }
-        const startChatBtn = document.getElementById("startChat");
-        if (!startChatBtn) {
-            console.error("startChat button not found in DOM after modal shown.");
-            return;
-        }
+    $(document).ready(function () {
+        $('#chatModal').on('shown.bs.modal', function () {
+            console.log("Chat modal shown, initializing SignalRChat at:", new Date().toISOString());
+            const modalBody = document.querySelector('#chatModal .modal-body');
+            if (!modalBody) {
+                console.error("Modal body not found in DOM.");
+                return;
+            }
+            const startChatBtn = document.getElementById("startChat");
+            if (!startChatBtn) {
+                console.error("startChat button not found in DOM after modal shown.");
+                return;
+            }
 
-        if (!window.signalRChatInstance) {
-            window.signalRChatInstance = new SignalRChat();
-            window.signalRChatInstance.init();
-            window.signalRChatInstance.bindEvents();
-        } else {
-            window.signalRChatInstance.bindEvents();
-        }
-        $('#chatModal').removeAttr('aria-hidden');
+            if (!window.signalRChatInstance) {
+                window.signalRChatInstance = new SignalRChat();
+                window.signalRChatInstance.init();
+                window.signalRChatInstance.bindEvents();
+                console.log("SignalRChat instance initialized and events bound at:", new Date().toISOString());
+            } else {
+                window.signalRChatInstance.bindEvents();
+                console.log("Rebinding events to existing SignalRChat instance at:", new Date().toISOString());
+            }
+            $('#chatModal').removeAttr('aria-hidden');
+        });
     });
 
     // Gắn sự kiện mở modal sau khi DOM sẵn sàng
@@ -240,7 +255,7 @@ if (typeof window.signalRChatInstance === 'undefined') {
         const openChatModalBtn = document.getElementById("openChatModal");
         if (openChatModalBtn) {
             openChatModalBtn.addEventListener("click", () => {
-                console.log("Opening chat modal...");
+                console.log("Opening chat modal at:", new Date().toISOString());
                 $('#chatModal').modal('show');
             });
         } else {

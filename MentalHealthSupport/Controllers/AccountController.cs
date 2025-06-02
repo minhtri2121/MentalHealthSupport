@@ -7,7 +7,8 @@ using System.Text.Json.Serialization;
 
 namespace MentalHealthSupport.Controllers
 {
-    [Route("Account")] // Định nghĩa prefix route cho toàn bộ controller
+    [Route("Account")]
+
     public class AccountController : Controller
     {
         private readonly string? connectionString;
