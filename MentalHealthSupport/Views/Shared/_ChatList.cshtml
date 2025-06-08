@@ -1,0 +1,80 @@
+@model List<ChatSessionViewModel>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+@foreach (var session in Model)
+{
+    <div class="chat-session border-bottom py-2">
+        <a asp-controller="Chat" asp-action="Detail" asp-route-id="@session.ChatSessionId" class="btn btn-sm btn-outline-primary float-end">
+        <h1>Trò chuyện với: @session.OtherUserName</h1>
+        <p>Bắt đầu: @session.StartTime.ToString("HH:mm dd/MM/yyyy")</p>
+        </a>
+    </div>
+}
+<style>
+
+.chat-session {
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.chat-session:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.chat-session .btn {
+    display: block;
+    text-decoration: none;
+    padding: 20px;
+    color: inherit;
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+.chat-session .btn:hover {
+    background-color: #f8f9fa;
+    text-decoration: none;
+    color: inherit;
+}
+
+.chat-session h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+
+.chat-session p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+.border-bottom {
+    border-bottom: none !important;
+}
+
+.py-2 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.btn-sm,
+.btn-outline-primary,
+.float-end {
+    /* Reset các class không cần thiết */
+}
+</style>

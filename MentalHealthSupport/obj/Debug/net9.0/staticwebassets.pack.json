@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\css\\about-us.css"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chat-detail.css",
+      "PackagePath": "staticwebassets\\css\\chat-detail.css"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chat-site.css",
       "PackagePath": "staticwebassets\\css\\chat-site.css"
     },

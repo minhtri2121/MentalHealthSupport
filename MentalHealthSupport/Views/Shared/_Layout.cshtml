@@ -128,31 +128,6 @@
         <div class="chat-icon" id="openChatModal">
             <i class="fas fa-comments"></i>
         </div>
-
-    <!-- Chat Modal -->
-        <div class="modal fade chat-modal" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="chatModalLabel">Chat với Chuyên gia</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <partial name="_SimpleChat" model="@Context.Session.GetInt32("UserId")" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            console.log("Rendering chat icon with UserId:", @Context.Session.GetInt32("UserId")?.ToString() ?? "null");
-        </script>
-    }
-    else
-    {
-        <script>
-            console.log("UserId not found in session, chat icon not rendered.");
-        </script>
     }
 
     <!-- Footer -->
@@ -243,10 +218,40 @@
             }
         });
 
-        // Open Chat Modal
-        document.getElementById("openChatModal").addEventListener("click", () => {
-            $('#chatModal').modal('show');
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatIcon = document.getElementById("openChatModal");
+            if (chatIcon) {
+                chatIcon.addEventListener("click", function () {
+                    window.location.href = "/Chat/Index";
+                });
+            }
+        }); 
+        
+        // Nhận tin nhắn mới
+        connection.on("NotifyNewMessage", function (senderName, message, chatSessionId) {
+            // 1. Hiển thị thông báo dạng toast
+            showToast(senderName + ": " + message);
+
+            // 2. (Tùy chọn) Cập nhật badge chưa đọc
+            incrementUnreadCount(chatSessionId);
         });
+
+        function showToast(text) {
+            const toast = document.createElement("div");
+            toast.className = "toast-message";
+            toast.innerText = text;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        function incrementUnreadCount(sessionId) {
+            const badge = document.querySelector(`#chat-badge-${sessionId}`);
+            if (badge) {
+                badge.innerText = parseInt(badge.innerText || "0") + 1;
+                badge.style.display = "inline-block";
+            }
+        }
     </script>
 </body>
 </html>

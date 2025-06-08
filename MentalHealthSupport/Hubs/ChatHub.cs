@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 
 namespace MentalHealthSupport.Hubs
 {
@@ -15,249 +14,138 @@ namespace MentalHealthSupport.Hubs
             _configuration = configuration;
         }
 
-        public override async Task OnConnectedAsync()
+        public async Task SendMessage(string userId, string message, int chatSessionId)
         {
-            var userId = GetUserIdFromContext();
-            if (userId.HasValue)
+            try
             {
-                OnlineUsers.AddOrUpdate(userId.Value, Context.ConnectionId, (key, oldValue) => Context.ConnectionId);
-                await SaveUserConnection(userId.Value, Context.ConnectionId);
+                //Lưu tin nhắn vào DB
+                int messageId;
+                using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    await conn.OpenAsync();
+                    string query = @"INSERT INTO ChatMessages (ChatSessionId, SenderId, Message, Timestamp, IsRead, MessageType)
+                                    OUTPUT INSERTED.MessageId
+                                    VALUES (@ChatSessionId, @SenderId, @Message, @Timestamp, @IsRead, @MessageType)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
+                        cmd.Parameters.AddWithValue("@SenderId", int.Parse(userId));
+                        cmd.Parameters.AddWithValue("@Message", message);
+                        cmd.Parameters.AddWithValue("@Timestamp", DateTime.UtcNow);
+                        cmd.Parameters.AddWithValue("@IsRead", false);
+                        cmd.Parameters.AddWithValue("@MessageType", "Text");
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        messageId = Convert.ToInt32(result);
+                    }
+                }
+
+                //Gửi tin nhắn đến group hiện tại (client đang mở chat)
+                await Clients.Group($"session_{chatSessionId}")
+                    .SendAsync("ReceiveMessage", userId, message, DateTime.UtcNow.ToString("HH:mm"));
+
+                //Gửi thông báo riêng cho người nhận (tin nhắn popup/toast)
+                int senderId = int.Parse(userId);
+                int receiverUserId = 0;
+
+                using (var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    await conn.OpenAsync();
+                    var query = @"SELECT 
+                                    CASE 
+                                        WHEN UserId = @SenderId THEN ConsultantId 
+                                        ELSE UserId 
+                                    END AS ReceiverId
+                                FROM ChatSessions
+                                WHERE ChatSessionId = @ChatSessionId";
+
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@SenderId", senderId);
+                        cmd.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        if (result != null)
+                        {
+                            receiverUserId = Convert.ToInt32(result);
+
+                            await Clients.User(receiverUserId.ToString())
+                                .SendAsync("NotifyNewMessage", userId, message, chatSessionId);
+                        }
+                    }
+                }
             }
-            await base.OnConnectedAsync();
+            catch (Exception ex)
+            {
+                await Clients.Caller.SendAsync("ReceiveError", "Error sending message: " + ex.Message);
+            }
+        }
+        public async Task JoinSession(int chatSessionId)
+        {
+            try
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, $"session_{chatSessionId}");
+
+                using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    await conn.OpenAsync();
+                    string query = @"INSERT INTO UserConnections (ConnectionId, UserId, ConnectedAt, IsActive)
+                                    VALUES (@ConnectionId, @UserId, @ConnectedAt, @IsActive)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ConnectionId", Context.ConnectionId);
+
+                        var httpContext = Context.GetHttpContext();
+                        var userId = httpContext?.Session.GetInt32("UserId");
+
+                        if (userId == null)
+                        {
+                            await Clients.Caller.SendAsync("ReceiveError", "Không xác định được UserId từ session.");
+                            return;
+                        }
+                        cmd.Parameters.AddWithValue("@UserId", userId.Value);
+                        cmd.Parameters.AddWithValue("@ConnectedAt", DateTime.UtcNow);
+                        cmd.Parameters.AddWithValue("@IsActive", true);
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await Clients.Caller.SendAsync("ReceiveError", $"JoinSession error: {ex.Message}");
+                Console.WriteLine("JoinSession Error: " + ex);
+            }
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var userId = GetUserIdFromContext();
-            if (userId.HasValue)
+            using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
             {
-                OnlineUsers.TryRemove(userId.Value, out _);
-                await RemoveUserConnection(Context.ConnectionId);
+                await conn.OpenAsync();
+                string query = @"UPDATE UserConnections SET IsActive = 0 WHERE ConnectionId = @ConnectionId";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ConnectionId", Context.ConnectionId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
+
             await base.OnDisconnectedAsync(exception);
         }
-
-        private int? GetUserIdFromContext()
+        
+        public override Task OnConnectedAsync()
         {
-            var httpContext = Context.GetHttpContext();
-            if (httpContext == null)
+            var userId = Context.GetHttpContext()?.Session.GetInt32("UserId");
+            if (userId != null)
             {
-                Console.WriteLine("HttpContext is null in GetUserIdFromContext.");
-                return null;
+                Context.Items["UserId"] = userId;
             }
 
-            var userId = httpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                Console.WriteLine("UserId not found in session.");
-            }
-            else
-            {
-                Console.WriteLine($"UserId from session: {userId.Value}");
-            }
-            return userId;
-        }
-
-        public async Task StartChat(int userId, int consultantId)
-        {
-            Console.WriteLine($"Starting chat between userId: {userId} and consultantId: {consultantId}");
-            try
-            {
-                var chatSessionId = await CreateChatSession(userId, consultantId);
-                await Groups.AddToGroupAsync(Context.ConnectionId, $"ChatSession_{chatSessionId}");
-                await Clients.Caller.SendAsync("ChatStarted", chatSessionId);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"StartChat Error: {ex.Message}");
-                await Clients.Caller.SendAsync("Error", $"Không thể bắt đầu chat: {ex.Message}");
-            }
-        }
-
-        public async Task SendMessage(int chatSessionId, int senderId, string message)
-        {
-            try
-            {
-                // Kiểm tra trạng thái phiên chat
-                string status = await GetChatSessionStatus(chatSessionId);
-                if (status != "Active")
-                {
-                    throw new Exception("Phiên chat không còn hoạt động.");
-                }
-
-                await SaveMessage(chatSessionId, senderId, message);
-                var chatInfo = await GetChatSessionInfo(chatSessionId);
-                if (chatInfo.HasValue)
-                {
-                    var (userId, consultantId) = chatInfo.Value;
-                    await Clients.Group($"ChatSession_{chatSessionId}")
-                        .SendAsync("ReceiveMessage", chatSessionId, senderId, message, DateTime.Now);
-                }
-                else
-                {
-                    throw new Exception("Không tìm thấy thông tin phiên chat.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"SendMessage Error: {ex.Message}");
-                await Clients.Caller.SendAsync("Error", $"Lỗi gửi tin nhắn: {ex.Message}");
-            }
-        }
-
-        public async Task EndChat(int chatSessionId)
-        {
-            try
-            {
-                await CloseChatSession(chatSessionId);
-                await Clients.Group($"ChatSession_{chatSessionId}")
-                    .SendAsync("ChatEnded");
-                var chatInfo = await GetChatSessionInfo(chatSessionId);
-                if (chatInfo.HasValue)
-                {
-                    var (userId, consultantId) = chatInfo.Value;
-                    var userConnectionId = OnlineUsers.GetValueOrDefault(userId);
-                    var consultantConnectionId = OnlineUsers.GetValueOrDefault(consultantId);
-                    if (userConnectionId != null)
-                    {
-                        await Groups.RemoveFromGroupAsync(userConnectionId, $"ChatSession_{chatSessionId}");
-                    }
-                    if (consultantConnectionId != null)
-                    {
-                        await Groups.RemoveFromGroupAsync(consultantConnectionId, $"ChatSession_{chatSessionId}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"EndChat Error: {ex.Message}");
-                await Clients.Caller.SendAsync("Error", $"Lỗi kết thúc chat: {ex.Message}");
-            }
-        }
-
-        private async Task<int> CreateChatSession(int userId, int consultantId)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "INSERT INTO ChatSessions (UserId, ConsultantId, StartTime, Status) OUTPUT INSERTED.ChatSessionId VALUES (@UserId, @ConsultantId, @StartTime, @Status)";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@UserId", userId);
-                    command.Parameters.AddWithValue("@ConsultantId", consultantId);
-                    command.Parameters.AddWithValue("@StartTime", DateTime.Now);
-                    command.Parameters.AddWithValue("@Status", "Active");
-                    var result = await command.ExecuteScalarAsync();
-                    if (result == null)
-                    {
-                        throw new Exception("Không thể tạo phiên chat.");
-                    }
-                    return (int)result; // Sửa lỗi CS8605 bằng cách kiểm tra null trước khi ép kiểu
-                }
-            }
-        }
-
-        private async Task<(int UserId, int ConsultantId)?> GetChatSessionInfo(int chatSessionId)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "SELECT UserId, ConsultantId FROM ChatSessions WHERE ChatSessionId = @ChatSessionId";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            return (reader.GetInt32(0), reader.GetInt32(1));
-                        }
-                    }
-                }
-                return null;
-            }
-        }
-
-        private async Task<string> GetChatSessionStatus(int chatSessionId)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "SELECT Status FROM ChatSessions WHERE ChatSessionId = @ChatSessionId";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
-                    var result = await command.ExecuteScalarAsync();
-                    return result?.ToString() ?? "Closed";
-                }
-            }
-        }
-
-        private async Task SaveMessage(int chatSessionId, int senderId, string message)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "INSERT INTO ChatMessages (ChatSessionId, SenderId, Message, Timestamp, IsRead, MessageType) VALUES (@ChatSessionId, @SenderId, @Message, @Timestamp, @IsRead, @MessageType)";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
-                    command.Parameters.AddWithValue("@SenderId", senderId);
-                    command.Parameters.AddWithValue("@Message", message);
-                    command.Parameters.AddWithValue("@Timestamp", DateTime.Now);
-                    command.Parameters.AddWithValue("@IsRead", false);
-                    command.Parameters.AddWithValue("@MessageType", "Text");
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
-
-        private async Task CloseChatSession(int chatSessionId)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "UPDATE ChatSessions SET EndTime = @EndTime, Status = @Status WHERE ChatSessionId = @ChatSessionId";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@EndTime", DateTime.Now);
-                    command.Parameters.AddWithValue("@Status", "Closed");
-                    command.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
-
-        private async Task SaveUserConnection(int userId, string connectionId)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "INSERT INTO UserConnections (ConnectionId, UserId, ConnectedAt, IsActive) VALUES (@ConnectionId, @UserId, @ConnectedAt, @IsActive)";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@ConnectionId", connectionId);
-                    command.Parameters.AddWithValue("@UserId", userId);
-                    command.Parameters.AddWithValue("@ConnectedAt", DateTime.Now);
-                    command.Parameters.AddWithValue("@IsActive", true);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
-
-        private async Task RemoveUserConnection(string connectionId)
-        {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connection.OpenAsync();
-                var query = "UPDATE UserConnections SET IsActive = @IsActive WHERE ConnectionId = @ConnectionId";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@IsActive", false);
-                    command.Parameters.AddWithValue("@ConnectionId", connectionId);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            return base.OnConnectedAsync();
         }
     }
 }

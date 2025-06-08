@@ -2,14 +2,14 @@ using MentalHealthSupport.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Thêm dịch vụ session với cấu hình chi tiết
+// Cấu hình Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Thời gian hết hạn
-    options.Cookie.HttpOnly = true; // Bảo mật cookie
-    options.Cookie.IsEssential = true; // Bắt buộc cookie
-    options.Cookie.SameSite = SameSiteMode.Lax; // Điều chỉnh SameSite để phù hợp
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
 // Cấu hình MVC và JSON
@@ -22,6 +22,10 @@ builder.Services.AddControllersWithViews()
 // Cấu hình SignalR
 builder.Services.AddSignalR();
 
+builder.Services.AddSignalR().AddHubOptions<ChatHub>(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 // Cấu hình CORS
 builder.Services.AddCors(options =>
 {
@@ -56,7 +60,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("AllowAll");
 app.UseAuthorization();
-app.UseSession(); // Đảm bảo UseSession được gọi trước MapControllerRoute
+app.UseSession();
 
 // Route và Hub
 app.MapControllerRoute(

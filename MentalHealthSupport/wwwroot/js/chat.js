@@ -52,6 +52,19 @@ if (typeof window.signalRChatInstance === 'undefined') {
                 this.addSystemMessage(message, "error");
             });
 
+            this.connection.on("ReceiveNotification", (data) => {
+                if ("Notification" in window && Notification.permission === "granted") {
+                    new Notification("Tin nhắn mới", { body: data.message });
+                } else if ("Notification" in window && Notification.permission !== "denied") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            new Notification("Tin nhắn mới", { body: data.message });
+                        }
+                    });
+                }
+                this.addSystemMessage(`${data.message} (Phiên chat: ${data.chatSessionId})`, "info");
+            });
+
             this.connection.start()
                 .then(() => {
                     console.log("SignalR Connected");
@@ -74,8 +87,7 @@ if (typeof window.signalRChatInstance === 'undefined') {
                 return;
             }
 
-            console.log("Binding events to StartChat button...");
-            startChatBtn.onclick = null; // Xóa sự kiện cũ
+            startChatBtn.onclick = null;
             startChatBtn.addEventListener("click", async (e) => {
                 e.preventDefault();
                 console.log("Start chat button clicked at:", new Date().toISOString());
@@ -91,7 +103,6 @@ if (typeof window.signalRChatInstance === 'undefined') {
         async startChat() {
             try {
                 this.addSystemMessage("Đang tìm chuyên gia...", "info");
-                console.log("Sending request to /Account/AssignConsultant with userId:", this.userId);
                 const response = await fetch('/Account/AssignConsultant', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -109,14 +120,12 @@ if (typeof window.signalRChatInstance === 'undefined') {
                 }
 
                 const data = await response.json();
-                console.log("AssignConsultant response:", data);
                 const consultantId = data.ConsultantId || data.consultantId;
 
                 if (!consultantId) {
                     throw new Error("ConsultantId not found in response: ", data);
                 }
 
-                console.log("Starting chat with userId:", this.userId, "and consultantId:", consultantId);
                 if (!this.connection) {
                     throw new Error("SignalR connection is not initialized.");
                 }
@@ -222,7 +231,6 @@ if (typeof window.signalRChatInstance === 'undefined') {
         }
     }
 
-    // Trì hoãn khởi tạo để đảm bảo modal đã hiển thị
     $(document).ready(function () {
         $('#chatModal').on('shown.bs.modal', function () {
             console.log("Chat modal shown, initializing SignalRChat at:", new Date().toISOString());
@@ -250,7 +258,6 @@ if (typeof window.signalRChatInstance === 'undefined') {
         });
     });
 
-    // Gắn sự kiện mở modal sau khi DOM sẵn sàng
     document.addEventListener('DOMContentLoaded', () => {
         const openChatModalBtn = document.getElementById("openChatModal");
         if (openChatModalBtn) {

@@ -1,10 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
-
-[Route("api/[controller]")]
-[ApiController]
-public class ChatController : ControllerBase
+public class ChatSessionViewModel
+{
+    public int ChatSessionId { get; set; }
+    public int UserId { get; set; }
+    public int ConsultantId { get; set; }
+    public string OtherUserName { get; set; } = string.Empty;
+    public DateTime StartTime { get; set; }
+    public DateTime? EndTime { get; set; }
+    public string Status { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public bool IsActive { get; set; }
+}
+public class ChatController : Controller
 {
     private readonly string? connectionString;
 
@@ -13,98 +22,201 @@ public class ChatController : ControllerBase
         connectionString = config.GetConnectionString("DefaultConnection");
     }
 
-    [HttpGet("GetOnlineConsultants")]
-    public async Task<IActionResult> GetOnlineConsultants()
+    // Hiển thị danh sách chat sessions
+    public IActionResult Index()
     {
-        var consultants = new List<object>();
-        using (var connection = new SqlConnection(connectionString))
+        var sessions = new List<ChatSessionViewModel>();
+        var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+        try
         {
-            await connection.OpenAsync();
-            var query = @"
-                SELECT u.UserId, u.FullName, cp.Specialty
-                FROM Users u
-                LEFT JOIN ConsultantProfiles cp ON u.UserId = cp.ConsultantId
-                JOIN UserConnections uc ON u.UserId = uc.UserId
-                WHERE u.Role = 'Consultant' AND uc.IsActive = 1";
-            using (var command = new SqlCommand(query, connection))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (var reader = await command.ExecuteReaderAsync())
+                conn.Open();
+                string query = @"SELECT cs.ChatSessionId, cs.UserId, cs.ConsultantId, cs.StartTime, cs.EndTime, cs.Status, cs.CreatedAt, cs.IsActive,
+                               CASE 
+                                   WHEN cs.UserId = @UserId THEN u2.FullName
+                                   ELSE u1.FullName
+                               END AS OtherUserName
+                               FROM ChatSessions cs
+                               INNER JOIN Users u1 ON cs.UserId = u1.UserId
+                               INNER JOIN Users u2 ON cs.ConsultantId = u2.UserId
+                               WHERE (cs.UserId = @UserId OR cs.ConsultantId = @UserId) AND cs.IsActive = 1";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    while (await reader.ReadAsync())
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        consultants.Add(new
+                        while (reader.Read())
                         {
-                            userId = reader.GetInt32(0),
-                            fullName = reader.GetString(1),
-                            specialty = reader.IsDBNull(2) ? null : reader.GetString(2)
-                        });
+                            sessions.Add(new ChatSessionViewModel
+                            {
+                                ChatSessionId = reader.GetInt32(0),
+                                UserId = reader.GetInt32(1),
+                                ConsultantId = reader.GetInt32(2),
+                                StartTime = reader.GetDateTime(3),
+                                EndTime = reader.IsDBNull(4) ? null : reader.GetDateTime(4),
+                                Status = reader.GetString(5),
+                                CreatedAt = reader.GetDateTime(6),
+                                IsActive = reader.GetBoolean(7),
+                                OtherUserName = reader.GetString(8)
+                            });
+                        }
                     }
                 }
             }
         }
-        return Ok(consultants);
+        catch (SqlException ex)
+        {
+            ViewBag.ErrorMessage = $"Database error: {ex.Message}";
+            return View(sessions);
+        }
+
+        return View(sessions);
     }
 
-    [HttpPost("StartChat")]
-    public async Task<IActionResult> StartChat([FromBody] StartChatRequest request)
+    public IActionResult Detail(int id)
     {
+        var messages = new List<ChatMessageViewModel>();
+        var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+        string otherUserName = "";
+
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // ✅ Lấy danh sách tin nhắn
+                string query = @"
+                    SELECT cm.MessageId, cm.ChatSessionId, cm.SenderId, cm.Message, 
+                        cm.Timestamp, cm.IsRead, cm.MessageType, u.FullName as SenderName
+                    FROM ChatMessages cm
+                    INNER JOIN Users u ON cm.SenderId = u.UserId
+                    WHERE cm.ChatSessionId = @ChatSessionId
+                    ORDER BY cm.Timestamp";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ChatSessionId", id);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            messages.Add(new ChatMessageViewModel
+                            {
+                                MessageId = reader.GetInt32(0),
+                                ChatSessionId = reader.GetInt32(1),
+                                SenderId = reader.GetInt32(2),
+                                Message = reader.GetString(3),
+                                Timestamp = DateTime.SpecifyKind(reader.GetDateTime(4), DateTimeKind.Utc),
+                                IsRead = reader.GetBoolean(5),
+                                MessageType = reader.GetString(6),
+                                SenderName = reader.GetString(7)
+                            });
+                        }
+                    }
+                }
+
+                // ✅ Truy vấn tên người còn lại trong phiên chat
+                string nameQuery = @"
+                    SELECT 
+                        CASE 
+                            WHEN cs.UserId = @CurrentUserId THEN u2.FullName
+                            ELSE u1.FullName
+                        END AS OtherUserName
+                    FROM ChatSessions cs
+                    INNER JOIN Users u1 ON cs.UserId = u1.UserId
+                    INNER JOIN Users u2 ON cs.ConsultantId = u2.UserId
+                    WHERE cs.ChatSessionId = @ChatSessionId";
+
+                using (SqlCommand nameCmd = new SqlCommand(nameQuery, conn))
+                {
+                    nameCmd.Parameters.AddWithValue("@CurrentUserId", userId);
+                    nameCmd.Parameters.AddWithValue("@ChatSessionId", id);
+
+                    var result = nameCmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        otherUserName = result?.ToString() ?? "";
+                    }
+                }
+            }
+        }
+        catch (SqlException ex)
+        {
+            ViewBag.ErrorMessage = $"Database error: {ex.Message}";
+        }
+
+        ViewBag.ChatSessionId = id;
+        ViewBag.OtherUserName = otherUserName;
+        return View("Detail", messages);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> StartChat(int consultantId)
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId == null)
+        {
+            TempData["ErrorMessage"] = "Vui lòng đăng nhập để bắt đầu trò chuyện.";
+            return RedirectToAction("Login", "Account"); // hoặc quay lại Index
+        }
+
+        if (userId == consultantId)
+        {
+            TempData["ErrorMessage"] = "Bạn không thể trò chuyện với chính mình.";
+            return RedirectToAction("Index", "Consultants");
+        }
+
         int chatSessionId;
-        using (var connection = new SqlConnection(connectionString))
-        {
-            await connection.OpenAsync();
-            var query = @"
-                INSERT INTO ChatSessions (UserId, ConsultantId, StartTime, Status, CreatedAt)
-                VALUES (@UserId, @ConsultantId, @StartTime, @Status, @CreatedAt);
-                SELECT SCOPE_IDENTITY();";
-            using (var command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@UserId", request.UserId);
-                command.Parameters.AddWithValue("@ConsultantId", request.ConsultantId);
-                command.Parameters.AddWithValue("@StartTime", DateTime.Now);
-                command.Parameters.AddWithValue("@Status", "Active");
-                command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
-                chatSessionId = Convert.ToInt32(await command.ExecuteScalarAsync());
-            }
-        }
-        return Ok(new { chatSessionId });
-    }
 
-    [HttpGet("GetMessages/{chatSessionId}")]
-    public async Task<IActionResult> GetMessages(int chatSessionId)
-    {
-        var messages = new List<object>();
         using (var connection = new SqlConnection(connectionString))
         {
             await connection.OpenAsync();
-            var query = @"
-                SELECT MessageId, SenderId, Message, Timestamp
-                FROM ChatMessages
-                WHERE ChatSessionId = @ChatSessionId
-                ORDER BY Timestamp ASC";
-            using (var command = new SqlCommand(query, connection))
+
+            // ✅ Kiểm tra nếu đã có phiên trò chuyện đang hoạt động
+            var checkQuery = @"SELECT TOP 1 ChatSessionId 
+                            FROM ChatSessions 
+                            WHERE ((UserId = @UserId AND ConsultantId = @ConsultantId) 
+                                    OR (UserId = @ConsultantId AND ConsultantId = @UserId))
+                                AND IsActive = 1";
+
+            using (var checkCmd = new SqlCommand(checkQuery, connection))
             {
-                command.Parameters.AddWithValue("@ChatSessionId", chatSessionId);
-                using (var reader = await command.ExecuteReaderAsync())
+                checkCmd.Parameters.AddWithValue("@UserId", userId);
+                checkCmd.Parameters.AddWithValue("@ConsultantId", consultantId);
+
+                var result = await checkCmd.ExecuteScalarAsync();
+                if (result != null)
                 {
-                    while (await reader.ReadAsync())
-                    {
-                        messages.Add(new
-                        {
-                            messageId = reader.GetInt32(0),
-                            senderId = reader.GetInt32(1),
-                            message = reader.GetString(2),
-                            timestamp = reader.GetDateTime(3).ToString("o")
-                        });
-                    }
+                    chatSessionId = Convert.ToInt32(result);
+                    return RedirectToAction("Detail", "Chat", new { id = chatSessionId });
                 }
             }
-        }
-        return Ok(messages);
-    }
-}
 
-public class StartChatRequest
-{
-    public int UserId { get; set; }
-    public int ConsultantId { get; set; }
+            // ✅ Nếu chưa có, tạo phiên chat mới
+            var insertQuery = @"INSERT INTO ChatSessions (UserId, ConsultantId, StartTime, Status, CreatedAt, IsActive)
+                                OUTPUT INSERTED.ChatSessionId
+                                VALUES (@UserId, @ConsultantId, @StartTime, @Status, @CreatedAt, 1)";
+
+            using (var insertCmd = new SqlCommand(insertQuery, connection))
+            {
+                insertCmd.Parameters.AddWithValue("@UserId", userId);
+                insertCmd.Parameters.AddWithValue("@ConsultantId", consultantId);
+                insertCmd.Parameters.AddWithValue("@StartTime", DateTime.UtcNow);
+                insertCmd.Parameters.AddWithValue("@Status", "Active");
+                insertCmd.Parameters.AddWithValue("@CreatedAt", DateTime.UtcNow);
+
+                chatSessionId = Convert.ToInt32(await insertCmd.ExecuteScalarAsync());
+            }
+        }
+
+        return RedirectToAction("Detail", "Chat", new { id = chatSessionId });
+    }
+
 }

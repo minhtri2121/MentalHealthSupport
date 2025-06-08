@@ -68,9 +68,6 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scoped
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\bundle\MentalHealthSupport.styles.css
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\scopedcss\projectbundle\MentalHealthSupport.bundle.scp.css
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\kjzz3xrw8u-3g1nuc1yad.gz
-D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\pku7rdi7gw-zr601n6u6e.gz
-D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\7c99p8r8co-vz1w8s9tj4.gz
-D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\s3d5ieebpl-61n19gt1b8.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\skdgkx5wrr-3r8b2a0bt1.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\upvy7w7kiv-bqjiyaj88i.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\1r6j5aa62e-c2jlpeoesf.gz
@@ -148,4 +145,8 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\refint
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.pdb
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.genruntimeconfig.cache
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\ref\MentalHealthSupport.dll
-D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\h5v5i3nyk3-c7sdg3kol8.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\h5v5i3nyk3-fvl4q2jhcj.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\7c99p8r8co-us178ktk8b.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\pku7rdi7gw-dx4jzq0ho2.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\s3d5ieebpl-j9qukmdjq7.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\bw0w74wvri-ggywkb38b8.gz

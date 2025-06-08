@@ -76,13 +76,12 @@
                         </div>
                         <div class="card-footer bg-white border-0">
                             <div class="d-flex gap-2">
-                                <a 
-                                    href="#" 
-                                    class="btn btn-primary flex-grow"
-                                    aria-label="Liên hệ với @consultant.FullName"
-                                >
-                                    Liên Hệ
-                                </a>
+                                <form asp-action="StartChat" asp-controller="Chat" method="post" class="flex-grow">
+                                    <input type="hidden" name="consultantId" value="@consultant.ConsultantId" />
+                                    <button type="submit" class="btn btn-primary w-100" aria-label="Liên hệ với @consultant.FullName">
+                                        Liên Hệ
+                                    </button>
+                                </form>
                                 <a 
                                     href="@Url.Action("Details", "Consultants", new { id = consultant.ConsultantId})" 
                                     class="btn btn-outline-primary flex-grow"

@@ -1,0 +1,123 @@
+@model List<ChatMessageViewModel>
+@{
+    Layout = null; // Tắt layout
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết trò chuyện</title>
+    <link rel="stylesheet"
+          href="~/css/chat-detail.css"
+          asp-append-version="true" />
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="chat-detail">
+        <!-- ✅ Chat Header -->
+        <div class="chat-header bg-primary text-white p-3 rounded-top">
+            <h5><span class="mb-0">
+                <i class="bxr bx-message-circle-dots-2" style="font-size: 35px;"></i>
+                <span> @ViewBag.OtherUserName</span>
+            </span></h5>
+        </div>
+
+        <!-- ✅ Chat Body -->
+        <div class="chat-body" id="chatMessages">
+            @foreach (var msg in Model)
+            {
+                <div class="@(msg.SenderId == Context.Session.GetInt32("UserId") ? "user-message" : "system-message")">
+                    <div class="message-meta">
+                        <span class="badge bg-info">@msg.SenderName</span>
+                    </div>
+                    <div class="message-content">
+                        <span>@msg.Message</span>
+                        <span class="badge bg-secondary">@(msg.Timestamp.ToLocalTime().ToString("HH:mm"))</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- ✅ Chat Footer -->
+        <div class="chat-footer">
+            <input type="text" id="messageInput" class="form-control" placeholder="Nhập tin nhắn..." />
+            <button class="btn btn-primary" onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        connection.on("ReceiveMessage", function (userId, message, timestamp) {
+            const chatBox = document.getElementById("chatMessages");
+            const isCurrentUser = userId == "@Context.Session.GetInt32("UserId")";
+            const messageClass = isCurrentUser ? "user-message" : "system-message";
+            const msgHtml = `
+                <div class="${messageClass}">
+                    <div class="message-meta">
+                        <span class="badge bg-info">${isCurrentUser ? "Bạn" : "Người khác"}</span>
+                        <span class="badge bg-secondary">${timestamp}</span>
+                    </div>
+                    <div class="message-content">${message}</div>
+                </div>`;
+            chatBox.innerHTML += msgHtml;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        connection.on("ReceiveError", function (error) {
+            console.error(error);
+            alert("Lỗi: " + error);
+        });
+
+        connection.start().then(() => {
+            console.log("SignalR connected");
+            connection.invoke("JoinSession", @ViewBag.ChatSessionId).catch(err => console.error(err));
+        }).catch(err => console.error(err));
+
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const message = input.value.trim();
+            const chatSessionId = @ViewBag.ChatSessionId;
+            if (message) {
+                connection.invoke("SendMessage", "@Context.Session.GetInt32("UserId")", message, chatSessionId)
+                    .catch(err => console.error(err));
+                input.value = "";
+            }
+        }
+
+        document.getElementById("messageInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+        // Nhận tin nhắn mới
+        connection.on("NotifyNewMessage", function (senderName, message, chatSessionId) {
+            // 1. Hiển thị thông báo dạng toast
+            showToast(senderName + ": " + message);
+
+            // 2. (Tùy chọn) Cập nhật badge chưa đọc
+            incrementUnreadCount(chatSessionId);
+        });
+
+        function showToast(text) {
+            const toast = document.createElement("div");
+            toast.className = "toast-message";
+            toast.innerText = text;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        function incrementUnreadCount(sessionId) {
+            const badge = document.querySelector(`#chat-badge-${sessionId}`);
+            if (badge) {
+                badge.innerText = parseInt(badge.innerText || "0") + 1;
+                badge.style.display = "inline-block";
+            }
+        }
+    </script>
+</body>
+</html>
