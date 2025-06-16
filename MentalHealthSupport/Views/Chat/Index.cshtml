@@ -1,15 +1,8 @@
 @model List<ChatSessionViewModel>
 @{
-    Layout = null; // Tắt layout
+    Layout = null;
     <title>Chat</title>
 }
-<link rel="stylesheet"
-        href="~/css/chat-site.css"
-        asp-append-version="true" />
-
 <body>
-    <div class="container">
-        <h2>Danh sách phiên chat</h2><br/>
         @await Html.PartialAsync("_ChatList", Model)
-    </div>
 </body>

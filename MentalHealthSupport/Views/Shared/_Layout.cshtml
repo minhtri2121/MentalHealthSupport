@@ -5,27 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MentalHealthSupport</title>
     <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
     <!-- Animate CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Custom CSS -->
-    <link rel="stylesheet"
-          href="~/css/site.css"
-          asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-
 <body>
     <!-- Pre-loader -->
     <div id="preloader">
@@ -67,7 +56,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(IsActive("Consultants") ? "active" : "")"
-                                href="@Url.Action("Index", "Consultants")">Chuyên gia</a>
+                               href="@Url.Action("Index", "Consultants")">Chuyên gia</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(IsActive("Baikiemtra") ? "active" : "")"
@@ -114,19 +103,18 @@
     </div>
 
     <!-- Scripts -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
-        <script src="~/js/chat.js" asp-append-version="true"></script>
-        @* <script src="~/js/site.js" asp-append-version="true"></script> *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
-        @await RenderSectionAsync("Scripts", required: false)
-
-    <!-- Chat Icon và Modal -->
+    <!-- Chat Icon và Badge -->
     @if (Context.Session.GetInt32("UserId") != null)
     {
         <div class="chat-icon" id="openChatModal">
             <i class="fas fa-comments"></i>
+            <span id="chat-icon-badge" class="badge-unread">0</span>
         </div>
     }
 
@@ -218,39 +206,61 @@
             }
         });
 
+        // Khởi tạo SignalR connection
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .withAutomaticReconnect()
+            .build();
+
+        // Xử lý chat icon
         document.addEventListener("DOMContentLoaded", function () {
             const chatIcon = document.getElementById("openChatModal");
             if (chatIcon) {
                 chatIcon.addEventListener("click", function () {
                     window.location.href = "/Chat/Index";
+                    // Reset badge khi mở trang chat
+                    const badge = document.getElementById("chat-icon-badge");
+                    if (badge) {
+                        badge.innerText = "0";
+                        badge.style.display = "none";
+                    }
                 });
             }
-        }); 
-        
+
+            // Khởi động SignalR
+            connection.start().then(() => {
+                console.log("SignalR connected");
+            }).catch(err => console.error("SignalR connection failed: ", err));
+        });
+
         // Nhận tin nhắn mới
         connection.on("NotifyNewMessage", function (senderName, message, chatSessionId) {
-            // 1. Hiển thị thông báo dạng toast
-            showToast(senderName + ": " + message);
-
-            // 2. (Tùy chọn) Cập nhật badge chưa đọc
-            incrementUnreadCount(chatSessionId);
+            // Hiển thị toast
+            showToast(`${senderName}: ${message}`);
+            // Cập nhật badge trên chat icon
+            const badge = document.getElementById("chat-icon-badge");
+            if (badge) {
+                let count = parseInt(badge.innerText || "0") + 1;
+                badge.innerText = count;
+                badge.style.display = "inline-block";
+                badge.classList.add("animate-pulse");
+                setTimeout(() => badge.classList.remove("animate-pulse"), 1000);
+            }
+            // Phát âm thanh thông báo
+            try {
+                const audio = new Audio("/sounds/notification.mp3");
+                audio.play().catch(err => console.error("Audio play failed: ", err));
+            } catch (err) {
+                console.error("Audio error: ", err);
+            }
         });
 
         function showToast(text) {
             const toast = document.createElement("div");
             toast.className = "toast-message";
-            toast.innerText = text;
+            toast.innerText = text.length > 30 ? text.substring(0, 27) + "..." : text;
             document.body.appendChild(toast);
-
             setTimeout(() => toast.remove(), 4000);
-        }
-
-        function incrementUnreadCount(sessionId) {
-            const badge = document.querySelector(`#chat-badge-${sessionId}`);
-            if (badge) {
-                badge.innerText = parseInt(badge.innerText || "0") + 1;
-                badge.style.display = "inline-block";
-            }
         }
     </script>
 </body>

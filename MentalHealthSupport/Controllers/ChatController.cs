@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
+using MentalHealthSupport.Hubs;
 
 public class ChatSessionViewModel
 {
@@ -12,44 +14,59 @@ public class ChatSessionViewModel
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public bool IsActive { get; set; }
+    public int UnreadCount { get; set; }
 }
 public class ChatController : Controller
 {
     private readonly string? connectionString;
+    private readonly IHubContext<ChatHub> _hubContext;
 
-    public ChatController(IConfiguration config)
+    public ChatController(IConfiguration config, IHubContext<ChatHub> hubContext)
     {
         connectionString = config.GetConnectionString("DefaultConnection");
+        _hubContext = hubContext;
     }
 
     // Hiển thị danh sách chat sessions
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var sessions = new List<ChatSessionViewModel>();
         var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            ViewBag.ErrorMessage = "Lỗi: Chuỗi kết nối cơ sở dữ liệu không được cấu hình.";
+            return View(sessions);
+        }
 
         try
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-                string query = @"SELECT cs.ChatSessionId, cs.UserId, cs.ConsultantId, cs.StartTime, cs.EndTime, cs.Status, cs.CreatedAt, cs.IsActive,
-                               CASE 
-                                   WHEN cs.UserId = @UserId THEN u2.FullName
-                                   ELSE u1.FullName
-                               END AS OtherUserName
-                               FROM ChatSessions cs
-                               INNER JOIN Users u1 ON cs.UserId = u1.UserId
-                               INNER JOIN Users u2 ON cs.ConsultantId = u2.UserId
-                               WHERE (cs.UserId = @UserId OR cs.ConsultantId = @UserId) AND cs.IsActive = 1";
+                await conn.OpenAsync();
+                string query = @"
+                    SELECT cs.ChatSessionId, cs.UserId, cs.ConsultantId, cs.StartTime, cs.EndTime, cs.Status, cs.CreatedAt, cs.IsActive,
+                           CASE 
+                               WHEN cs.UserId = @UserId THEN u2.FullName
+                               ELSE u1.FullName
+                           END AS OtherUserName,
+                           (SELECT COUNT(*) 
+                            FROM ChatMessages cm 
+                            WHERE cm.ChatSessionId = cs.ChatSessionId 
+                            AND cm.SenderId != @UserId 
+                            AND cm.IsRead = 0) AS UnreadCount
+                    FROM ChatSessions cs
+                    INNER JOIN Users u1 ON cs.UserId = u1.UserId
+                    INNER JOIN Users u2 ON cs.ConsultantId = u2.UserId
+                    WHERE (cs.UserId = @UserId OR cs.ConsultantId = @UserId) AND cs.IsActive = 1";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             sessions.Add(new ChatSessionViewModel
                             {
@@ -61,7 +78,8 @@ public class ChatController : Controller
                                 Status = reader.GetString(5),
                                 CreatedAt = reader.GetDateTime(6),
                                 IsActive = reader.GetBoolean(7),
-                                OtherUserName = reader.GetString(8)
+                                OtherUserName = reader.GetString(8),
+                                UnreadCount = reader.GetInt32(9)
                             });
                         }
                     }
@@ -70,26 +88,31 @@ public class ChatController : Controller
         }
         catch (SqlException ex)
         {
-            ViewBag.ErrorMessage = $"Database error: {ex.Message}";
-            return View(sessions);
+            ViewBag.ErrorMessage = $"Lỗi cơ sở dữ liệu: {ex.Message}";
         }
 
         return View(sessions);
     }
 
-    public IActionResult Detail(int id)
+    public async Task<IActionResult> Detail(int id)
     {
         var messages = new List<ChatMessageViewModel>();
         var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
         string otherUserName = "";
 
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            ViewBag.ErrorMessage = "Lỗi: Chuỗi kết nối cơ sở dữ liệu không được cấu hình.";
+            return View(messages);
+        }
+
         try
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
+                await conn.OpenAsync();
 
-                // ✅ Lấy danh sách tin nhắn
+                // Lấy danh sách tin nhắn
                 string query = @"
                     SELECT cm.MessageId, cm.ChatSessionId, cm.SenderId, cm.Message, 
                         cm.Timestamp, cm.IsRead, cm.MessageType, u.FullName as SenderName
@@ -102,9 +125,9 @@ public class ChatController : Controller
                 {
                     cmd.Parameters.AddWithValue("@ChatSessionId", id);
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             messages.Add(new ChatMessageViewModel
                             {
@@ -121,7 +144,17 @@ public class ChatController : Controller
                     }
                 }
 
-                // ✅ Truy vấn tên người còn lại trong phiên chat
+                // Cập nhật trạng thái IsRead
+                string updateQuery = @"UPDATE ChatMessages SET IsRead = 1 
+                                      WHERE ChatSessionId = @ChatSessionId AND SenderId != @CurrentUserId";
+                using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ChatSessionId", id);
+                    cmd.Parameters.AddWithValue("@CurrentUserId", userId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                // Truy vấn tên người dùng khác
                 string nameQuery = @"
                     SELECT 
                         CASE 
@@ -138,17 +171,20 @@ public class ChatController : Controller
                     nameCmd.Parameters.AddWithValue("@CurrentUserId", userId);
                     nameCmd.Parameters.AddWithValue("@ChatSessionId", id);
 
-                    var result = nameCmd.ExecuteScalar();
+                    var result = await nameCmd.ExecuteScalarAsync();
                     if (result != null)
                     {
-                        otherUserName = result?.ToString() ?? "";
+                        otherUserName = result.ToString() ?? "";
                     }
                 }
             }
+
+            // Gửi sự kiện SignalR để cập nhật badge
+            await _hubContext.Clients.User(userId.ToString()).SendAsync("ClearBadge", id);
         }
         catch (SqlException ex)
         {
-            ViewBag.ErrorMessage = $"Database error: {ex.Message}";
+            ViewBag.ErrorMessage = $"Lỗi cơ sở dữ liệu: {ex.Message}";
         }
 
         ViewBag.ChatSessionId = id;

@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\css\\chat-detail.css"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chat-list.css",
+      "PackagePath": "staticwebassets\\css\\chat-list.css"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chat-site.css",
       "PackagePath": "staticwebassets\\css\\chat-site.css"
     },

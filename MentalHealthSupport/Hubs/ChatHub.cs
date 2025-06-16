@@ -18,7 +18,7 @@ namespace MentalHealthSupport.Hubs
         {
             try
             {
-                //Lưu tin nhắn vào DB
+                // Lưu tin nhắn vào DB
                 int messageId;
                 using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
@@ -36,16 +36,15 @@ namespace MentalHealthSupport.Hubs
                         cmd.Parameters.AddWithValue("@IsRead", false);
                         cmd.Parameters.AddWithValue("@MessageType", "Text");
 
-                        var result = await cmd.ExecuteScalarAsync();
-                        messageId = Convert.ToInt32(result);
+                        messageId = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                     }
                 }
 
-                //Gửi tin nhắn đến group hiện tại (client đang mở chat)
+                // Gửi tin nhắn đến group hiện tại
                 await Clients.Group($"session_{chatSessionId}")
                     .SendAsync("ReceiveMessage", userId, message, DateTime.UtcNow.ToString("HH:mm"));
 
-                //Gửi thông báo riêng cho người nhận (tin nhắn popup/toast)
+                // Gửi thông báo đến người nhận
                 int senderId = int.Parse(userId);
                 int receiverUserId = 0;
 
@@ -57,8 +56,8 @@ namespace MentalHealthSupport.Hubs
                                         WHEN UserId = @SenderId THEN ConsultantId 
                                         ELSE UserId 
                                     END AS ReceiverId
-                                FROM ChatSessions
-                                WHERE ChatSessionId = @ChatSessionId";
+                                  FROM ChatSessions
+                                  WHERE ChatSessionId = @ChatSessionId";
 
                     using (var cmd = new SqlCommand(query, conn))
                     {
@@ -69,18 +68,21 @@ namespace MentalHealthSupport.Hubs
                         if (result != null)
                         {
                             receiverUserId = Convert.ToInt32(result);
-
                             await Clients.User(receiverUserId.ToString())
                                 .SendAsync("NotifyNewMessage", userId, message, chatSessionId);
                         }
                     }
                 }
+
+                // Thông báo đến tất cả client để cập nhật badge
+                await Clients.All.SendAsync("UpdateChatSession", chatSessionId, receiverUserId);
             }
             catch (Exception ex)
             {
-                await Clients.Caller.SendAsync("ReceiveError", "Error sending message: " + ex.Message);
+                await Clients.Caller.SendAsync("ReceiveError", "Lỗi gửi tin nhắn: " + ex.Message);
             }
         }
+
         public async Task JoinSession(int chatSessionId)
         {
             try
