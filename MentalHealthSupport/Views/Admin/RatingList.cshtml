@@ -1,0 +1,30 @@
+@model List<MentalHealthSupport.Models.Rating>
+
+@{
+    ViewData["Title"] = "Danh Sách Đánh Giá";
+}
+
+<h2>Danh Sách Đánh Giá</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Appointment ID</th>
+            <th>Điểm</th>
+            <th>Bình luận</th>
+            <th>Ngày đánh giá</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rating in Model)
+        {
+            <tr>
+                <td>@rating.RatingId</td>
+                <td>@rating.AppointmentId</td>
+                <td>@rating.Score</td>
+                <td>@rating.Comment</td>
+                <td>@rating.RatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

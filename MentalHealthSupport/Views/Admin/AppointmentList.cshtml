@@ -1,0 +1,34 @@
+@model List<MentalHealthSupport.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Danh Sách Lịch Hẹn";
+}
+
+<h2>Danh Sách Lịch Hẹn</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Consultant ID</th>
+            <th>Thời gian</th>
+            <th>Trạng thái</th>
+            <th>Ghi chú</th>
+            <th>Ngày tạo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.AppointmentId</td>
+                <td>@appointment.UserId</td>
+                <td>@appointment.ConsultantId</td>
+                <td>@appointment.AppointmentTime.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@appointment.Status</td>
+                <td>@appointment.Note</td>
+                <td>@appointment.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

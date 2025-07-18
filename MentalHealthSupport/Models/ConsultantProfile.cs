@@ -1,9 +1,10 @@
+namespace MentalHealthSupport.Models;
+
 public class ConsultantProfile
 {
     public int ConsultantId { get; set; }
-    public int UserId { get; set; }
-    public string Specialization { get; set; } = string.Empty;
-    public string Certificate { get; set; } = string.Empty;
-    public string ApprovalStatus { get; set; } = "Pending"; // Pending, Approved, Rejected
+    public string? Specialty { get; set; } = string.Empty;
     public int ExperienceYears { get; set; }
+    public string? Description { get; set; } = string.Empty;
+    public string ApprovalStatus { get; set; } = string.Empty;
 }

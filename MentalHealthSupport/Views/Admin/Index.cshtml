@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Quản Lý Trang Web</h2>
+<div class="row">
+    <div class="col-md-3">
+        <a asp-action="CreateNews" class="btn btn-primary w-100 mb-2">Đăng Tin Tức</a>
+        <a asp-action="NewsList" class="btn btn-secondary w-100 mb-2">Danh Sách Tin Tức</a>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="UserList" class="btn btn-info w-100 mb-2">Danh Sách Người Dùng</a>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="ConsultantList" class="btn btn-success w-100 mb-2">Danh Sách Chuyên Gia</a>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="AppointmentList" class="btn btn-warning w-100 mb-2">Danh Sách Lịch Hẹn</a>
+        <a asp-action="RatingList" class="btn btn-primary w-100 mb-2">Danh Sách Đánh Giá</a>
+        <a asp-action="PaymentList" class="btn btn-danger w-100 mb-2">Danh Sách Thanh Toán</a>
+        <a asp-action="ReportList" class="btn btn-dark w-100 mb-2">Danh Sách Báo Cáo</a>
+        <a asp-action="ArticleList" class="btn btn-info w-100 mb-2">Danh Sách Bài Viết</a>
+    </div>
+</div>

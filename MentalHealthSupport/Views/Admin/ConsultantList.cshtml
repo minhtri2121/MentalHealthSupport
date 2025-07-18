@@ -1,0 +1,30 @@
+@model List<MentalHealthSupport.Models.ConsultantProfile>
+
+@{
+    ViewData["Title"] = "Danh Sách Chuyên Gia";
+}
+
+<h2>Danh Sách Chuyên Gia</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Chuyên môn</th>
+            <th>Kinh nghiệm (năm)</th>
+            <th>Mô tả</th>
+            <th>Trạng thái phê duyệt</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var consultant in Model)
+        {
+            <tr>
+                <td>@consultant.ConsultantId</td>
+                <td>@consultant.Specialty</td>
+                <td>@consultant.ExperienceYears</td>
+                <td>@consultant.Description</td>
+                <td>@consultant.ApprovalStatus</td>
+            </tr>
+        }
+    </tbody>
+</table>

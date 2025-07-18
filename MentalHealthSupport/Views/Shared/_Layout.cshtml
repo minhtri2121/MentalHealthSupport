@@ -59,12 +59,8 @@
                                href="@Url.Action("Index", "Consultants")">Chuyên gia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(IsActive("Baikiemtra") ? "active" : "")"
-                               href="@Url.Action("Index", "Baikiemtra")">Bài kiểm tra</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(IsActive("Article") ? "active" : "")"
-                               asp-controller="About" asp-action="Index">Bài viết</a>
+                            <a class="nav-link @(IsActive("Admin", "NewsList") ? "active" : "")"
+                               asp-controller="News" asp-action="Index">Tin tức</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(IsActive("About", "Index") ? "active" : "")"
@@ -75,7 +71,7 @@
                         @if (Context.Session.GetInt32("UserId") == null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link btn px-3" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                                <a class="nav-link btn btn-outline-primary px-3" asp-controller="Account" asp-action="Login">Đăng nhập</a>
                             </li>
                         }
                         else
@@ -87,6 +83,10 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" asp-controller="Account" asp-action="Manage">Hồ sơ</a></li>
+                                    @if (Context.Session.GetString("UserRole") == "Admin")
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index">Quản lý</a></li>
+                                    }
                                     <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
                                 </ul>
                             </li>
@@ -135,22 +135,11 @@
                 <div class="col-lg-3 col-md-6">
                     <h5 class="fw-bold mb-4">Liên Kết Nhanh</h5>
                     <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Trang Chủ</a></li>
+                        <li class="mb-2"><a href="@Url.Action("Index", "Home")" class="text-white-50 text-decoration-none">Trang Chủ</a></li>
                         <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Về Chúng Tôi</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Dịch Vụ</a></li>
                         <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Chuyên Gia</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+                        <li class="mb-2"><a href="@Url.Action("NewsList", "Admin")" class="text-white-50 text-decoration-none">Tin tức</a></li>
                         <li><a href="#" class="text-white-50 text-decoration-none">Liên Hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-4">Dịch Vụ</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Tư Vấn Trực Tuyến</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Tư Vấn Trực Tiếp</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Kiểm Tra Tâm Lý</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Khóa Học</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Seminar</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -218,7 +207,6 @@
             if (chatIcon) {
                 chatIcon.addEventListener("click", function () {
                     window.location.href = "/Chat/Index";
-                    // Reset badge khi mở trang chat
                     const badge = document.getElementById("chat-icon-badge");
                     if (badge) {
                         badge.innerText = "0";
@@ -227,7 +215,6 @@
                 });
             }
 
-            // Khởi động SignalR
             connection.start().then(() => {
                 console.log("SignalR connected");
             }).catch(err => console.error("SignalR connection failed: ", err));
@@ -235,9 +222,7 @@
 
         // Nhận tin nhắn mới
         connection.on("NotifyNewMessage", function (senderName, message, chatSessionId) {
-            // Hiển thị toast
             showToast(`${senderName}: ${message}`);
-            // Cập nhật badge trên chat icon
             const badge = document.getElementById("chat-icon-badge");
             if (badge) {
                 let count = parseInt(badge.innerText || "0") + 1;
@@ -246,7 +231,6 @@
                 badge.classList.add("animate-pulse");
                 setTimeout(() => badge.classList.remove("animate-pulse"), 1000);
             }
-            // Phát âm thanh thông báo
             try {
                 const audio = new Audio("/sounds/notification.mp3");
                 audio.play().catch(err => console.error("Audio play failed: ", err));
@@ -257,9 +241,10 @@
 
         function showToast(text) {
             const toast = document.createElement("div");
-            toast.className = "toast-message";
+            toast.className = "toast-message animate__animated animate__fadeInUp";
             toast.innerText = text.length > 30 ? text.substring(0, 27) + "..." : text;
             document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add("animate__fadeOutDown"), 3000);
             setTimeout(() => toast.remove(), 4000);
         }
     </script>

@@ -1,0 +1,32 @@
+@model List<MentalHealthSupport.Models.Payment>
+
+@{
+    ViewData["Title"] = "Danh Sách Thanh Toán";
+}
+
+<h2>Danh Sách Thanh Toán</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Appointment ID</th>
+            <th>Số tiền</th>
+            <th>Phương thức</th>
+            <th>Trạng thái</th>
+            <th>Ngày thanh toán</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.PaymentId</td>
+                <td>@payment.AppointmentId</td>
+                <td>@payment.Amount</td>
+                <td>@payment.PaymentMethod</td>
+                <td>@payment.PaymentStatus</td>
+                <td>@(payment.PaidAt?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa thanh toán")</td>
+            </tr>
+        }
+    </tbody>
+</table>

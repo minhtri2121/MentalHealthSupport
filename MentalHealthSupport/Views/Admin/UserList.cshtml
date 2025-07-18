@@ -1,0 +1,34 @@
+@model List<MentalHealthSupport.Models.User>
+
+@{
+    ViewData["Title"] = "Danh Sách Người Dùng";
+}
+
+<h2>Danh Sách Người Dùng</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Vai trò</th>
+            <th>Đã xác minh</th>
+            <th>Ngày tạo</th>
+            <th>Giới tính</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@user.Role</td>
+                <td>@(user.IsVerified ? "Có" : "Không")</td>
+                <td>@user.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(user.Sex ? "Nam" : "Nữ")</td>
+            </tr>
+        }
+    </tbody>
+</table>
