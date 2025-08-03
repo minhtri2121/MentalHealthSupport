@@ -1,24 +1,49 @@
 @{
     ViewData["Title"] = "Admin Dashboard";
+    Layout = null;
 }
 
-<h2>Quản Lý Trang Web</h2>
-<div class="row">
-    <div class="col-md-3">
-        <a asp-action="CreateNews" class="btn btn-primary w-100 mb-2">Đăng Tin Tức</a>
-        <a asp-action="NewsList" class="btn btn-secondary w-100 mb-2">Danh Sách Tin Tức</a>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom Admin CSS -->
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center dashboard-title">📊 Bảng Điều Khiển Quản Lý</h1>
+        <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
     </div>
-    <div class="col-md-3">
-        <a asp-action="UserList" class="btn btn-info w-100 mb-2">Danh Sách Người Dùng</a>
-    </div>
-    <div class="col-md-3">
-        <a asp-action="ConsultantList" class="btn btn-success w-100 mb-2">Danh Sách Chuyên Gia</a>
-    </div>
-    <div class="col-md-3">
-        <a asp-action="AppointmentList" class="btn btn-warning w-100 mb-2">Danh Sách Lịch Hẹn</a>
-        <a asp-action="RatingList" class="btn btn-primary w-100 mb-2">Danh Sách Đánh Giá</a>
-        <a asp-action="PaymentList" class="btn btn-danger w-100 mb-2">Danh Sách Thanh Toán</a>
-        <a asp-action="ReportList" class="btn btn-dark w-100 mb-2">Danh Sách Báo Cáo</a>
-        <a asp-action="ArticleList" class="btn btn-info w-100 mb-2">Danh Sách Bài Viết</a>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card card-admin text-center p-4 shadow">
+                <i class="fas fa-newspaper mb-3"></i>
+                <h5>Tin Tức</h5>
+                <p>Quản lý bài viết tin tức.</p>
+                <a asp-action="NewsList" class="btn btn-primary">Xem</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-admin text-center p-4 shadow">
+                <i class="fas fa-users mb-3"></i>
+                <h5>Người Dùng</h5>
+                <p>Quản lý tài khoản người dùng.</p>
+                <a asp-action="UserList" class="btn btn-primary">Xem</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-admin text-center p-4 shadow">
+                <i class="fas fa-user-tie mb-3"></i>
+                <h5>Chuyên Gia</h5>
+                <p>Quản lý hồ sơ chuyên gia.</p>
+                <a asp-action="ConsultantList" class="btn btn-primary">Xem</a>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,30 +1,56 @@
 @model List<MentalHealthSupport.Models.ConsultantProfile>
-
 @{
     ViewData["Title"] = "Danh Sách Chuyên Gia";
+    Layout = null;
 }
 
-<h2>Danh Sách Chuyên Gia</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Chuyên môn</th>
-            <th>Kinh nghiệm (năm)</th>
-            <th>Mô tả</th>
-            <th>Trạng thái phê duyệt</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="color: #2c3e50;">Danh Sách Chuyên Gia</h1>
+    <div class="text-end mb-4">
+        <a asp-action="CreateConsultant" class="btn btn-primary">Thêm Chuyên Gia Mới</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach (var consultant in Model)
         {
-            <tr>
-                <td>@consultant.ConsultantId</td>
-                <td>@consultant.Specialty</td>
-                <td>@consultant.ExperienceYears</td>
-                <td>@consultant.Description</td>
-                <td>@consultant.ApprovalStatus</td>
-            </tr>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Chuyên gia ID: @consultant.ConsultantId</h5>
+                        <p class="card-text text-muted small mb-2">Chuyên môn: @(consultant.Specialty ?? "Chưa có")</p>
+                        <p class="card-text">Kinh nghiệm: @consultant.ExperienceYears năm | Trạng thái: @consultant.ApprovalStatus</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-end">
+                        <a asp-action="EditConsultant" asp-route-id="@consultant.ConsultantId" class="btn btn-warning btn-sm ms-2">Sửa</a>
+                        <a asp-action="DeleteConsultant" asp-route-id="@consultant.ConsultantId" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+    @if (Model.Count == 0)
+    {
+        <div class="text-center mt-4">
+            <p class="text-muted">Không có chuyên gia nào để hiển thị.</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .card-text {
+            color: #7f8c8d;
+        }
+    </style>
+}

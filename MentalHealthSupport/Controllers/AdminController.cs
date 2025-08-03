@@ -4,18 +4,20 @@ using MentalHealthSupport.Models;
 
 namespace MentalHealthSupport.Controllers
 {
+    [Route("Admin")]
     public class AdminController : Controller
     {
         private readonly string? connectionString;
 
         public AdminController(IConfiguration config)
         {
-            connectionString = config.GetConnectionString("DefaultConnection");
+            connectionString = config.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException(nameof(config), "Connection string not found.");
         }
 
+        [Route("Index")]
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -23,20 +25,22 @@ namespace MentalHealthSupport.Controllers
         }
 
         // Quản lý Tin tức
+        [Route("News/Create")]
         [HttpGet]
         public IActionResult CreateNews()
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
             return View();
         }
 
+        [Route("News/Create")]
         [HttpPost]
         public IActionResult CreateNews(News news)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -45,87 +49,111 @@ namespace MentalHealthSupport.Controllers
                 news.CreatedDate = DateTime.Now;
                 news.Author = HttpContext.Session.GetString("FullName") ?? "Admin";
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                try
                 {
-                    connection.Open();
-                    string query = "INSERT INTO News (Title, Content, CreatedDate, Author) VALUES (@Title, @Content, @CreatedDate, @Author)";
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        command.Parameters.AddWithValue("@Title", news.Title);
-                        command.Parameters.AddWithValue("@Content", news.Content);
-                        command.Parameters.AddWithValue("@CreatedDate", news.CreatedDate);
-                        command.Parameters.AddWithValue("@Author", news.Author);
-                        command.ExecuteNonQuery();
+                        connection.Open();
+                        string query = "INSERT INTO News (Title, Content, CreatedDate, Author) VALUES (@Title, @Content, @CreatedDate, @Author)";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Title", news.Title);
+                            command.Parameters.AddWithValue("@Content", news.Content);
+                            command.Parameters.AddWithValue("@CreatedDate", news.CreatedDate);
+                            command.Parameters.AddWithValue("@Author", news.Author);
+                            command.ExecuteNonQuery();
+                        }
                     }
+                    return RedirectToAction("NewsList");
                 }
-                return RedirectToAction("NewsList");
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
             }
             return View(news);
         }
 
+        [Route("News/List")]
         [HttpGet]
         public IActionResult NewsList()
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
             List<News> newsList = new List<News>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string query = "SELECT Id, Title, Content, CreatedDate, Author FROM News ORDER BY CreatedDate DESC";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string query = "SELECT Id, Title, Content, CreatedDate, Author FROM News ORDER BY CreatedDate DESC";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            newsList.Add(new News
+                            while (reader.Read())
                             {
-                                Id = reader.GetInt32(0),
-                                Title = reader.GetString(1),
-                                Content = reader.GetString(2),
-                                CreatedDate = reader.GetDateTime(3),
-                                Author = reader.GetString(4)
-                            });
+                                newsList.Add(new News
+                                {
+                                    Id = reader.GetInt32(0),
+                                    Title = reader.GetString(1),
+                                    Content = reader.GetString(2),
+                                    CreatedDate = reader.GetDateTime(3),
+                                    Author = reader.GetString(4)
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
             return View(newsList);
         }
 
+        [Route("News/Edit/{id}")]
         [HttpGet]
         public IActionResult EditNews(int id)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
             News? news = null;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string query = "SELECT Id, Title, Content, CreatedDate, Author FROM News WHERE Id = @Id";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.Parameters.AddWithValue("@Id", id);
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string query = "SELECT Id, Title, Content, CreatedDate, Author FROM News WHERE Id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        if (reader.Read())
+                        command.Parameters.AddWithValue("@Id", id);
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            news = new News
+                            if (reader.Read())
                             {
-                                Id = reader.GetInt32(0),
-                                Title = reader.GetString(1),
-                                Content = reader.GetString(2),
-                                CreatedDate = reader.GetDateTime(3),
-                                Author = reader.GetString(4)
-                            };
+                                news = new News
+                                {
+                                    Id = reader.GetInt32(0),
+                                    Title = reader.GetString(1),
+                                    Content = reader.GetString(2),
+                                    CreatedDate = reader.GetDateTime(3),
+                                    Author = reader.GetString(4)
+                                };
+                            }
                         }
                     }
                 }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                return RedirectToAction("NewsList");
             }
             if (news == null)
             {
@@ -134,300 +162,534 @@ namespace MentalHealthSupport.Controllers
             return View(news);
         }
 
+        [Route("News/Edit/{id}")]
         [HttpPost]
         public IActionResult EditNews(News news)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
             if (ModelState.IsValid)
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                news.Author = HttpContext.Session.GetString("FullName") ?? "Admin";
+                try
                 {
-                    connection.Open();
-                    string query = "UPDATE News SET Title = @Title, Content = @Content, CreatedDate = @CreatedDate, Author = @Author WHERE Id = @Id";
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        command.Parameters.AddWithValue("@Id", news.Id);
-                        command.Parameters.AddWithValue("@Title", news.Title);
-                        command.Parameters.AddWithValue("@Content", news.Content);
-                        command.Parameters.AddWithValue("@CreatedDate", news.CreatedDate);
-                        command.Parameters.AddWithValue("@Author", news.Author);
-                        command.ExecuteNonQuery();
+                        connection.Open();
+                        DateTime validCreatedDate = news.CreatedDate;
+                        if (validCreatedDate < new DateTime(1753, 1, 1))
+                        {
+                            string getDateQuery = "SELECT CreatedDate FROM News WHERE Id = @Id";
+                            using (SqlCommand getCommand = new SqlCommand(getDateQuery, connection))
+                            {
+                                getCommand.Parameters.AddWithValue("@Id", news.Id);
+                                var existingDate = getCommand.ExecuteScalar();
+                                validCreatedDate = existingDate != DBNull.Value ? (DateTime)existingDate : DateTime.Now;
+                            }
+                        }
+
+                        string query = "UPDATE News SET Title = @Title, Content = @Content, CreatedDate = @CreatedDate, Author = @Author WHERE Id = @Id";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", news.Id);
+                            command.Parameters.AddWithValue("@Title", news.Title);
+                            command.Parameters.AddWithValue("@Content", news.Content);
+                            command.Parameters.AddWithValue("@CreatedDate", validCreatedDate);
+                            command.Parameters.AddWithValue("@Author", news.Author);
+                            command.ExecuteNonQuery();
+                        }
                     }
+                    return RedirectToAction("NewsList");
                 }
-                return RedirectToAction("NewsList");
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
             }
             return View(news);
         }
 
+        [Route("News/Delete/{id}")]
         [HttpGet]
         public IActionResult DeleteNews(int id)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string query = "DELETE FROM News WHERE Id = @Id";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.Parameters.AddWithValue("@Id", id);
-                    command.ExecuteNonQuery();
+                    connection.Open();
+                    string query = "DELETE FROM News WHERE Id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
             return RedirectToAction("NewsList");
         }
 
         // Quản lý Người dùng
+        [Route("Users/Create")]
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+        [Route("Users/Create")]
+        [HttpPost]
+        public IActionResult CreateUser(User user)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "INSERT INTO Users (FullName, Email, Phone, Role, IsVerified, PasswordHash) VALUES (@FullName, @Email, @Phone, @Role, @IsVerified, @PasswordHash)";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@FullName", user.FullName);
+                            command.Parameters.AddWithValue("@Email", user.Email);
+                            if (user.Phone == null)
+                            {
+                                command.Parameters.Add("@Phone", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                command.Parameters.Add("@Phone", System.Data.SqlDbType.NVarChar).Value = user.Phone;
+                            }
+                            command.Parameters.AddWithValue("@Role", user.Role);
+                            command.Parameters.AddWithValue("@IsVerified", user.IsVerified);
+                            // Hash password trước khi lưu
+                            string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash); // Cần package BCrypt.Net-Next
+                            command.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    return RedirectToAction("UserList");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+            }
+            return View(user);
+        }
+
+        [Route("Users/List")]
         [HttpGet]
         public IActionResult UserList()
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
             List<User> userList = new List<User>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string query = "SELECT UserId, FullName, Email, PasswordHash, Phone, Role, IsVerified, CreatedAt, Sex FROM Users";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string query = "SELECT UserId, FullName, Email, Phone, Role, IsVerified FROM Users";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            userList.Add(new User
+                            while (reader.Read())
                             {
-                                UserId = reader.GetInt32(0),
-                                FullName = reader.GetString(1),
-                                Email = reader.GetString(2),
-                                PasswordHash = reader.GetString(3),
-                                Phone = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                Role = reader.GetString(5),
-                                IsVerified = reader.GetBoolean(6),
-                                CreatedAt = reader.GetDateTime(7),
-                                Sex = reader.GetBoolean(8)
-                            });
+                                userList.Add(new User
+                                {
+                                    UserId = reader.GetInt32(0),
+                                    FullName = reader.GetString(1),
+                                    Email = reader.GetString(2),
+                                    Phone = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                    Role = reader.GetString(4),
+                                    IsVerified = reader.GetBoolean(5)
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
             return View(userList);
         }
 
+        [Route("Users/Edit/{id}")]
+        [HttpGet]
+        public IActionResult EditUser(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            User? user = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT UserId, FullName, Email, Phone, Role, IsVerified FROM Users WHERE UserId = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                user = new User
+                                {
+                                    UserId = reader.GetInt32(0),
+                                    FullName = reader.GetString(1),
+                                    Email = reader.GetString(2),
+                                    Phone = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                    Role = reader.GetString(4),
+                                    IsVerified = reader.GetBoolean(5)
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                return RedirectToAction("UserList");
+            }
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        [Route("Users/Edit/{id}")]
+        [HttpPost]
+        public IActionResult EditUser(User user)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "UPDATE Users SET FullName = @FullName, Email = @Email, Phone = @Phone, Role = @Role, IsVerified = @IsVerified, PasswordHash = @PasswordHash WHERE UserId = @UserId";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@UserId", user.UserId);
+                            command.Parameters.AddWithValue("@FullName", user.FullName);
+                            command.Parameters.AddWithValue("@Email", user.Email);
+                            if (user.Phone == null)
+                            {
+                                command.Parameters.Add("@Phone", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                command.Parameters.Add("@Phone", System.Data.SqlDbType.NVarChar).Value = user.Phone;
+                            }
+                            command.Parameters.AddWithValue("@Role", user.Role);
+                            command.Parameters.AddWithValue("@IsVerified", user.IsVerified);
+                            // Hash password nếu có thay đổi
+                            string passwordHash = string.IsNullOrEmpty(user.PasswordHash) ? (string)command.Parameters["@PasswordHash"].Value : BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+                            command.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    return RedirectToAction("UserList");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+            }
+            return View(user);
+        }
+
+        [Route("Users/Delete/{id}")]
+        [HttpGet]
+        public IActionResult DeleteUser(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM Users WHERE UserId = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+            }
+            return RedirectToAction("UserList");
+        }
+
         // Quản lý Chuyên gia
+        [Route("Consultants/Create")]
+        [HttpGet]
+        public IActionResult CreateConsultant()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+        [Route("Consultants/Create")]
+        [HttpPost]
+        public IActionResult CreateConsultant(ConsultantProfile consultant)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus)";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@ConsultantId", consultant.ConsultantId);
+                            if (consultant.Specialty == null)
+                            {
+                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = consultant.Specialty;
+                            }
+
+                            if (consultant.Description == null)
+                            {
+                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = consultant.Description;
+                            }
+                            command.Parameters.AddWithValue("@ExperienceYears", (object)consultant.ExperienceYears ?? DBNull.Value);
+                            command.Parameters.AddWithValue("@ApprovalStatus", consultant.ApprovalStatus);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    return RedirectToAction("ConsultantList");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+            }
+            return View(consultant);
+        }
+
+        [Route("Consultants/List")]
         [HttpGet]
         public IActionResult ConsultantList()
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
             List<ConsultantProfile> consultantList = new List<ConsultantProfile>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string query = "SELECT cp.ConsultantId, cp.Specialty, cp.ExperienceYears, cp.Description, cp.ApprovalStatus " +
-                               "FROM ConsultantProfiles cp JOIN Users u ON cp.ConsultantId = u.UserId";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string query = "SELECT ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus FROM ConsultantProfiles";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            consultantList.Add(new ConsultantProfile
+                            while (reader.Read())
                             {
-                                ConsultantId = reader.GetInt32(0),
-                                Specialty = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                ExperienceYears = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
-                                Description = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                ApprovalStatus = reader.GetString(4)
-                            });
+                                consultantList.Add(new ConsultantProfile
+                                {
+                                    ConsultantId = reader.GetInt32(0),
+                                    Specialty = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                    ExperienceYears = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
+                                    Description = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                    ApprovalStatus = reader.GetString(4)
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
             return View(consultantList);
         }
 
-        // Quản lý Lịch hẹn
+        [Route("Consultants/Edit/{id}")]
         [HttpGet]
-        public IActionResult AppointmentList()
+        public IActionResult EditConsultant(int id)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
-            List<Appointment> appointmentList = new List<Appointment>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            ConsultantProfile? consultant = null;
+            try
             {
-                connection.Open();
-                string query = "SELECT AppointmentId, UserId, ConsultantId, AppointmentTime, Status, Note, CreatedAt FROM Appointments";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string query = "SELECT ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus FROM ConsultantProfiles WHERE ConsultantId = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        command.Parameters.AddWithValue("@Id", id);
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            appointmentList.Add(new Appointment
+                            if (reader.Read())
                             {
-                                AppointmentId = reader.GetInt32(0),
-                                UserId = reader.GetInt32(1),
-                                ConsultantId = reader.GetInt32(2),
-                                AppointmentTime = reader.GetDateTime(3),
-                                Status = reader.GetString(4),
-                                Note = reader.IsDBNull(5) ? null : reader.GetString(5),
-                                CreatedAt = reader.GetDateTime(6)
-                            });
+                                consultant = new ConsultantProfile
+                                {
+                                    ConsultantId = reader.GetInt32(0),
+                                    Specialty = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                    ExperienceYears = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
+                                    Description = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                    ApprovalStatus = reader.GetString(4)
+                                };
+                            }
                         }
                     }
                 }
             }
-            return View(appointmentList);
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                return RedirectToAction("ConsultantList");
+            }
+            if (consultant == null)
+            {
+                return NotFound();
+            }
+            return View(consultant);
         }
 
-        // Quản lý Đánh giá
-        [HttpGet]
-        public IActionResult RatingList()
+        [Route("Consultants/Edit/{id}")]
+        [HttpPost]
+        public IActionResult EditConsultant(ConsultantProfile consultant)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
-            List<Rating> ratingList = new List<Rating>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (ModelState.IsValid)
             {
-                connection.Open();
-                string query = "SELECT RatingId, AppointmentId, Score, Comment, RatedAt FROM Ratings";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                try
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        while (reader.Read())
+                        connection.Open();
+                        string query = "UPDATE ConsultantProfiles SET Specialty = @Specialty, ExperienceYears = @ExperienceYears, Description = @Description, ApprovalStatus = @ApprovalStatus WHERE ConsultantId = @ConsultantId";
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            ratingList.Add(new Rating
+                            command.Parameters.AddWithValue("@ConsultantId", consultant.ConsultantId);
+                            if (consultant.Specialty == null)
                             {
-                                RatingId = reader.GetInt32(0),
-                                AppointmentId = reader.GetInt32(1),
-                                Score = reader.GetInt32(2),
-                                Comment = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                RatedAt = reader.GetDateTime(4)
-                            });
+                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = consultant.Specialty;
+                            }
+
+                            if (consultant.Description == null)
+                            {
+                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = consultant.Description;
+                            }
+                            command.Parameters.AddWithValue("@ExperienceYears", (object)consultant.ExperienceYears ?? DBNull.Value);
+                            command.Parameters.AddWithValue("@ApprovalStatus", consultant.ApprovalStatus);
+                            command.ExecuteNonQuery();
                         }
                     }
+                    return RedirectToAction("ConsultantList");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
                 }
             }
-            return View(ratingList);
+            return View(consultant);
         }
 
-        // Quản lý Thanh toán
+        [Route("Consultants/Delete/{id}")]
         [HttpGet]
-        public IActionResult PaymentList()
+        public IActionResult DeleteConsultant(int id)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
-            List<Payment> paymentList = new List<Payment>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string query = "SELECT PaymentId, AppointmentId, Amount, PaymentMethod, PaymentStatus, PaidAt FROM Payments";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string query = "DELETE FROM ConsultantProfiles WHERE ConsultantId = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
-                        {
-                            paymentList.Add(new Payment
-                            {
-                                PaymentId = reader.GetInt32(0),
-                                AppointmentId = reader.GetInt32(1),
-                                Amount = reader.GetDecimal(2),
-                                PaymentMethod = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                PaymentStatus = reader.GetString(4),
-                                PaidAt = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5)
-                            });
-                        }
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
                     }
                 }
             }
-            return View(paymentList);
-        }
-
-        // Quản lý Báo cáo
-        [HttpGet]
-        public IActionResult ReportList()
-        {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            catch (SqlException ex)
             {
-                return RedirectToAction("Login", "Account");
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
-            List<Report> reportList = new List<Report>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT ReportId, ReporterId, ReportedUserId, Message, CreatedAt, Status FROM Reports";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            reportList.Add(new Report
-                            {
-                                ReportId = reader.GetInt32(0),
-                                ReporterId = reader.GetInt32(1),
-                                ReportedUserId = reader.GetInt32(2),
-                                Message = reader.GetString(3),
-                                CreatedAt = reader.GetDateTime(4),
-                                Status = reader.GetString(5)
-                            });
-                        }
-                    }
-                }
-            }
-            return View(reportList);
-        }
-
-        // Quản lý Bài viết
-        [HttpGet]
-        public IActionResult ArticleList()
-        {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            List<Article> articleList = new List<Article>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT ArticleId, Title, Content, Category, CreatedBy, CreatedAt FROM Articles";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            articleList.Add(new Article
-                            {
-                                ArticleId = reader.GetInt32(0),
-                                Title = reader.GetString(1),
-                                Content = reader.GetString(2),
-                                Category = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                CreatedBy = reader.GetInt32(4),
-                                CreatedAt = reader.GetDateTime(5)
-                            });
-                        }
-                    }
-                }
-            }
-            return View(articleList);
+            return RedirectToAction("ConsultantList");
         }
     }
 }

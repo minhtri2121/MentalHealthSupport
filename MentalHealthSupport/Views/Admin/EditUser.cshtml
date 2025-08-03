@@ -1,0 +1,70 @@
+@model MentalHealthSupport.Models.User
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Người Dùng";
+    Layout = null;
+}
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<link rel="stylesheet" href="~/css/edituser.css" />
+
+<div class="container">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="form-title">Chỉnh Sửa Người Dùng</h2>
+            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+        </div>
+        <form asp-action="EditUser" method="post">
+            <input type="hidden" asp-for="UserId" />
+            <div class="form-group">
+                <label asp-for="FullName">Họ và Tên</label>
+                <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Nhập email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone">Số Điện Thoại</label>
+                <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role">Vai Trò</label>
+                <select asp-for="Role" class="form-select">
+                    <option value="">Chọn vai trò</option>
+                    <option value="Admin">Admin</option>
+                    <option value="User">User</option>
+                    <option value="Consultant">Consultant</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="IsVerified" type="checkbox" class="form-check-input" id="IsVerified" />
+                <label class="form-check-label" for="IsVerified">Đã Xác Thực</label>
+                <span asp-validation-for="IsVerified" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PasswordHash">Mật Khẩu Mới (Để trống nếu không đổi)</label>
+                <input asp-for="PasswordHash" type="password" class="form-control" placeholder="Nhập mật khẩu mới" />
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu</button>
+                <a asp-action="UserList" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

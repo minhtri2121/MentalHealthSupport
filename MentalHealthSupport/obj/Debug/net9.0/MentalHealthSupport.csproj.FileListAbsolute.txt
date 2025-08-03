@@ -151,3 +151,9 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\Mental
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\MentalHealthSupport.genruntimeconfig.cache
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\ref\MentalHealthSupport.dll
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\7c99p8r8co-6hlmss9c9f.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\vkdexngknr-o8bvpp1ltl.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\uspd144rhk-3ypdxzixpu.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\0jiaa575kh-zurab3nyow.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\fqape7zb2n-3ypdxzixpu.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\cw6rfo1zo6-6ijb5lodxp.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\9vmfxf71ve-zurab3nyow.gz
