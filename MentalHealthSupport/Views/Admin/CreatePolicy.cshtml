@@ -1,0 +1,56 @@
+@model MentalHealthSupport.Models.TermsAndPolicy
+
+@{
+    ViewData["Title"] = "Thêm mới Điều khoản/Chính sách";
+    Layout = null;
+}
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<link rel="stylesheet" href="~/css/createpolicy.css" />
+
+<div class="container">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="form-title">Thêm mới Điều khoản/Chính sách</h2>
+            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+        </div>
+        <form asp-action="CreatePolicy" asp-controller="Admin" method="post" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label asp-for="PolicyType" class="form-label">Loại</label>
+                <select asp-for="PolicyType" class="form-select" required>
+                    <option value="">Chọn loại</option>
+                    <option value="Terms">Điều khoản dịch vụ</option>
+                    <option value="Privacy">Chính sách bảo mật</option>
+                </select>
+                <span asp-validation-for="PolicyType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="form-label">Nội dung</label>
+                <textarea asp-for="Content" class="form-control" rows="8" placeholder="Nhập nội dung" required></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="form-label">Trạng thái</label>
+                <select asp-for="IsActive" class="form-select" required>
+                    <option value="true">Hoạt động</option>
+                    <option value="false">Không hoạt động</option>
+                </select>
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Thêm</button>
+                <a asp-action="PolicyList" asp-controller="Admin" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

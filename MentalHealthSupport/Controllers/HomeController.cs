@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MentalHealthSupport.Models.ViewModel;
 using Microsoft.Data.SqlClient;
+using MentalHealthSupport.Models;
 
 namespace MentalHealthSupport.Controllers;
 
@@ -11,7 +12,7 @@ public class HomeController(IConfiguration config) : Controller
     public IActionResult Index()
     {
         List<ConsultantViewModel> consultants = new List<ConsultantViewModel>();
-        string ?connectionString = _config.GetConnectionString("DefaultConnection");
+        string? connectionString = _config.GetConnectionString("DefaultConnection");
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
@@ -44,4 +45,46 @@ public class HomeController(IConfiguration config) : Controller
         }
         return View(consultants);
     }
+    
+    public IActionResult Terms()
+        {
+            TermsAndPolicy policy = GetPolicyByType("Terms");
+            return View(policy);
+        }
+
+        public IActionResult Privacy()
+        {
+            TermsAndPolicy policy = GetPolicyByType("Privacy");
+            return View(policy);
+        }
+
+        private TermsAndPolicy GetPolicyByType(string policyType)
+        {
+            string? connectionString = _config.GetConnectionString("DefaultConnection");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT TOP 1 * FROM TermsAndPolicies WHERE PolicyType = @PolicyType AND IsActive = 1";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@PolicyType", policyType);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new TermsAndPolicy
+                        {
+                            Id = reader.GetInt32(0),
+                            PolicyType = reader.GetString(1),
+                            Content = reader.GetString(2),
+                            CreatedDate = reader.GetDateTime(3),
+                            LastModifiedDate = reader.IsDBNull(4) ? null : reader.GetDateTime(4) as DateTime?,
+                            IsActive = reader.GetBoolean(5)
+                        };
+                    }
+                }
+            }
+        }
+            return new TermsAndPolicy { PolicyType = policyType, Content = "Nội dung chưa có.", IsActive = true };
+        }
 }

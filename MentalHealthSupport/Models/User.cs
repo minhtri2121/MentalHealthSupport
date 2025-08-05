@@ -11,4 +11,6 @@ public class User
     public bool IsVerified { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool Sex { get; set; }
+    public string? SecurityQuestion { get; set; }
+    public string? SecurityAnswer { get; set; }
 }

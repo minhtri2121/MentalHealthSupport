@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using MentalHealthSupport.Models;
+using MentalHealthSupport.ViewModels;
 
 namespace MentalHealthSupport.Controllers
 {
@@ -402,7 +403,7 @@ namespace MentalHealthSupport.Controllers
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
-                        string query = "UPDATE Users SET FullName = @FullName, Email = @Email, Phone = @Phone, Role = @Role, IsVerified = @IsVerified, PasswordHash = @PasswordHash WHERE UserId = @UserId";
+                        string query = "UPDATE Users SET FullName = @FullName, Email = @Email, Phone = @Phone, Role = @Role, IsVerified = @IsVerified WHERE UserId = @UserId";
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@UserId", user.UserId);
@@ -418,9 +419,6 @@ namespace MentalHealthSupport.Controllers
                             }
                             command.Parameters.AddWithValue("@Role", user.Role);
                             command.Parameters.AddWithValue("@IsVerified", user.IsVerified);
-                            // Hash password nếu có thay đổi
-                            string passwordHash = string.IsNullOrEmpty(user.PasswordHash) ? (string)command.Parameters["@PasswordHash"].Value : BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-                            command.Parameters.AddWithValue("@PasswordHash", passwordHash);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -471,12 +469,12 @@ namespace MentalHealthSupport.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            return View();
+            return View(new ConsultantCreate());
         }
 
         [Route("Consultants/Create")]
         [HttpPost]
-        public IActionResult CreateConsultant(ConsultantProfile consultant)
+        public IActionResult CreateConsultant(ConsultantCreate model)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
@@ -489,30 +487,64 @@ namespace MentalHealthSupport.Controllers
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
-                        string query = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus)";
-                        using (SqlCommand command = new SqlCommand(query, connection))
+                        // Kiểm tra email đã tồn tại chưa
+                        string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
+                        using (SqlCommand checkCommand = new SqlCommand(checkEmailQuery, connection))
                         {
-                            command.Parameters.AddWithValue("@ConsultantId", consultant.ConsultantId);
-                            if (consultant.Specialty == null)
+                            checkCommand.Parameters.AddWithValue("@Email", model.Email);
+                            int emailCount = (int)checkCommand.ExecuteScalar();
+                            if (emailCount > 0)
                             {
-                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                                ModelState.AddModelError("Email", "Email đã tồn tại.");
+                                return View(model);
                             }
-                            else
-                            {
-                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = consultant.Specialty;
-                            }
+                        }
 
-                            if (consultant.Description == null)
-                            {
-                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
-                            }
-                            else
-                            {
-                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = consultant.Description;
-                            }
-                            command.Parameters.AddWithValue("@ExperienceYears", (object)consultant.ExperienceYears ?? DBNull.Value);
-                            command.Parameters.AddWithValue("@ApprovalStatus", consultant.ApprovalStatus);
-                            command.ExecuteNonQuery();
+                        // Hash password
+                        string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                        // Thêm user vào bảng Users
+                        string userQuery = "INSERT INTO Users (FullName, Email, Phone, Role, IsVerified, PasswordHash, Sex, SecurityQuestion, SecurityAnswer, CreatedAt) VALUES (@FullName, @Email, @Phone, @Role, @IsVerified, @PasswordHash, @Sex, @SecurityQuestion, @SecurityAnswer, @CreatedAt); SELECT SCOPE_IDENTITY();";
+                        int userId;
+                        using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
+                        {
+                            userCommand.Parameters.AddWithValue("@FullName", model.FullName);
+                            userCommand.Parameters.AddWithValue("@Email", model.Email);
+                            userCommand.Parameters.AddWithValue(
+                                "@Phone",
+                                model.Phone != null ? (object)model.Phone : DBNull.Value
+                            );
+                            userCommand.Parameters.AddWithValue("@Role", model.Role);
+                            userCommand.Parameters.AddWithValue("@IsVerified", model.IsVerified);
+                            userCommand.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                            userCommand.Parameters.AddWithValue("@Sex", (object)model.Sex ?? DBNull.Value);
+                            userCommand.Parameters.AddWithValue("@SecurityQuestion", model.SecurityQuestion);
+                            userCommand.Parameters.AddWithValue("@SecurityAnswer", model.SecurityAnswer);
+                            userCommand.Parameters.AddWithValue("@CreatedAt", model.CreatedAt);
+                            userId = Convert.ToInt32(userCommand.ExecuteScalar());
+                        }
+
+                        // Thêm vào ConsultantProfiles
+                        string consultantQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl, @AvatarUrl)";
+                        using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
+                        {
+                            consultantCommand.Parameters.AddWithValue("@ConsultantId", userId);
+                            consultantCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
+                            consultantCommand.Parameters.AddWithValue(
+                                "@ExperienceYears",
+                                model.ExperienceYears.HasValue ? (object)model.ExperienceYears.Value : DBNull.Value
+                            );
+                            consultantCommand.Parameters.AddWithValue("@Description", model.Description);
+                            consultantCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
+                            consultantCommand.Parameters.AddWithValue(
+                                "@CertificateUrl",
+                                model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
+                            );
+
+                            consultantCommand.Parameters.AddWithValue(
+                                "@AvatarUrl",
+                                model.AvatarUrl != null ? (object)model.AvatarUrl : DBNull.Value
+                            );
+                            consultantCommand.ExecuteNonQuery();
                         }
                     }
                     return RedirectToAction("ConsultantList");
@@ -522,7 +554,7 @@ namespace MentalHealthSupport.Controllers
                     ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
                 }
             }
-            return View(consultant);
+            return View(model);
         }
 
         [Route("Consultants/List")]
@@ -566,36 +598,65 @@ namespace MentalHealthSupport.Controllers
             return View(consultantList);
         }
 
-        [Route("Consultants/Edit/{id}")]
         [HttpGet]
+        [Route("Consultants/Edit/{id}")]
         public IActionResult EditConsultant(int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
-            ConsultantProfile? consultant = null;
+
+            ConsultantEditViewModel? model = null;
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus FROM ConsultantProfiles WHERE ConsultantId = @Id";
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    // Lấy thông tin từ bảng Users
+                    string userQuery = "SELECT UserId, FullName, Email, Phone, Role, IsVerified, Sex, SecurityQuestion, SecurityAnswer, CreatedAt FROM Users WHERE UserId = @UserId";
+                    using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@Id", id);
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        userCommand.Parameters.AddWithValue("@UserId", id);
+                        using (SqlDataReader userReader = userCommand.ExecuteReader())
                         {
-                            if (reader.Read())
+                            if (userReader.Read())
                             {
-                                consultant = new ConsultantProfile
+                                model = new ConsultantEditViewModel
                                 {
-                                    ConsultantId = reader.GetInt32(0),
-                                    Specialty = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                    ExperienceYears = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
-                                    Description = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                    ApprovalStatus = reader.GetString(4)
+                                    UserId = userReader.GetInt32(0),
+                                    FullName = userReader.GetString(1),
+                                    Email = userReader.GetString(2),
+                                    Phone = userReader.IsDBNull(3) ? null : userReader.GetString(3),
+                                    Role = userReader.GetString(4),
+                                    IsVerified = userReader.GetBoolean(5),
+                                    Sex = userReader.IsDBNull(6) ? false : Convert.ToBoolean(userReader.GetValue(6)),
+                                    SecurityQuestion = userReader.IsDBNull(7) ? null : userReader.GetString(7),
+                                    SecurityAnswer = userReader.IsDBNull(8) ? null : userReader.GetString(8),
+                                    CreatedAt = userReader.GetDateTime(9)
                                 };
+                            }
+                        }
+                    }
+
+                    if (model != null)
+                    {
+                        // Lấy thông tin từ ConsultantProfiles
+                        string consultantQuery = "SELECT Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl FROM ConsultantProfiles WHERE ConsultantId = @ConsultantId";
+                        using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
+                        {
+                            consultantCommand.Parameters.AddWithValue("@ConsultantId", id);
+                            using (SqlDataReader consultantReader = consultantCommand.ExecuteReader())
+                            {
+                                if (consultantReader.Read())
+                                {
+                                    model.Specialty = consultantReader.IsDBNull(0) ? null : consultantReader.GetString(0);
+                                    model.ExperienceYears = consultantReader.IsDBNull(1) ? null : consultantReader.GetInt32(1);
+                                    model.Description = consultantReader.IsDBNull(2) ? null : consultantReader.GetString(2);
+                                    model.ApprovalStatus = consultantReader.IsDBNull(3) ? null : consultantReader.GetString(3);
+                                    model.CertificateUrl = consultantReader.IsDBNull(4) ? null : consultantReader.GetString(4);
+                                    model.AvatarUrl = consultantReader.IsDBNull(5) ? null : consultantReader.GetString(5);
+                                }
                             }
                         }
                     }
@@ -606,21 +667,24 @@ namespace MentalHealthSupport.Controllers
                 ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
                 return RedirectToAction("ConsultantList");
             }
-            if (consultant == null)
+
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(consultant);
+
+            return View(model);
         }
 
-        [Route("Consultants/Edit/{id}")]
         [HttpPost]
-        public IActionResult EditConsultant(ConsultantProfile consultant)
+        [Route("Consultants/Edit/{id}")]
+        public IActionResult EditConsultant(int id, ConsultantEditViewModel model)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
             {
                 return RedirectToAction("Login", "Account");
             }
+
             if (ModelState.IsValid)
             {
                 try
@@ -628,30 +692,88 @@ namespace MentalHealthSupport.Controllers
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
-                        string query = "UPDATE ConsultantProfiles SET Specialty = @Specialty, ExperienceYears = @ExperienceYears, Description = @Description, ApprovalStatus = @ApprovalStatus WHERE ConsultantId = @ConsultantId";
-                        using (SqlCommand command = new SqlCommand(query, connection))
+                        // Cập nhật bảng Users
+                        string userQuery = @"
+                            UPDATE Users 
+                            SET FullName = @FullName, Email = @Email, Phone = @Phone,
+                                Sex = @Sex, SecurityQuestion = @SecurityQuestion, SecurityAnswer = @SecurityAnswer
+                            WHERE UserId = @UserId";
+                        using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
                         {
-                            command.Parameters.AddWithValue("@ConsultantId", consultant.ConsultantId);
-                            if (consultant.Specialty == null)
-                            {
-                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
-                            }
-                            else
-                            {
-                                command.Parameters.Add("@Specialty", System.Data.SqlDbType.NVarChar).Value = consultant.Specialty;
-                            }
+                            userCommand.Parameters.AddWithValue("@UserId", id);
+                            userCommand.Parameters.AddWithValue("@FullName", model.FullName);
+                            userCommand.Parameters.AddWithValue("@Email", model.Email);
+                            userCommand.Parameters.AddWithValue(
+                                "@Phone",
+                                model.Phone != null ? (object)model.Phone : DBNull.Value
+                            );
+                            userCommand.Parameters.AddWithValue("@Sex", model.Sex);
+                            userCommand.Parameters.AddWithValue("@SecurityQuestion", model.SecurityQuestion);
+                            userCommand.Parameters.AddWithValue("@SecurityAnswer", model.SecurityAnswer);
+                            userCommand.ExecuteNonQuery();
+                        }
 
-                            if (consultant.Description == null)
+                        // Cập nhật hoặc thêm ConsultantProfiles
+                        string checkConsultantQuery = "SELECT COUNT(*) FROM ConsultantProfiles WHERE ConsultantId = @ConsultantId";
+                        using (SqlCommand checkCommand = new SqlCommand(checkConsultantQuery, connection))
+                        {
+                            checkCommand.Parameters.AddWithValue("@ConsultantId", id);
+                            int count = (int)checkCommand.ExecuteScalar();
+                            if (count == 0)
                             {
-                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = DBNull.Value;
+                                string insertQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl, @AvatarUrl)";
+                                using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                                {
+                                    insertCommand.Parameters.AddWithValue("@ConsultantId", id);
+                                    insertCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
+                                    insertCommand.Parameters.AddWithValue(
+                                        "@ExperienceYears",
+                                        model.ExperienceYears.HasValue ? (object)model.ExperienceYears.Value : DBNull.Value
+                                    );
+
+                                    insertCommand.Parameters.AddWithValue("@Description", model.Description);
+                                    insertCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
+                                    insertCommand.Parameters.AddWithValue(
+                                        "@CertificateUrl",
+                                        model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
+                                    );
+
+                                    insertCommand.Parameters.AddWithValue(
+                                        "@AvatarUrl",
+                                        model.AvatarUrl != null ? (object)model.AvatarUrl : DBNull.Value
+                                    );
+                                    insertCommand.ExecuteNonQuery();
+                                }
                             }
                             else
                             {
-                                command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar).Value = consultant.Description;
+                                string updateQuery = @"
+                                    UPDATE ConsultantProfiles 
+                                    SET Specialty = @Specialty, ExperienceYears = @ExperienceYears, Description = @Description, 
+                                        ApprovalStatus = @ApprovalStatus, CertificateUrl = @CertificateUrl, AvatarUrl = @AvatarUrl
+                                    WHERE ConsultantId = @ConsultantId";
+                                using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                                {
+                                    updateCommand.Parameters.AddWithValue("@ConsultantId", id);
+                                    updateCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
+                                    updateCommand.Parameters.AddWithValue(
+                                        "@ExperienceYears",
+                                        model.ExperienceYears.HasValue ? (object)model.ExperienceYears.Value : DBNull.Value
+                                    );
+                                    updateCommand.Parameters.AddWithValue("@Description", model.Description);
+                                    updateCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
+                                    updateCommand.Parameters.AddWithValue(
+                                        "@CertificateUrl",
+                                        model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
+                                    );
+
+                                    updateCommand.Parameters.AddWithValue(
+                                        "@AvatarUrl",
+                                        model.AvatarUrl != null ? (object)model.AvatarUrl : DBNull.Value
+                                    );
+                                    updateCommand.ExecuteNonQuery();
+                                }
                             }
-                            command.Parameters.AddWithValue("@ExperienceYears", (object)consultant.ExperienceYears ?? DBNull.Value);
-                            command.Parameters.AddWithValue("@ApprovalStatus", consultant.ApprovalStatus);
-                            command.ExecuteNonQuery();
                         }
                     }
                     return RedirectToAction("ConsultantList");
@@ -661,7 +783,7 @@ namespace MentalHealthSupport.Controllers
                     ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
                 }
             }
-            return View(consultant);
+            return View(model);
         }
 
         [Route("Consultants/Delete/{id}")]
@@ -690,6 +812,215 @@ namespace MentalHealthSupport.Controllers
                 ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
             return RedirectToAction("ConsultantList");
+        }
+
+        [Route("Policies/List")]
+        [HttpGet]
+        public IActionResult PolicyList()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            List<TermsAndPolicy> policies = new List<TermsAndPolicy>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT Id, PolicyType, Content, CreatedDate, LastModifiedDate, IsActive FROM TermsAndPolicies";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                policies.Add(new TermsAndPolicy
+                                {
+                                    Id = reader.GetInt32(0),
+                                    PolicyType = reader.GetString(1),
+                                    Content = reader.GetString(2),
+                                    CreatedDate = reader.GetDateTime(3),
+                                    LastModifiedDate = reader.IsDBNull(4) ? null : reader.GetDateTime(4) as DateTime?,
+                                    IsActive = reader.GetBoolean(5)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+            }
+            return View(policies);
+        }
+
+        [Route("Policies/Edit/{id}")]
+        [HttpGet]
+        public IActionResult EditPolicy(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            TermsAndPolicy? policy = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT Id, PolicyType, Content, CreatedDate, LastModifiedDate, IsActive FROM TermsAndPolicies WHERE Id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                policy = new TermsAndPolicy
+                                {
+                                    Id = reader.GetInt32(0),
+                                    PolicyType = reader.GetString(1),
+                                    Content = reader.GetString(2),
+                                    CreatedDate = reader.GetDateTime(3),
+                                    LastModifiedDate = reader.IsDBNull(4) ? null : reader.GetDateTime(4) as DateTime?,
+                                    IsActive = reader.GetBoolean(5)
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                return RedirectToAction("PolicyList");
+            }
+            if (policy == null)
+            {
+                return NotFound();
+            }
+            return View(policy);
+        }
+
+        [Route("Policies/Edit/{id}")]
+        [HttpPost]
+        public IActionResult EditPolicy(TermsAndPolicy model)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = @"
+                            UPDATE TermsAndPolicies 
+                            SET Content = @Content, LastModifiedDate = @LastModifiedDate, IsActive = @IsActive 
+                            WHERE Id = @Id";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", model.Id);
+                            command.Parameters.AddWithValue("@Content", model.Content);
+                            command.Parameters.AddWithValue("@LastModifiedDate", DateTime.Now);
+                            command.Parameters.AddWithValue("@IsActive", model.IsActive);
+                            int rowsAffected = command.ExecuteNonQuery();
+                            if (rowsAffected == 0)
+                            {
+                                ModelState.AddModelError("", "Không tìm thấy chính sách để cập nhật.");
+                            }
+                        }
+                    }
+                    return RedirectToAction("PolicyList");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+            }
+            return View(model);
+        }
+
+        [Route("Policies/Create")]
+        [HttpGet]
+        public IActionResult CreatePolicy()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View(new TermsAndPolicy());
+        }
+
+        [Route("Policies/Create")]
+        [HttpPost]
+        public IActionResult CreatePolicy(TermsAndPolicy model)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = @"
+                            INSERT INTO TermsAndPolicies (PolicyType, Content, CreatedDate, LastModifiedDate, IsActive)
+                            VALUES (@PolicyType, @Content, @CreatedDate, @LastModifiedDate, @IsActive)";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@PolicyType", model.PolicyType);
+                            command.Parameters.AddWithValue("@Content", model.Content);
+                            command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                            command.Parameters.AddWithValue("@LastModifiedDate", DateTime.Now);
+                            command.Parameters.AddWithValue("@IsActive", model.IsActive);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    return RedirectToAction("PolicyList");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+            }
+            return View(model);
+        }
+
+        [Route("Policies/Delete/{id}")]
+        [HttpGet]
+        public IActionResult DeletePolicy(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM TermsAndPolicies WHERE Id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+            }
+            return RedirectToAction("PolicyList");
         }
     }
 }

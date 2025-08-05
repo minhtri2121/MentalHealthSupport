@@ -1,0 +1,40 @@
+@model MentalHealthSupport.Models.ViewModel.VerifySecurityAnswerViewModel
+@{
+    ViewData["Title"] = "Xác minh Câu Hỏi Bảo Mật";
+}
+
+<div class="bg-light min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="w-100 p-4" style="max-width: 28rem;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">Xác minh Câu Hỏi Bảo Mật</h2>
+            <p class="text-muted">Trả lời câu hỏi để đặt lại mật khẩu</p>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4">
+                @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @ViewData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form asp-action="VerifySecurityAnswer" asp-controller="Account" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Email" />
+                    <div class="mb-3">
+                        <label class="form-label">@ViewData["SecurityQuestion"]</label>
+                        <input asp-for="Answer" class="form-control" required />
+                        <span asp-validation-for="Answer" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Xác minh</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

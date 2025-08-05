@@ -29,8 +29,20 @@
       "PackagePath": "staticwebassets\\css\\createnews.css"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createpolicy.css",
+      "PackagePath": "staticwebassets\\css\\createpolicy.css"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createuser.css",
       "PackagePath": "staticwebassets\\css\\createuser.css"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\editnews.css",
+      "PackagePath": "staticwebassets\\css\\editnews.css"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\editpolicy.css",
+      "PackagePath": "staticwebassets\\css\\editpolicy.css"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\edituser.css",
@@ -41,12 +53,12 @@
       "PackagePath": "staticwebassets\\css\\newslist.css"
     },
     {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\site.css",
-      "PackagePath": "staticwebassets\\css\\site.css"
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\policylist.css",
+      "PackagePath": "staticwebassets\\css\\policylist.css"
     },
     {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\userlist.css",
-      "PackagePath": "staticwebassets\\css\\userlist.css"
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\favicon.ico",

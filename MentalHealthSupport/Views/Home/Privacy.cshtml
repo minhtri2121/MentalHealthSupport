@@ -1,0 +1,19 @@
+@model MentalHealthSupport.Models.TermsAndPolicy
+@{
+    ViewData["Title"] = "Chính sách bảo mật";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+    <div class="card">
+        <div class="card-body">
+            <p>@Html.Raw(Model.Content)</p>
+            <p class="text-muted"><small>Ngày tạo: @Model.CreatedDate.ToString("dd/MM/yyyy")</small></p>
+            @if (Model.LastModifiedDate.HasValue)
+            {
+                <p class="text-muted"><small>Ngày chỉnh sửa: @Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")</small></p>
+            }
+        </div>
+    </div>
+</div>

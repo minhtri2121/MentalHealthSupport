@@ -26,5 +26,9 @@ namespace MentalHealthSupport.Models.ViewModel
         [Required(ErrorMessage = "Giới tính là bắt buộc")]
         [Display(Name = "Giới tính")]
         public bool Sex { get; set; }
+        [Required]
+        public string SecurityQuestion { get; set; } = string.Empty;
+        [Required]
+        public string SecurityAnswer { get; set; } = string.Empty;
     }
 }

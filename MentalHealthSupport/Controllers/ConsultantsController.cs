@@ -11,7 +11,7 @@ public class ConsultantsController : Controller
         _config = config;
     }
 
-    // Lấy danh sách chuyên gia kèm thông tin user
+
     public IActionResult Index()
     {
         List<ConsultantViewModel> consultants = new List<ConsultantViewModel>();
@@ -20,7 +20,6 @@ public class ConsultantsController : Controller
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
             conn.Open();
-            // JOIN Users và ConsultantProfiles
             SqlCommand cmd = new SqlCommand(@"
                 SELECT u.UserId, u.FullName, u.Email, u.Phone, u.Role, u.IsVerified,
                        c.ConsultantId, c.Specialty, c.Description, c.ApprovalStatus, c.AvatarUrl, c.ExperienceYears, c.CertificateUrl
@@ -264,53 +263,7 @@ public class ConsultantsController : Controller
                     });
                 }
             }
-
-            // 3. Lấy đánh giá
-            SqlCommand ratingCmd = new SqlCommand(@"
-                SELECT u.FullName, r.Score, r.Comment, r.RatedAt
-                FROM Ratings r
-                INNER JOIN Appointments a ON r.AppointmentId = a.AppointmentId
-                INNER JOIN Users u ON a.UserId = u.UserId
-                WHERE u.UserId = @ConsultantId
-            ", conn);
-            ratingCmd.Parameters.AddWithValue("@ConsultantId", id);
-
-            using (SqlDataReader reader = ratingCmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    consultant.Ratings.Add(new RatingViewModel
-                    {
-                        UserName = reader["FullName"].ToString() ?? "",
-                        Score = Convert.ToInt32(reader["Score"]),
-                        Comment = reader["Comment"].ToString() ?? "",
-                        CreatedAt = Convert.ToDateTime(reader["RatedAt"])
-                    });
-                }
-            }
-
-            // 4. Lấy bài viết
-            SqlCommand articleCmd = new SqlCommand(@"
-                SELECT Title, Content, Category
-                FROM Articles a join Users u on u.UserId = a.CreatedBy
-                WHERE u.UserId = @ConsultantId
-            ", conn);
-            articleCmd.Parameters.AddWithValue("@ConsultantId", id);
-
-            using (SqlDataReader reader = articleCmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    consultant.Articles.Add(new ArticleViewModel
-                    {
-                        Title = reader["Title"].ToString() ?? "",
-                        Content = reader["Content"].ToString() ?? "",
-                        Category = reader["Category"].ToString() ?? "",
-                    });
-                }
-            }
         }
-
         return View(consultant);
     }
 

@@ -14,24 +14,25 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-.card {
-    border: none;
-    border-radius: 15px;
+.table {
     background: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+.table thead {
+    background-color: #3498db;
+    color: #fff;
 }
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #2c3e50;
+.table th, .table td {
+    vertical-align: middle;
+    padding: 15px;
 }
-.card-text {
-    color: #7f8c8d;
-    font-size: 0.9rem;
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.1);
 }
 .btn-primary {
     background-color: #3498db;
@@ -81,4 +82,6 @@ body {
 .no-data {
     font-size: 1.1rem;
     color: #7f8c8d;
+    text-align: center;
+    padding: 20px;
 }

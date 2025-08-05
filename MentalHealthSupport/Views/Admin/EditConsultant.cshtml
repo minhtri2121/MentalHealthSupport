@@ -1,0 +1,100 @@
+@model MentalHealthSupport.ViewModels.ConsultantEditViewModel
+
+@{
+    ViewData["Title"] = "Sửa Thông Tin Chuyên Gia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+    
+    <form asp-action="EditConsultant" asp-controller="Admin" method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Họ và Tên</label>
+            <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" required />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" placeholder="Nhập email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label">Số Điện Thoại</label>
+            <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Sex" class="form-label">Giới Tính</label>
+            <select asp-for="Sex" class="form-control">
+                <option value="true">Nam</option>
+                <option value="false">Nữ</option>
+            </select>
+            <span asp-validation-for="Sex" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SecurityQuestion" class="form-label">Câu Hỏi Bảo Mật</label>
+            <input asp-for="SecurityQuestion" class="form-control" placeholder="Nhập câu hỏi bảo mật" required />
+            <span asp-validation-for="SecurityQuestion" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SecurityAnswer" class="form-label">Câu Trả Lời Bảo Mật</label>
+            <input asp-for="SecurityAnswer" class="form-control" placeholder="Nhập câu trả lời" required />
+            <span asp-validation-for="SecurityAnswer" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Specialty" class="form-label">Chuyên Ngành</label>
+            <input asp-for="Specialty" class="form-control" placeholder="Nhập chuyên ngành" required />
+            <span asp-validation-for="Specialty" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ExperienceYears" class="form-label">Số Năm Kinh Nghiệm</label>
+            <input asp-for="ExperienceYears" type="number" class="form-control" min="0" step="1" />
+            <span asp-validation-for="ExperienceYears" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô Tả</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ApprovalStatus" class="form-label">Trạng Thái Phê Duyệt</label>
+            <select asp-for="ApprovalStatus" class="form-control">
+                <option value="Pending">Chờ duyệt</option>
+                <option value="Approved">Đã duyệt</option>
+                <option value="Rejected">Bị từ chối</option>
+            </select>
+            <span asp-validation-for="ApprovalStatus" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CertificateUrl" class="form-label">URL Chứng Chỉ</label>
+            <input asp-for="CertificateUrl" class="form-control" placeholder="Nhập URL chứng chỉ" />
+            <span asp-validation-for="CertificateUrl" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AvatarUrl" class="form-label">URL Avatar</label>
+            <input asp-for="AvatarUrl" class="form-control" placeholder="Nhập URL avatar" />
+            <span asp-validation-for="AvatarUrl" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cập Nhật</button>
+        <a asp-action="ConsultantList" asp-controller="Admin" class="btn btn-secondary ms-2">Hủy</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

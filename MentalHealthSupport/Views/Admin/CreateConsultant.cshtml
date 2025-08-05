@@ -1,0 +1,217 @@
+@model MentalHealthSupport.ViewModels.ConsultantCreate
+
+@{
+    ViewData["Title"] = "Tạo Chuyên Gia Mới";
+    Layout = null;
+}
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: 'Roboto', sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin-top: 50px;
+    }
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        background: #fff;
+    }
+    .form-title {
+        font-weight: 700;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        transition: border-color 0.3s ease;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+    .text-danger {
+        font-size: 0.85rem;
+    }
+    .btn-primary {
+        background-color: #3498db;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+    .btn-secondary {
+        background-color: #95a5a6;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+        background-color: #7f8c8d;
+    }
+    .btn-back {
+        background-color: #6c757d;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: 500;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+    .btn-back:hover {
+        background-color: #5a6268;
+    }
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .preview-img {
+        max-width: 100%;
+        max-height: 150px;
+        margin-top: 10px;
+        border-radius: 10px;
+        display: none;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="form-title">Tạo Chuyên Gia Mới</h2>
+            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+        </div>
+        <form asp-action="CreateConsultant" asp-controller="Admin" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label asp-for="FullName" class="form-label">Họ và Tên</label>
+                <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" required />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Nhập email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="form-label">Số Điện Thoại</label>
+                <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">Mật Khẩu</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="form-label">Giới Tính</label>
+                <select asp-for="Sex" class="form-select">
+                    <option value="">Chọn giới tính</option>
+                    <option value="true">Nam</option>
+                    <option value="false">Nữ</option>
+                </select>
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecurityQuestion" class="form-label">Câu Hỏi Bảo Mật</label>
+                <input asp-for="SecurityQuestion" class="form-control" placeholder="Nhập câu hỏi bảo mật" required />
+                <span asp-validation-for="SecurityQuestion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecurityAnswer" class="form-label">Câu Trả Lời Bảo Mật</label>
+                <input asp-for="SecurityAnswer" class="form-control" placeholder="Nhập câu trả lời" required />
+                <span asp-validation-for="SecurityAnswer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Specialty" class="form-label">Chuyên Ngành</label>
+                <input asp-for="Specialty" class="form-control" placeholder="Nhập chuyên ngành" required />
+                <span asp-validation-for="Specialty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExperienceYears" class="form-label">Số Năm Kinh Nghiệm</label>
+                <input asp-for="ExperienceYears" type="number" class="form-control" min="0" placeholder="Nhập số năm kinh nghiệm" />
+                <span asp-validation-for="ExperienceYears" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">Mô Tả</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApprovalStatus" class="form-label">Trạng Thái Phê Duyệt</label>
+                <select asp-for="ApprovalStatus" class="form-select">
+                    <option value="Pending">Chờ duyệt</option>
+                    <option value="Approved">Đã duyệt</option>
+                    <option value="Rejected">Bị từ chối</option>
+                </select>
+                <span asp-validation-for="ApprovalStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CertificateUrl" class="form-label">URL Chứng Chỉ</label>
+                <input asp-for="CertificateUrl" class="form-control" placeholder="Nhập URL chứng chỉ" />
+                <span asp-validation-for="CertificateUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="AvatarFile" class="form-label">Tải Ảnh Avatar</label>
+                <input type="file" name="AvatarFile" id="AvatarFile" class="form-control" accept="image/*" />
+                <img id="avatarPreview" class="preview-img" alt="Avatar Preview" />
+                <span class="text-danger" id="avatarFileError"></span>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Tạo Chuyên Gia</button>
+                <a asp-action="ConsultantList" asp-controller="Admin" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('AvatarFile').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('avatarPreview');
+            const error = document.getElementById('avatarFileError');
+            
+            if (file) {
+                if (file.type.startsWith('image/')) {
+                    preview.src = URL.createObjectURL(file);
+                    preview.style.display = 'block';
+                    error.textContent = '';
+                } else {
+                    error.textContent = 'Vui lòng chọn một tệp hình ảnh.';
+                    preview.style.display = 'none';
+                    this.value = '';
+                }
+            }
+        });
+    </script>
+}

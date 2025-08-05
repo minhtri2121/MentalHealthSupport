@@ -1,0 +1,76 @@
+@model List<MentalHealthSupport.Models.TermsAndPolicy>
+
+@{
+    ViewData["Title"] = "Danh sách Điều khoản và Chính sách";
+    Layout = null;
+}
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<link rel="stylesheet" href="~/css/policylist.css" />
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="page-title">📜 Danh sách Điều khoản và Chính sách</h1>
+        <div>
+            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <a asp-action="CreatePolicy" asp-controller="Admin" class="btn btn-primary ms-2"><i class="fas fa-plus me-2"></i>Thêm mới</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Loại</th>
+                    <th>Nội dung</th>
+                    <th>Ngày tạo</th>
+                    <th>Ngày chỉnh sửa</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var policy in Model)
+                {
+                    <tr>
+                        <td>@policy.PolicyType</td>
+                        <td>
+                            @{
+                                var previewContent = policy.Content.Length > 50 
+                                    ? policy.Content.Substring(0, 50) + "..." 
+                                    : policy.Content;
+                            }
+                            @Html.Raw(previewContent)
+                        </td>
+                        <td>@policy.CreatedDate.ToString("dd/MM/yyyy")</td>
+                        <td>@(policy.LastModifiedDate.HasValue ? policy.LastModifiedDate.Value.ToString("dd/MM/yyyy") : "-")</td>
+                        <td>
+                            <span class="badge @(policy.IsActive ? "bg-success" : "bg-secondary")">
+                                @(policy.IsActive ? "Hoạt động" : "Không hoạt động")
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-action="EditPolicy" asp-controller="Admin" asp-route-id="@policy.Id" class="btn btn-warning btn-sm"><i class="fas fa-edit me-1"></i>Sửa</a>
+                            <a asp-action="DeletePolicy" asp-controller="Admin" asp-route-id="@policy.Id" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Bạn có chắc muốn xóa?')"><i class="fas fa-trash me-1"></i>Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Count == 0)
+    {
+        <div class="no-data">
+            <i class="fas fa-exclamation-circle me-2"></i>Không có điều khoản hoặc chính sách nào để hiển thị.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -24,6 +24,10 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJvdXRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -36,20 +40,44 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Account/VerifySecurityAnswer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWZXJpZnlTZWN1cml0eUFuc3dlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/ConsultantList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ29uc3VsdGFudExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/CreateConsultant.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlQ29uc3VsdGFudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/CreateNews.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlTmV3cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/CreatePolicy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlUG9saWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/CreateUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/EditConsultant.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENvbnN1bHRhbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/EditNews.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdE5ld3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/EditPolicy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFBvbGljeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/EditUser.cshtml]
@@ -62,6 +90,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/NewsList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTmV3c0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/PolicyList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUG9saWN5TGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Admin/UserList.cshtml]
@@ -86,6 +118,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/Home/Terms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZXJtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/TaiLieuHocTap/MentalHealthSupport/MentalHealthSupport/Views/News/Index.cshtml]

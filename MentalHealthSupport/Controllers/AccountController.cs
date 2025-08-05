@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using BCrypt.Net;
 using System.Data;
 using System.Text.Json.Serialization;
+using System;
 
 namespace MentalHealthSupport.Controllers
 {
@@ -110,8 +111,8 @@ namespace MentalHealthSupport.Controllers
 
                         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
                         var query = @"
-                            INSERT INTO Users (FullName, Email, PasswordHash, Role, Phone, Sex)
-                            VALUES (@FullName, @Email, @PasswordHash, @Role, @Phone, @Sex)";
+                            INSERT INTO Users (FullName, Email, PasswordHash, Role, Phone, Sex, SecurityQuestion, SecurityAnswer)
+                            VALUES (@FullName, @Email, @PasswordHash, @Role, @Phone, @Sex, @SecurityQuestion, @SecurityAnswer)";
 
                         using (var command = new SqlCommand(query, connection))
                         {
@@ -121,6 +122,8 @@ namespace MentalHealthSupport.Controllers
                             command.Parameters.AddWithValue("@Role", "User");
                             command.Parameters.AddWithValue("@Phone", (object?)model.Phone ?? DBNull.Value);
                             command.Parameters.AddWithValue("@Sex", model.Sex);
+                            command.Parameters.AddWithValue("@SecurityQuestion", model.SecurityQuestion);
+                            command.Parameters.AddWithValue("@SecurityAnswer", model.SecurityAnswer);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -288,6 +291,159 @@ namespace MentalHealthSupport.Controllers
                 Console.WriteLine($"Error in AssignConsultant: {ex.Message}");
                 return StatusCode(500, new { error = $"Error: {ex.Message}" });
             }
+        }
+
+        [HttpGet("ForgotPassword")]
+        public IActionResult ForgotPassword()
+        {
+            return View(new ForgotPasswordViewModel());
+        }
+
+        [HttpPost("ForgotPassword")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "SELECT SecurityQuestion FROM Users WHERE Email = @Email";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Email", model.Email);
+                            var securityQuestion = command.ExecuteScalar() as string;
+                            if (securityQuestion != null)
+                            {
+                                ViewData["SecurityQuestion"] = securityQuestion;
+                                return View("VerifySecurityAnswer", new VerifySecurityAnswerViewModel { Email = model.Email });
+                            }
+                            else
+                            {
+                                ViewData["ErrorMessage"] = "Email không tồn tại hoặc chưa thiết lập câu hỏi bảo mật.";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost("VerifySecurityAnswer")]
+        [ValidateAntiForgeryToken]
+        public IActionResult VerifySecurityAnswer(VerifySecurityAnswerViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "SELECT SecurityAnswer FROM Users WHERE Email = @Email";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Email", model.Email);
+                            var dbAnswer = command.ExecuteScalar() as string;
+                            if (dbAnswer != null && dbAnswer.ToLower() == model.Answer.ToLower()) // So sánh không phân biệt hoa thường
+                            {
+                                var token = Guid.NewGuid().ToString();
+                                string updateQuery = "UPDATE Users SET ResetToken = @ResetToken, ResetTokenExpiry = @ResetTokenExpiry WHERE Email = @Email";
+                                using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                                {
+                                    updateCommand.Parameters.AddWithValue("@ResetToken", token);
+                                    updateCommand.Parameters.AddWithValue("@ResetTokenExpiry", DateTime.Now.AddHours(1));
+                                    updateCommand.Parameters.AddWithValue("@Email", model.Email);
+                                    updateCommand.ExecuteNonQuery();
+                                }
+                                return RedirectToAction("ResetPassword", new { email = model.Email, token = token });
+                            }
+                            else
+                            {
+                                ViewData["ErrorMessage"] = "Câu trả lời không đúng.";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                }
+            }
+            ViewData["SecurityQuestion"] = ViewData["SecurityQuestion"] ?? "Câu hỏi bảo mật của bạn";
+            return View(model);
+        }
+
+        [HttpGet("ResetPassword")]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+            return View(new ResetPasswordViewModel { Email = email, Token = token });
+        }
+
+        [HttpPost("ResetPassword")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "SELECT ResetToken, ResetTokenExpiry FROM Users WHERE Email = @Email";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Email", model.Email);
+                            using (SqlDataReader reader = command.ExecuteReader()) // Đóng reader bằng using
+                            {
+                                if (reader.Read())
+                                {
+                                    var dbToken = reader["ResetToken"] as string;
+                                    var expiry = reader["ResetTokenExpiry"] as DateTime?;
+                                    if (dbToken == model.Token && expiry.HasValue && expiry.Value > DateTime.Now)
+                                    {
+                                        reader.Close(); // Đóng reader trước khi thực hiện lệnh UPDATE
+                                        string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+                                        string updateQuery = "UPDATE Users SET PasswordHash = @PasswordHash, ResetToken = NULL, ResetTokenExpiry = NULL WHERE Email = @Email";
+                                        using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                                        {
+                                            updateCommand.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                                            updateCommand.Parameters.AddWithValue("@Email", model.Email);
+                                            updateCommand.ExecuteNonQuery();
+                                        }
+                                        ViewData["SuccessMessage"] = "Mật khẩu đã được đặt lại. Vui lòng đăng nhập.";
+                                        return RedirectToAction("Login");
+                                    }
+                                    else
+                                    {
+                                        ViewData["ErrorMessage"] = "Token không hợp lệ hoặc đã hết hạn.";
+                                    }
+                                }
+                                else
+                                {
+                                    ViewData["ErrorMessage"] = "Email không tồn tại.";
+                                }
+                            } // reader tự động đóng khi thoát using
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                }
+            }
+            return View(model);
         }
 
         private string GetAvailableConsultants(SqlConnection connection)
