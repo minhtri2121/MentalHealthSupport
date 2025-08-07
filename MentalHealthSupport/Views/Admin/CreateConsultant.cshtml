@@ -108,7 +108,7 @@
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="form-title">Tạo Chuyên Gia Mới</h2>
-            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <a asp-controller="Admin" asp-action="ConsultantList" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
         </div>
         <form asp-action="CreateConsultant" asp-controller="Admin" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="form-group">
@@ -195,23 +195,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.getElementById('AvatarFile').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('avatarPreview');
-            const error = document.getElementById('avatarFileError');
-            
-            if (file) {
-                if (file.type.startsWith('image/')) {
-                    preview.src = URL.createObjectURL(file);
-                    preview.style.display = 'block';
-                    error.textContent = '';
-                } else {
-                    error.textContent = 'Vui lòng chọn một tệp hình ảnh.';
-                    preview.style.display = 'none';
-                    this.value = '';
-                }
-            }
-        });
-    </script>
 }

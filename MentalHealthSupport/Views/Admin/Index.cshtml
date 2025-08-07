@@ -15,7 +15,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-center dashboard-title">📊 Bảng Điều Khiển Quản Lý</h1>
-        <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
     </div>
 
     <div class="row g-4">
@@ -48,10 +48,19 @@
 
         <div class="col-md-4">
             <div class="card card-admin text-center p-4 shadow">
-                <i class="fas fa-user-tie mb-3"></i>
+                <i class="fas fa-lock mb-3"></i>
                 <h5>Điều khoản dịch vụ</h5>
                 <p>Quản lý Điều khoản dịch vụ và Chính sách bảo mật.</p>
                 <a asp-action="PolicyList" class="btn btn-primary">Xem</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-admin text-center p-4 shadow">
+                <i class="fas fa-info-circle mb-3"></i>
+                <h5>Quả lý thông tin về chúng tôi</h5>
+                <p>Quản lý Điều khoản dịch vụ và Chính sách bảo mật.</p>
+                <a asp-action="EditAboutUs" class="btn btn-primary">Xem</a>
             </div>
         </div>
     </div>

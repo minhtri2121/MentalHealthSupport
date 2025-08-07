@@ -1,0 +1,89 @@
+@model MentalHealthSupport.Models.ViewModel.ManageViewModel
+@{
+    ViewData["Title"] = "Chỉnh sửa tài khoản";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Chỉnh sửa thông tin tài khoản</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" asp-controller="Account" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="Role" />
+                <input type="hidden" asp-for="IsVerified" />
+                <input type="hidden" asp-for="CreatedAt" />
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label">Họ và tên</label>
+                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" required />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="Nhập email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label">Số điện thoại</label>
+                    <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                @if (Model.Role == "Consultant")
+                {
+                    <hr />
+                    <h5 class="text-primary">Thông tin chuyên gia</h5>
+
+                    <div class="mb-3">
+                        <label asp-for="Specialty" class="form-label">Chuyên ngành</label>
+                        <input asp-for="Specialty" class="form-control" placeholder="Nhập chuyên ngành" required />
+                        <span asp-validation-for="Specialty" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CertificateUrl" class="form-label">URL Bằng cấp</label>
+                        <input asp-for="CertificateUrl" class="form-control" placeholder="Nhập URL bằng cấp" />
+                        <span asp-validation-for="CertificateUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ApprovalStatus" class="form-label">Trạng thái duyệt</label>
+                        <select asp-for="ApprovalStatus" class="form-control" disabled>
+                            <option value="Pending" selected>Chờ duyệt</option>
+                            <option value="Approved">Đã duyệt</option>
+                            <option value="Rejected">Từ chối</option>
+                        </select>
+                        <span asp-validation-for="ApprovalStatus" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ExperienceYears" class="form-label">Số năm kinh nghiệm</label>
+                        <input asp-for="ExperienceYears" type="number" class="form-control" min="0" required />
+                        <span asp-validation-for="ExperienceYears" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AvatarFile" class="form-label">Tải lên Avatar</label>
+                        <input asp-for="AvatarFile" type="file" accept="image/*" class="form-control" />
+                        <span asp-validation-for="AvatarFile" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col text-end">
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        <a href="@Url.Action("Manage", "Account")" class="btn btn-secondary ms-2">Hủy</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

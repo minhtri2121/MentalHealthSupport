@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using MentalHealthSupport.Models;
 using MentalHealthSupport.ViewModels;
+using MentalHealthSupport.Models.ViewModel;
+using System.IO;
 
 namespace MentalHealthSupport.Controllers
 {
@@ -9,10 +11,12 @@ namespace MentalHealthSupport.Controllers
     public class AdminController : Controller
     {
         private readonly string? connectionString;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public AdminController(IConfiguration config)
+        public AdminController(IConfiguration config, IWebHostEnvironment hostingEnvironment)
         {
             connectionString = config.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException(nameof(config), "Connection string not found.");
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [Route("Index")]
@@ -524,7 +528,7 @@ namespace MentalHealthSupport.Controllers
                         }
 
                         // Thêm vào ConsultantProfiles
-                        string consultantQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl, @AvatarUrl)";
+                        string consultantQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl)";
                         using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
                         {
                             consultantCommand.Parameters.AddWithValue("@ConsultantId", userId);
@@ -538,11 +542,6 @@ namespace MentalHealthSupport.Controllers
                             consultantCommand.Parameters.AddWithValue(
                                 "@CertificateUrl",
                                 model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
-                            );
-
-                            consultantCommand.Parameters.AddWithValue(
-                                "@AvatarUrl",
-                                model.AvatarUrl != null ? (object)model.AvatarUrl : DBNull.Value
                             );
                             consultantCommand.ExecuteNonQuery();
                         }
@@ -571,7 +570,7 @@ namespace MentalHealthSupport.Controllers
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus FROM ConsultantProfiles";
+                    string query = "SELECT ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, Users.FullName FROM ConsultantProfiles JOIN Users ON ConsultantProfiles.ConsultantId = Users.UserId WHERE Users.Role = 'Consultant'";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -584,7 +583,8 @@ namespace MentalHealthSupport.Controllers
                                     Specialty = reader.IsDBNull(1) ? null : reader.GetString(1),
                                     ExperienceYears = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
                                     Description = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                    ApprovalStatus = reader.GetString(4)
+                                    ApprovalStatus = reader.GetString(4),
+                                    FullName = reader.IsDBNull(5) ? null : reader.GetString(5)
                                 });
                             }
                         }
@@ -642,7 +642,7 @@ namespace MentalHealthSupport.Controllers
                     if (model != null)
                     {
                         // Lấy thông tin từ ConsultantProfiles
-                        string consultantQuery = "SELECT Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl FROM ConsultantProfiles WHERE ConsultantId = @ConsultantId";
+                        string consultantQuery = "SELECT Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl FROM ConsultantProfiles WHERE ConsultantId = @ConsultantId";
                         using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
                         {
                             consultantCommand.Parameters.AddWithValue("@ConsultantId", id);
@@ -655,7 +655,6 @@ namespace MentalHealthSupport.Controllers
                                     model.Description = consultantReader.IsDBNull(2) ? null : consultantReader.GetString(2);
                                     model.ApprovalStatus = consultantReader.IsDBNull(3) ? null : consultantReader.GetString(3);
                                     model.CertificateUrl = consultantReader.IsDBNull(4) ? null : consultantReader.GetString(4);
-                                    model.AvatarUrl = consultantReader.IsDBNull(5) ? null : consultantReader.GetString(5);
                                 }
                             }
                         }
@@ -721,7 +720,7 @@ namespace MentalHealthSupport.Controllers
                             int count = (int)checkCommand.ExecuteScalar();
                             if (count == 0)
                             {
-                                string insertQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl, @AvatarUrl)";
+                                string insertQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl)";
                                 using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
                                 {
                                     insertCommand.Parameters.AddWithValue("@ConsultantId", id);
@@ -737,11 +736,6 @@ namespace MentalHealthSupport.Controllers
                                         "@CertificateUrl",
                                         model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
                                     );
-
-                                    insertCommand.Parameters.AddWithValue(
-                                        "@AvatarUrl",
-                                        model.AvatarUrl != null ? (object)model.AvatarUrl : DBNull.Value
-                                    );
                                     insertCommand.ExecuteNonQuery();
                                 }
                             }
@@ -750,7 +744,7 @@ namespace MentalHealthSupport.Controllers
                                 string updateQuery = @"
                                     UPDATE ConsultantProfiles 
                                     SET Specialty = @Specialty, ExperienceYears = @ExperienceYears, Description = @Description, 
-                                        ApprovalStatus = @ApprovalStatus, CertificateUrl = @CertificateUrl, AvatarUrl = @AvatarUrl
+                                        ApprovalStatus = @ApprovalStatus, CertificateUrl = @CertificateUrl
                                     WHERE ConsultantId = @ConsultantId";
                                 using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
                                 {
@@ -765,11 +759,6 @@ namespace MentalHealthSupport.Controllers
                                     updateCommand.Parameters.AddWithValue(
                                         "@CertificateUrl",
                                         model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
-                                    );
-
-                                    updateCommand.Parameters.AddWithValue(
-                                        "@AvatarUrl",
-                                        model.AvatarUrl != null ? (object)model.AvatarUrl : DBNull.Value
                                     );
                                     updateCommand.ExecuteNonQuery();
                                 }
@@ -1021,6 +1010,119 @@ namespace MentalHealthSupport.Controllers
                 ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
             }
             return RedirectToAction("PolicyList");
+        }
+
+        [HttpGet("EditAboutUs")]
+        public IActionResult EditAboutUs()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var model = new AboutUsViewModel();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM AboutUs WHERE Id = @Id";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", 1);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                model.Id = reader.GetInt32(0);
+                                model.Title = reader["Title"].ToString();
+                                model.HeroHeading = reader["HeroHeading"].ToString();
+                                model.HeroDescription = reader["HeroDescription"].ToString();
+                                model.HeroImageUrl = reader["HeroImageUrl"].ToString();
+                                model.MissionHeading = reader["MissionHeading"].ToString();
+                                model.ValuesHeading = reader["ValuesHeading"].ToString();
+                                model.CallToActionHeading = reader["CallToActionHeading"].ToString();
+                                model.CallToActionDescription = reader["CallToActionDescription"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost("EditAboutUs")]
+        public async Task<IActionResult> EditAboutUs(AboutUsViewModel model)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string? heroImageFileName = model.HeroImageUrl;
+                        if (model.HeroImageFile != null)
+                        {
+                            string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                            if (!Directory.Exists(uploadsFolder))
+                            {
+                                Directory.CreateDirectory(uploadsFolder);
+                            }
+                            heroImageFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.HeroImageFile.FileName);
+                            string filePath = Path.Combine(uploadsFolder, heroImageFileName);
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await model.HeroImageFile.CopyToAsync(stream);
+                            }
+                        }
+
+                        string query = @"
+                            IF NOT EXISTS (SELECT 1 FROM AboutUs WHERE Id = @Id)
+                                INSERT INTO AboutUs (Id, Title, HeroHeading, HeroDescription, HeroImageUrl, MissionHeading, ValuesHeading, CallToActionHeading, CallToActionDescription)
+                                VALUES (@Id, @Title, @HeroHeading, @HeroDescription, @HeroImageUrl, @MissionHeading, @ValuesHeading, @CallToActionHeading, @CallToActionDescription)
+                            ELSE
+                                UPDATE AboutUs 
+                                SET Title = @Title, HeroHeading = @HeroHeading, HeroDescription = @HeroDescription, 
+                                    HeroImageUrl = @HeroImageUrl, MissionHeading = @MissionHeading, ValuesHeading = @ValuesHeading, 
+                                    CallToActionHeading = @CallToActionHeading, CallToActionDescription = @CallToActionDescription
+                                WHERE Id = @Id";
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", model.Id);
+                            cmd.Parameters.AddWithValue("@Title", model.Title);
+                            cmd.Parameters.AddWithValue("@HeroHeading", model.HeroHeading);
+                            cmd.Parameters.AddWithValue("@HeroDescription", model.HeroDescription);
+                            cmd.Parameters.AddWithValue("@HeroImageUrl", heroImageFileName ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@MissionHeading", model.MissionHeading);
+                            cmd.Parameters.AddWithValue("@ValuesHeading", model.ValuesHeading);
+                            cmd.Parameters.AddWithValue("@CallToActionHeading", model.CallToActionHeading);
+                            cmd.Parameters.AddWithValue("@CallToActionDescription", model.CallToActionDescription);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    return RedirectToAction("EditAboutUs");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+                catch (IOException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi khi lưu file: {ex.Message}");
+                }
+            }
+            return View(model);
         }
     }
 }

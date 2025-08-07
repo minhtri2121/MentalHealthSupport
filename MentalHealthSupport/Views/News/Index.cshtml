@@ -1,69 +1,71 @@
 @model List<MentalHealthSupport.Models.News>
-
 @{
     ViewData["Title"] = "Tin Tức";
 }
+<link rel="stylesheet" href="~/css/news.css" />
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4" style="color: #2c3e50;">Tin Tức Sức Khỏe Tâm Lý</h1>
+<div class="container-fluid px-4 py-5">
+    <!-- Header báo -->
+    <div class="newspaper-header text-center mb-5">
+        <h1 class="newspaper-title">SỨC KHỎE TÂM LÝ</h1>
+        <div class="newspaper-subtitle">Tin tức - Thông tin - Kiến thức</div>
+        <div class="newspaper-date">@DateTime.Now.ToString("dddd, dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))</div>
+        <hr class="newspaper-divider">
+    </div>
 
     <!-- Nút thêm tin tức (chỉ hiển thị cho Admin) -->
     @if (Context.Session.GetString("Role") == "Admin")
     {
-        <div class="text-end mb-4">
-            <a asp-action="CreateNews" asp-controller="Admin" class="btn btn-primary">Thêm Tin Tức Mới</a>
+        <div class="admin-controls mb-4">
+            <a asp-action="CreateNews" asp-controller="Admin" class="btn btn-admin">
+                <i class="fas fa-plus"></i> Thêm Tin Tức Mới
+            </a>
         </div>
     }
 
-    <!-- Danh sách tin tức -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var news in Model)
-        {
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">@news.Title</h5>
-                        <p class="card-text text-muted small mb-2">Đăng bởi: @news.Author | @news.CreatedDate.ToString("dd/MM/yyyy HH:mm")</p>
-                        <p class="card-text">@(news.Content.Length > 150 ? news.Content.Substring(0, 150) + "..." : news.Content)</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 text-end">
-                        <a href="#" class="btn btn-outline-primary btn-sm">Đọc thêm</a>
-                        @if (Context.Session.GetString("Role") == "Admin")
-                        {
-                            <a asp-action="EditNews" asp-controller="Admin" asp-route-id="@news.Id" class="btn btn-warning btn-sm ms-2">Sửa</a>
-                            <a asp-action="DeleteNews" asp-controller="Admin" asp-route-id="@news.Id" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
-    <!-- Phân trang (nếu cần) -->
-    @if (Model.Count == 0)
+    @if (Model.Count > 0)
     {
-        <div class="text-center mt-4">
-            <p class="text-muted">Không có tin tức nào để hiển thị.</p>
+        <!-- Danh sách tin tức -->
+        <div class="news-list">
+            @foreach (var news in Model)
+            {
+                <div class="news-article mb-5">
+                    <div class="article-header">
+                        <h2 class="article-title">@news.Title</h2>
+                        <div class="article-meta">
+                            <span class="author">Bởi @news.Author</span>
+                            <span class="date">@news.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
+                        </div>
+                    </div>
+                    <div class="article-content">
+                        <p class="article-text">@news.Content</p>
+                    </div>
+                    @if (Context.Session.GetString("Role") == "Admin")
+                    {
+                        <div class="article-actions">
+                            <div class="admin-actions">
+                                <a asp-action="EditNews" asp-controller="Admin" asp-route-id="@news.Id" class="btn-edit">Sửa</a>
+                                <a asp-action="DeleteNews" asp-controller="Admin" asp-route-id="@news.Id" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (!Model.Last().Equals(news))
+                {
+                    <hr class="article-divider">
+                }
+            }
+        </div>
+    }
+    else
+    {
+        <div class="no-news text-center">
+            <h4>Chưa có tin tức nào</h4>
+            <p class="text-muted">Hiện tại chưa có tin tức nào để hiển thị.</p>
         </div>
     }
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <style>
-        .card {
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-        .card-text {
-            color: #7f8c8d;
-        }
-    </style>
 }

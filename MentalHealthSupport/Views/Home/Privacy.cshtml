@@ -1,19 +1,34 @@
 @model MentalHealthSupport.Models.TermsAndPolicy
+
 @{
     ViewData["Title"] = "Chính sách bảo mật";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<div class="container py-5">
-    <h1 class="mb-4">@ViewData["Title"]</h1>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=sw ap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<link rel="stylesheet" href="~/css/privacy.css" />
+
+<div class="container">
     <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="page-title">📜 Chính sách bảo mật</h1>
+            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+        </div>
         <div class="card-body">
             <p>@Html.Raw(Model.Content)</p>
-            <p class="text-muted"><small>Ngày tạo: @Model.CreatedDate.ToString("dd/MM/yyyy")</small></p>
-            @if (Model.LastModifiedDate.HasValue)
-            {
-                <p class="text-muted"><small>Ngày chỉnh sửa: @Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")</small></p>
-            }
+            <br><br><br>
+            <div class="meta-info">
+                @if (Model.LastModifiedDate.HasValue)
+                {
+                    <p>Ngày chỉnh sửa: @Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")</p>
+                }
+            </div>
         </div>
     </div>
 </div>

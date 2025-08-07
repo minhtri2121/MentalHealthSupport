@@ -5,6 +5,7 @@ using BCrypt.Net;
 using System.Data;
 using System.Text.Json.Serialization;
 using System;
+using System.IO;
 
 namespace MentalHealthSupport.Controllers
 {
@@ -13,10 +14,12 @@ namespace MentalHealthSupport.Controllers
     public class AccountController : Controller
     {
         private readonly string? connectionString;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public AccountController(IConfiguration config)
+        public AccountController(IConfiguration config, IWebHostEnvironment hostingEnvironment)
         {
             connectionString = config.GetConnectionString("DefaultConnection");
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet("Login")] // Route cụ thể cho Login
@@ -441,6 +444,191 @@ namespace MentalHealthSupport.Controllers
                 catch (Exception ex)
                 {
                     ViewData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("Edit")]
+        public IActionResult Edit()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            ManageViewModel? model = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string userQuery = "SELECT UserId, FullName, Email, Phone, Role, IsVerified, CreatedAt FROM Users WHERE UserId = @UserId";
+                    using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
+                    {
+                        userCommand.Parameters.AddWithValue("@UserId", userId);
+                        using (SqlDataReader userReader = userCommand.ExecuteReader())
+                        {
+                            if (userReader.Read())
+                            {
+                                model = new ManageViewModel
+                                {
+                                    UserId = userReader.GetInt32(0),
+                                    FullName = userReader.IsDBNull(1) ? null : userReader.GetString(1),
+                                    Email = userReader.IsDBNull(2) ? null : userReader.GetString(2),
+                                    Phone = userReader.IsDBNull(3) ? null : userReader.GetString(3),
+                                    Role = userReader.IsDBNull(4) ? null : userReader.GetString(4),
+                                    IsVerified = userReader.GetBoolean(5),
+                                    CreatedAt = userReader.GetDateTime(6)
+                                };
+                            }
+                        }
+                    }
+
+                    if (model != null && model.Role == "Consultant")
+                    {
+                        string consultantQuery = "SELECT ConsultantId, Specialty, CertificateUrl, ApprovalStatus, ExperienceYears, AvatarUrl FROM ConsultantProfiles WHERE ConsultantId = @ConsultantId";
+                        using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
+                        {
+                            consultantCommand.Parameters.AddWithValue("@ConsultantId", userId);
+                            using (SqlDataReader consultantReader = consultantCommand.ExecuteReader())
+                            {
+                                if (consultantReader.Read())
+                                {
+                                    model.ConsultantId = consultantReader.GetInt32(0);
+                                    model.Specialty = consultantReader.IsDBNull(1) ? null : consultantReader.GetString(1);
+                                    model.CertificateUrl = consultantReader.IsDBNull(2) ? null : consultantReader.GetString(2);
+                                    model.ApprovalStatus = consultantReader.IsDBNull(3) ? null : consultantReader.GetString(3);
+                                    model.ExperienceYears = consultantReader.IsDBNull(4) ? 0 : consultantReader.GetInt32(4);
+                                    model.AvatarUrl = consultantReader.IsDBNull(5) ? null : consultantReader.GetString(5);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("Edit")]
+        public async Task<IActionResult> Edit(ManageViewModel model)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        // Cập nhật bảng Users
+                        string userQuery = @"
+                            UPDATE Users 
+                            SET FullName = @FullName, Email = @Email, Phone = @Phone
+                            WHERE UserId = @UserId";
+                        using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
+                        {
+                            userCommand.Parameters.AddWithValue("@UserId", userId);
+                            userCommand.Parameters.AddWithValue("@FullName", model.FullName);
+                            userCommand.Parameters.AddWithValue("@Email", model.Email);
+                            userCommand.Parameters.AddWithValue("@Phone", model.Phone ?? (object)DBNull.Value);
+                            userCommand.ExecuteNonQuery();
+                        }
+
+                        // Xử lý upload file và lưu tên file
+                        string? avatarFileName = model.AvatarUrl; // Giữ nguyên nếu không upload
+                        if (model.AvatarFile != null && model.Role == "Consultant")
+                        {
+                            // Tạo thư mục images (nếu chưa có)
+                            string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                            if (!Directory.Exists(uploadsFolder))
+                            {
+                                Directory.CreateDirectory(uploadsFolder);
+                            }
+
+                            // Lấy tên file gốc và tạo tên duy nhất
+                            string fileName = Path.GetFileName(model.AvatarFile.FileName);
+                            avatarFileName = Guid.NewGuid().ToString() + "_" + fileName; // Thêm GUID để tránh trùng lặp
+                            string filePath = Path.Combine(uploadsFolder, avatarFileName);
+
+                            // Lưu file lên server
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await model.AvatarFile.CopyToAsync(stream);
+                            }
+                        }
+
+                        // Cập nhật hoặc thêm ConsultantProfiles
+                        if (model.Role == "Consultant")
+                        {
+                            string checkConsultantQuery = "SELECT COUNT(*) FROM ConsultantProfiles WHERE ConsultantId = @ConsultantId";
+                            using (SqlCommand checkCommand = new SqlCommand(checkConsultantQuery, connection))
+                            {
+                                checkCommand.Parameters.AddWithValue("@ConsultantId", userId);
+                                int count = (int)checkCommand.ExecuteScalar();
+                                if (count == 0)
+                                {
+                                    string insertQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, CertificateUrl, ApprovalStatus, ExperienceYears, AvatarUrl) VALUES (@ConsultantId, @Specialty, @CertificateUrl, @ApprovalStatus, @ExperienceYears, @AvatarUrl)";
+                                    using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                                    {
+                                        insertCommand.Parameters.AddWithValue("@ConsultantId", userId);
+                                        insertCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
+                                        insertCommand.Parameters.AddWithValue("@CertificateUrl", model.CertificateUrl ?? (object)DBNull.Value);
+                                        insertCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
+                                        insertCommand.Parameters.AddWithValue("@ExperienceYears", model.ExperienceYears);
+                                        insertCommand.Parameters.AddWithValue("@AvatarUrl", avatarFileName ?? (object)DBNull.Value);
+                                        insertCommand.ExecuteNonQuery();
+                                    }
+                                }
+                                else
+                                {
+                                    string updateQuery = @"
+                                        UPDATE ConsultantProfiles 
+                                        SET Specialty = @Specialty, CertificateUrl = @CertificateUrl, 
+                                            ApprovalStatus = @ApprovalStatus, ExperienceYears = @ExperienceYears, AvatarUrl = @AvatarUrl
+                                        WHERE ConsultantId = @ConsultantId";
+                                    using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                                    {
+                                        updateCommand.Parameters.AddWithValue("@ConsultantId", userId);
+                                        updateCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
+                                        updateCommand.Parameters.AddWithValue("@CertificateUrl", model.CertificateUrl ?? (object)DBNull.Value);
+                                        updateCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
+                                        updateCommand.Parameters.AddWithValue("@ExperienceYears", model.ExperienceYears);
+                                        updateCommand.Parameters.AddWithValue("@AvatarUrl", avatarFileName ?? (object)DBNull.Value);
+                                        updateCommand.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return RedirectToAction("Manage", "Account");
+                }
+                catch (SqlException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                }
+                catch (IOException ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi khi lưu file: {ex.Message}");
                 }
             }
             return View(model);

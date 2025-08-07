@@ -9,7 +9,7 @@
         <div class="row">
             <!-- Bên trái: Avatar + Role + Verification -->
             <div class="col-md-4 text-center border-end">
-                <img src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "/images/default-avatar.png" : Url.Content("~/images/" + Model.AvatarUrl))"
+                <img src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "/images/default-avatar.png" : Url.Content(Model.AvatarUrl))"
                      alt="Ảnh đại diện"
                      class="rounded-circle shadow-sm mb-3"
                      style="width: 150px; height: 150px; object-fit: cover;" />

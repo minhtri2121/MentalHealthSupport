@@ -114,7 +114,6 @@
     {
         <div class="chat-icon" id="openChatModal">
             <i class="fas fa-comments"></i>
-            <span id="chat-icon-badge" class="badge-unread">0</span>
         </div>
     }
 
@@ -122,9 +121,9 @@
     <footer class="footer bg-dark text-white py-5">
         <div class="container py-5">
             <div class="row d-flex flex-wrap justify-content-between">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <h4 class="fw-bold mb-4">MentalHealthSupport</h4>
-                    <div class="social-links">
+                    <div class="social-icons">
                         <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
@@ -132,17 +131,17 @@
                         <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <h5 class="fw-bold mb-4">Liên Kết Nhanh</h5>
                     <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="@Url.Action("Index", "Home")" class="text-white-50 text-decoration-none">Trang Chủ</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Về Chúng Tôi</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Chuyên Gia</a></li>
-                        <li class="mb-2"><a href="@Url.Action("NewsList", "Admin")" class="text-white-50 text-decoration-none">Tin tức</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Liên Hệ</a></li>
+                        <li class="mb-2"><a href="@Url.Action("Index", "Home")" class="footer-link">Trang Chủ</a></li>
+                        <li class="mb-2"><a href="@Url.Action("Index", "About")" class="footer-link">Về Chúng Tôi</a></li>
+                        <li class="mb-2"><a href="@Url.Action("Index", "Consultants")" class="footer-link">Chuyên Gia</a></li>
+                        <li class="mb-2"><a href="@Url.Action("Index", "News")" class="footer-link">Tin tức</a></li>
+                        <li><a href="#" class="footer-link">Liên Hệ</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <h5 class="fw-bold mb-4">Liên Hệ</h5>
                     <ul class="list-unstyled footer-contact">
                         <li class="d-flex mb-3">
@@ -151,11 +150,11 @@
                         </li>
                         <li class="d-flex mb-3">
                             <i class="fas fa-phone-alt text-primary me-3 mt-1"></i>
-                            <span class="text-white-50">+84 28 1234 5678</span>
+                            <a href="tel:+842812345678" class="footer-contact-link">+84 28 1234 5678</a>
                         </li>
                         <li class="d-flex mb-3">
                             <i class="fas fa-envelope text-primary me-3 mt-1"></i>
-                            <span class="text-white-50">info@tamlyvn.com</span>
+                            <a href="mailto:info@tamlyvn.com" class="footer-contact-link">info@tamlyvn.com</a>
                         </li>
                         <li class="d-flex">
                             <i class="fas fa-clock text-primary me-3 mt-1"></i>
@@ -163,7 +162,6 @@
                         </li>
                     </ul>
                 </div>
-            </div>
         </div>
         <div class="border-top border-secondary mt-4">
             <div class="container">
@@ -172,14 +170,13 @@
                         <p class="mb-md-0 text-white-50">© 2025 MentalHealthSupport. Tất cả quyền được bảo lưu.</p>
                     </div>
                     <div class="col-md-6 text-center text-md-end">
-                        <a href="#" class="text-white-50 text-decoration-none me-4">Điều Khoản Sử Dụng</a>
-                        <a href="#" class="text-white-50 text-decoration-none">Chính Sách Bảo Mật</a>
+                        <a href="@Url.Action("Privacy", "Home")" class="footer-bottom-link me-4">Chính Sách Bảo Mật</a>
+                        <a href="@Url.Action("Terms", "Home")" class="footer-bottom-link">Điều Khoản Dịch Vụ</a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-
     <script>
         // Preloader
         $(window).on('load', function () {
@@ -208,10 +205,6 @@
                 chatIcon.addEventListener("click", function () {
                     window.location.href = "/Chat/Index";
                     const badge = document.getElementById("chat-icon-badge");
-                    if (badge) {
-                        badge.innerText = "0";
-                        badge.style.display = "none";
-                    }
                 });
             }
 
@@ -225,7 +218,6 @@
             showToast(`${senderName}: ${message}`);
             const badge = document.getElementById("chat-icon-badge");
             if (badge) {
-                let count = parseInt(badge.innerText || "0") + 1;
                 badge.innerText = count;
                 badge.style.display = "inline-block";
                 badge.classList.add("animate-pulse");

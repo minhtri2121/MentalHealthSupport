@@ -7,4 +7,8 @@ public class ConsultantProfile
     public int ExperienceYears { get; set; }
     public string? Description { get; set; } = string.Empty;
     public string ApprovalStatus { get; set; } = string.Empty;
+    public string? AvatarUrl { get; set; } = string.Empty;
+    public string? CertificateUrl { get; set; } = string.Empty;
+
+    public string? FullName { get; set; } = string.Empty;
 }

@@ -1,0 +1,108 @@
+@model MentalHealthSupport.Models.ViewModel.AboutUsViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Về Chúng Tôi";
+    Layout = null;
+}
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<link rel="stylesheet" href="~/css/editaboutus.css" />
+
+<div class="container">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="form-title">Chỉnh Sửa Về Chúng Tôi</h2>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+        </div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @Html.ValidationSummary(false, "Có lỗi xảy ra:")
+            </div>
+        }
+        <form asp-action="EditAboutUs" asp-controller="Admin" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <input type="hidden" asp-for="Id" value="1" />
+            <div class="form-group">
+                <label asp-for="Title" class="form-label">Tiêu đề trang</label>
+                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề trang" required />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HeroHeading" class="form-label">Tiêu đề Hero</label>
+                <input asp-for="HeroHeading" class="form-control" placeholder="Nhập tiêu đề hero" required />
+                <span asp-validation-for="HeroHeading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HeroDescription" class="form-label">Mô tả Hero</label>
+                <textarea asp-for="HeroDescription" class="form-control" rows="4" placeholder="Nhập mô tả hero" required></textarea>
+                <span asp-validation-for="HeroDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HeroImageFile" class="form-label">Tải lên ảnh Hero</label>
+                <input asp-for="HeroImageFile" type="file" accept="image/*" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.HeroImageUrl))
+                {
+                    <img src="~/images/@Model.HeroImageUrl" class="preview-img show" id="heroImagePreview" alt="Hero Image Preview" />
+                }
+                else
+                {
+                    <img id="heroImagePreview" class="preview-img" alt="Hero Image Preview" />
+                }
+                <span asp-validation-for="HeroImageFile" class="text-danger" id="heroImageError"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MissionHeading" class="form-label">Tiêu đề Sứ Mệnh</label>
+                <input asp-for="MissionHeading" class="form-control" placeholder="Nhập tiêu đề sứ mệnh" required />
+                <span asp-validation-for="MissionHeading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValuesHeading" class="form-label">Tiêu đề Giá Trị Cốt Lõi</label>
+                <input asp-for="ValuesHeading" class="form-control" placeholder="Nhập tiêu đề giá trị cốt lõi" required />
+                <span asp-validation-for="ValuesHeading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CallToActionHeading" class="form-label">Tiêu đề Call to Action</label>
+                <input asp-for="CallToActionHeading" class="form-control" placeholder="Nhập tiêu đề call to action" required />
+                <span asp-validation-for="CallToActionHeading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CallToActionDescription" class="form-label">Mô tả Call to Action</label>
+                <textarea asp-for="CallToActionDescription" class="form-control" rows="4" placeholder="Nhập mô tả call to action" required></textarea>
+                <span asp-validation-for="CallToActionDescription" class="text-danger"></span>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu Thay Đổi</button>
+                <a asp-action="Index" asp-controller="Admin" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('HeroImageFile').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('heroImagePreview');
+            const error = document.getElementById('heroImageError');
+            
+            if (file) {
+                if (file.type.startsWith('image/')) {
+                    preview.src = URL.createObjectURL(file);
+                    preview.classList.add('show');
+                    error.textContent = '';
+                } else {
+                    error.textContent = 'Vui lòng chọn một tệp hình ảnh.';
+                    preview.classList.remove('show');
+                    this.value = '';
+                }
+            }
+        });
+    </script>
+}

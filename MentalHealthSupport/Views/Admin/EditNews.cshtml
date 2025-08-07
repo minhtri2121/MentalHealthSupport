@@ -18,7 +18,7 @@
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="form-title">Sửa Tin Tức</h2>
-            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <a asp-controller="Admin" asp-action="NewsList" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
         </div>
         <form asp-action="EditNews" method="post" class="needs-validation" novalidate>
             <input asp-for="Id" type="hidden" />
