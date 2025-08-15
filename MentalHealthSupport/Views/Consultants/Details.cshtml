@@ -9,10 +9,13 @@
         <div class="row">
             <!-- Bên trái: Avatar + Role + Verification -->
             <div class="col-md-4 text-center border-end">
-                <img src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "/images/default-avatar.png" : Url.Content(Model.AvatarUrl))"
-                     alt="Ảnh đại diện"
-                     class="rounded-circle shadow-sm mb-3"
-                     style="width: 150px; height: 150px; object-fit: cover;" />
+                <img 
+                                src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "~/images/default-avatar.png" : Url.Content("~/images/" + Model.AvatarUrl))"
+                                alt="Ảnh đại diện của @Model.FullName"
+                                class="rounded-circle img-thumbnail mb-3"
+                                style="width: 120px; height: 120px; object-fit: cover;"
+                                loading="lazy"
+                            />
 
                 <div class="mb-3">
                     <span class="badge px-3 py-1 @(Model.IsVerified ? "bg-success" : "bg-danger") d-inline-flex align-items-center gap-1">

@@ -17,10 +17,9 @@ public class HomeController(IConfiguration config) : Controller
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
             conn.Open();
-            // JOIN Users và ConsultantProfiles
             SqlCommand cmd = new SqlCommand(@"
-                SELECT u.UserId, u.FullName, u.Role, u.IsVerified,
-                       c.ConsultantId, c.Specialty, c.CertificateUrl, c.AvatarUrl, c.ExperienceYears
+                SELECT Top 4 u.UserId, u.FullName, u.Email, u.Phone, u.Role, u.IsVerified,
+                    c.ConsultantId, c.Specialty, c.Description, c.ApprovalStatus, c.AvatarUrl, c.ExperienceYears
                 FROM Users u
                 INNER JOIN ConsultantProfiles c ON u.UserId = c.ConsultantId and u.IsVerified = 'True'
                 and u.Role = 'Consultant'

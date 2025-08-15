@@ -35,5 +35,6 @@ namespace MentalHealthSupport.ViewModels
         public string? ApprovalStatus { get; set; } = "Pending";
         public string? CertificateUrl { get; set; } = string.Empty;
         public string? AvatarUrl { get; set; } = string.Empty;
+        public IFormFile? AvatarFile { get; set; }
     }
 }

@@ -360,6 +360,42 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avt.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>shtarf0fvn</Fingerprint>
+      <Integrity>0Ars9bxNxj1Q6eN5SU/gpzZOSyJBfZZAKqOHJHzrN0M=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e902341d-882a-42b5-bebc-17adedc8993a_avt.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/e902341d-882a-42b5-bebc-17adedc8993a_avt.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>mdmp76t53h</Fingerprint>
+      <Integrity>dnP3LZ9PqXjTjvqDv5auk9XY5M9sWaZ5itgCwmGmtuc=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e902341d-882a-42b5-bebc-17adedc8993a_avt.png'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\empathy-Photoroom.png'))">
       <SourceType>Package</SourceType>
       <SourceId>MentalHealthSupport</SourceId>

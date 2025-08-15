@@ -477,84 +477,100 @@ namespace MentalHealthSupport.Controllers
         }
 
         [Route("Consultants/Create")]
-        [HttpPost]
-        public IActionResult CreateConsultant(ConsultantCreate model)
+[HttpPost]
+public async Task<IActionResult> CreateConsultant(ConsultantCreate model)
+{
+    if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+    {
+        return RedirectToAction("Login", "Account");
+    }
+
+    if (ModelState.IsValid)
+    {
+        try
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole")) || HttpContext.Session.GetString("UserRole") != "Admin")
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                return RedirectToAction("Login", "Account");
-            }
-            if (ModelState.IsValid)
-            {
-                try
+                connection.Open();
+
+                // Kiểm tra email đã tồn tại chưa
+                string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
+                using (SqlCommand checkCommand = new SqlCommand(checkEmailQuery, connection))
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    checkCommand.Parameters.AddWithValue("@Email", model.Email);
+                    int emailCount = (int)checkCommand.ExecuteScalar();
+                    if (emailCount > 0)
                     {
-                        connection.Open();
-                        // Kiểm tra email đã tồn tại chưa
-                        string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
-                        using (SqlCommand checkCommand = new SqlCommand(checkEmailQuery, connection))
-                        {
-                            checkCommand.Parameters.AddWithValue("@Email", model.Email);
-                            int emailCount = (int)checkCommand.ExecuteScalar();
-                            if (emailCount > 0)
-                            {
-                                ModelState.AddModelError("Email", "Email đã tồn tại.");
-                                return View(model);
-                            }
-                        }
-
-                        // Hash password
-                        string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
-                        // Thêm user vào bảng Users
-                        string userQuery = "INSERT INTO Users (FullName, Email, Phone, Role, IsVerified, PasswordHash, Sex, SecurityQuestion, SecurityAnswer, CreatedAt) VALUES (@FullName, @Email, @Phone, @Role, @IsVerified, @PasswordHash, @Sex, @SecurityQuestion, @SecurityAnswer, @CreatedAt); SELECT SCOPE_IDENTITY();";
-                        int userId;
-                        using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
-                        {
-                            userCommand.Parameters.AddWithValue("@FullName", model.FullName);
-                            userCommand.Parameters.AddWithValue("@Email", model.Email);
-                            userCommand.Parameters.AddWithValue(
-                                "@Phone",
-                                model.Phone != null ? (object)model.Phone : DBNull.Value
-                            );
-                            userCommand.Parameters.AddWithValue("@Role", model.Role);
-                            userCommand.Parameters.AddWithValue("@IsVerified", model.IsVerified);
-                            userCommand.Parameters.AddWithValue("@PasswordHash", passwordHash);
-                            userCommand.Parameters.AddWithValue("@Sex", (object)model.Sex ?? DBNull.Value);
-                            userCommand.Parameters.AddWithValue("@SecurityQuestion", model.SecurityQuestion);
-                            userCommand.Parameters.AddWithValue("@SecurityAnswer", model.SecurityAnswer);
-                            userCommand.Parameters.AddWithValue("@CreatedAt", model.CreatedAt);
-                            userId = Convert.ToInt32(userCommand.ExecuteScalar());
-                        }
-
-                        // Thêm vào ConsultantProfiles
-                        string consultantQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl)";
-                        using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
-                        {
-                            consultantCommand.Parameters.AddWithValue("@ConsultantId", userId);
-                            consultantCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
-                            consultantCommand.Parameters.AddWithValue(
-                                "@ExperienceYears",
-                                model.ExperienceYears.HasValue ? (object)model.ExperienceYears.Value : DBNull.Value
-                            );
-                            consultantCommand.Parameters.AddWithValue("@Description", model.Description);
-                            consultantCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
-                            consultantCommand.Parameters.AddWithValue(
-                                "@CertificateUrl",
-                                model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value
-                            );
-                            consultantCommand.ExecuteNonQuery();
-                        }
+                        ModelState.AddModelError("Email", "Email đã tồn tại.");
+                        return View(model);
                     }
-                    return RedirectToAction("ConsultantList");
                 }
-                catch (SqlException ex)
+
+                // Xử lý upload file avatar
+                string? avatarFileName = null; // Khởi tạo biến lưu tên file
+                if (model.AvatarFile != null) // Kiểm tra nếu có file được upload
                 {
-                    ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    avatarFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.AvatarFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, avatarFileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.AvatarFile.CopyToAsync(stream);
+                    }
+                }
+
+                // Hash password
+                string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+                // Thêm user vào bảng Users
+                string userQuery = "INSERT INTO Users (FullName, Email, Phone, Role, IsVerified, PasswordHash, Sex, SecurityQuestion, SecurityAnswer, CreatedAt) VALUES (@FullName, @Email, @Phone, @Role, @IsVerified, @PasswordHash, @Sex, @SecurityQuestion, @SecurityAnswer, @CreatedAt); SELECT SCOPE_IDENTITY();";
+                int userId;
+                using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
+                {
+                    userCommand.Parameters.AddWithValue("@FullName", model.FullName);
+                    userCommand.Parameters.AddWithValue("@Email", model.Email);
+                    userCommand.Parameters.AddWithValue("@Phone", model.Phone != null ? (object)model.Phone : DBNull.Value);
+                    userCommand.Parameters.AddWithValue("@Role", model.Role);
+                    userCommand.Parameters.AddWithValue("@IsVerified", model.IsVerified);
+                    userCommand.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                    userCommand.Parameters.AddWithValue("@Sex", (object)model.Sex ?? DBNull.Value);
+                    userCommand.Parameters.AddWithValue("@SecurityQuestion", model.SecurityQuestion);
+                    userCommand.Parameters.AddWithValue("@SecurityAnswer", model.SecurityAnswer);
+                    userCommand.Parameters.AddWithValue("@CreatedAt", model.CreatedAt);
+                    userId = Convert.ToInt32(userCommand.ExecuteScalar());
+                }
+
+                // Thêm vào ConsultantProfiles với avatar
+                string consultantQuery = "INSERT INTO ConsultantProfiles (ConsultantId, Specialty, ExperienceYears, Description, ApprovalStatus, CertificateUrl, AvatarUrl) VALUES (@ConsultantId, @Specialty, @ExperienceYears, @Description, @ApprovalStatus, @CertificateUrl, @AvatarUrl)";
+                using (SqlCommand consultantCommand = new SqlCommand(consultantQuery, connection))
+                {
+                    consultantCommand.Parameters.AddWithValue("@ConsultantId", userId);
+                    consultantCommand.Parameters.AddWithValue("@Specialty", model.Specialty);
+                    consultantCommand.Parameters.AddWithValue("@ExperienceYears", model.ExperienceYears.HasValue ? (object)model.ExperienceYears.Value : DBNull.Value);
+                    consultantCommand.Parameters.AddWithValue("@Description", model.Description);
+                    consultantCommand.Parameters.AddWithValue("@ApprovalStatus", model.ApprovalStatus);
+                    consultantCommand.Parameters.AddWithValue("@CertificateUrl", model.CertificateUrl != null ? (object)model.CertificateUrl : DBNull.Value);
+                    consultantCommand.Parameters.AddWithValue("@AvatarUrl", avatarFileName ?? (object)DBNull.Value); // Lưu tên file avatar
+                    consultantCommand.ExecuteNonQuery();
                 }
             }
-            return View(model);
+            return RedirectToAction("ConsultantList");
         }
+        catch (SqlException ex)
+        {
+            ModelState.AddModelError("", $"Lỗi cơ sở dữ liệu: {ex.Message}");
+        }
+        catch (IOException ex)
+        {
+            ModelState.AddModelError("", $"Lỗi khi lưu file: {ex.Message}");
+        }
+    }
+    return View(model);
+}
 
         [Route("Consultants/List")]
         [HttpGet]
@@ -790,6 +806,12 @@ namespace MentalHealthSupport.Controllers
                     connection.Open();
                     string query = "DELETE FROM ConsultantProfiles WHERE ConsultantId = @Id";
                     using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
+                    }
+                    string query1 = "DELETE FROM Users WHERE UserId = @Id";
+                    using (SqlCommand command = new SqlCommand(query1, connection))
                     {
                         command.Parameters.AddWithValue("@Id", id);
                         command.ExecuteNonQuery();
