@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+De/ccsyYkjBD00zDVn4ZV/Ru/4an8u9JKo6uyS3JMc=",
+  "Hash": "2w9nlkklVdjl98syI0CbpXW8jfuoXSqBaFOwLmjOM+E=",
   "Source": "MentalHealthSupport",
   "BasePath": "_content/MentalHealthSupport",
   "Mode": "Default",
@@ -2180,6 +2180,90 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "images/682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ta854di8hz",
+      "Integrity": "u06NU1vQuZWSnNaCjbbifzVTq0I1V/fIKTz+eO80g+o=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "images/7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wzesbix14k",
+      "Integrity": "FAJ/a7V8i2rtaRWqzpNta6wxgAVwtV1S+sxI4EgWJQM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "images/a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ozw9eaf5qi",
+      "Integrity": "RHXjPYV6nFwLj6mMimV0wWOhbaXOujWM/Sbk/xpKpDA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "images/ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ect7hi8hx7",
+      "Integrity": "TolQ/PYJorcfRcpRy1q0GnYyL6eRuss7GY34gVhQhZA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg"
+    },
+    {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\avt.jpg",
       "SourceId": "MentalHealthSupport",
       "SourceType": "Discovered",
@@ -2199,6 +2283,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\avt.jpg"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "images/ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9kosgeedi0",
+      "Integrity": "p2yuOap2GvLlMJ4nGVaQh9vae7asXmWwtSU3hSWlwQ4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png"
     },
     {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg",
@@ -2262,6 +2367,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\empathy-Photoroom.png"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "images/fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "0yww6xdz0p",
+      "Integrity": "yOgqOfCuxSRkAtL8pEH7qRJOFaltOK3mC587py6gZBM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg"
     },
     {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\hodiavar.jpg",
@@ -8700,7 +8826,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 07 Aug 2025 22:56:32 GMT"
+          "Value": "Tue, 10 Mar 2026 12:52:05 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -8753,7 +8879,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 07 Aug 2025 22:56:32 GMT"
+          "Value": "Tue, 10 Mar 2026 12:52:05 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -8790,7 +8916,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 07 Aug 2025 22:56:32 GMT"
+          "Value": "Tue, 10 Mar 2026 12:52:05 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -8837,7 +8963,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 07 Aug 2025 22:56:32 GMT"
+          "Value": "Tue, 10 Mar 2026 12:52:05 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -8898,7 +9024,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 07 Aug 2025 22:56:32 GMT"
+          "Value": "Tue, 10 Mar 2026 12:52:05 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -8943,7 +9069,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 07 Aug 2025 22:56:32 GMT"
+          "Value": "Tue, 10 Mar 2026 12:52:05 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -9272,6 +9398,334 @@
       ]
     },
     {
+      "Route": "images/682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "50664"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"u06NU1vQuZWSnNaCjbbifzVTq0I1V/fIKTz+eO80g+o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 20:14:55 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-u06NU1vQuZWSnNaCjbbifzVTq0I1V/fIKTz+eO80g+o="
+        }
+      ]
+    },
+    {
+      "Route": "images/682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.ta854di8hz.png",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "50664"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"u06NU1vQuZWSnNaCjbbifzVTq0I1V/fIKTz+eO80g+o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 20:14:55 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ta854di8hz"
+        },
+        {
+          "Name": "label",
+          "Value": "images/682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-u06NU1vQuZWSnNaCjbbifzVTq0I1V/fIKTz+eO80g+o="
+        }
+      ]
+    },
+    {
+      "Route": "images/7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "46355"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FAJ/a7V8i2rtaRWqzpNta6wxgAVwtV1S+sxI4EgWJQM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:48:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-FAJ/a7V8i2rtaRWqzpNta6wxgAVwtV1S+sxI4EgWJQM="
+        }
+      ]
+    },
+    {
+      "Route": "images/7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.wzesbix14k.jpg",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "46355"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FAJ/a7V8i2rtaRWqzpNta6wxgAVwtV1S+sxI4EgWJQM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:48:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wzesbix14k"
+        },
+        {
+          "Name": "label",
+          "Value": "images/7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-FAJ/a7V8i2rtaRWqzpNta6wxgAVwtV1S+sxI4EgWJQM="
+        }
+      ]
+    },
+    {
+      "Route": "images/a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.ozw9eaf5qi.png",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "152379"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RHXjPYV6nFwLj6mMimV0wWOhbaXOujWM/Sbk/xpKpDA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:35:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ozw9eaf5qi"
+        },
+        {
+          "Name": "label",
+          "Value": "images/a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-RHXjPYV6nFwLj6mMimV0wWOhbaXOujWM/Sbk/xpKpDA="
+        }
+      ]
+    },
+    {
+      "Route": "images/a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "152379"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RHXjPYV6nFwLj6mMimV0wWOhbaXOujWM/Sbk/xpKpDA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:35:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-RHXjPYV6nFwLj6mMimV0wWOhbaXOujWM/Sbk/xpKpDA="
+        }
+      ]
+    },
+    {
+      "Route": "images/ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.ect7hi8hx7.jpg",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "46537"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TolQ/PYJorcfRcpRy1q0GnYyL6eRuss7GY34gVhQhZA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:41:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ect7hi8hx7"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TolQ/PYJorcfRcpRy1q0GnYyL6eRuss7GY34gVhQhZA="
+        }
+      ]
+    },
+    {
+      "Route": "images/ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "46537"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TolQ/PYJorcfRcpRy1q0GnYyL6eRuss7GY34gVhQhZA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:41:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-TolQ/PYJorcfRcpRy1q0GnYyL6eRuss7GY34gVhQhZA="
+        }
+      ]
+    },
+    {
       "Route": "images/avt.jpg",
       "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\avt.jpg",
       "Selectors": [],
@@ -9350,6 +9804,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-dnP3LZ9PqXjTjvqDv5auk9XY5M9sWaZ5itgCwmGmtuc="
+        }
+      ]
+    },
+    {
+      "Route": "images/ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.9kosgeedi0.png",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "64505"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"p2yuOap2GvLlMJ4nGVaQh9vae7asXmWwtSU3hSWlwQ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:36:36 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9kosgeedi0"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-p2yuOap2GvLlMJ4nGVaQh9vae7asXmWwtSU3hSWlwQ4="
+        }
+      ]
+    },
+    {
+      "Route": "images/ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "64505"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"p2yuOap2GvLlMJ4nGVaQh9vae7asXmWwtSU3hSWlwQ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:36:36 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-p2yuOap2GvLlMJ4nGVaQh9vae7asXmWwtSU3hSWlwQ4="
         }
       ]
     },
@@ -9596,6 +10132,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-+Dw0mTCUnKmaqRGiUfqmc4YWRbDDHolgrWYfmK6Pnoo="
+        }
+      ]
+    },
+    {
+      "Route": "images/fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.0yww6xdz0p.jpg",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "49757"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yOgqOfCuxSRkAtL8pEH7qRJOFaltOK3mC587py6gZBM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:52:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "0yww6xdz0p"
+        },
+        {
+          "Name": "label",
+          "Value": "images/fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yOgqOfCuxSRkAtL8pEH7qRJOFaltOK3mC587py6gZBM="
+        }
+      ]
+    },
+    {
+      "Route": "images/fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "49757"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yOgqOfCuxSRkAtL8pEH7qRJOFaltOK3mC587py6gZBM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 15 Aug 2025 12:52:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-yOgqOfCuxSRkAtL8pEH7qRJOFaltOK3mC587py6gZBM="
         }
       ]
     },

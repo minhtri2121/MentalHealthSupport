@@ -342,6 +342,78 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ta854di8hz</Fingerprint>
+      <Integrity>u06NU1vQuZWSnNaCjbbifzVTq0I1V/fIKTz+eO80g+o=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>wzesbix14k</Fingerprint>
+      <Integrity>FAJ/a7V8i2rtaRWqzpNta6wxgAVwtV1S+sxI4EgWJQM=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ozw9eaf5qi</Fingerprint>
+      <Integrity>RHXjPYV6nFwLj6mMimV0wWOhbaXOujWM/Sbk/xpKpDA=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ect7hi8hx7</Fingerprint>
+      <Integrity>TolQ/PYJorcfRcpRy1q0GnYyL6eRuss7GY34gVhQhZA=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avt.jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>MentalHealthSupport</SourceId>
@@ -359,6 +431,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avt.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>9kosgeedi0</Fingerprint>
+      <Integrity>p2yuOap2GvLlMJ4nGVaQh9vae7asXmWwtSU3hSWlwQ4=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg'))">
       <SourceType>Package</SourceType>
@@ -413,6 +503,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\empathy-Photoroom.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MentalHealthSupport</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MentalHealthSupport</BasePath>
+      <RelativePath>images/fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>0yww6xdz0p</Fingerprint>
+      <Integrity>yOgqOfCuxSRkAtL8pEH7qRJOFaltOK3mC587py6gZBM=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\hodiavar.jpg'))">
       <SourceType>Package</SourceType>

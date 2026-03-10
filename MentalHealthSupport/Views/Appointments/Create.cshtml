@@ -1,0 +1,52 @@
+@model MentalHealthSupport.Models.ViewModel.CreateAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Đặt lịch tư vấn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-center mb-4">Đặt lịch tư vấn</h2>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" asp-validation-summary="All"></div>
+        }
+
+        <form asp-action="Create" method="post">
+
+            <input type="hidden" asp-for="ConsultantId" />
+
+            <div class="mb-3">
+                <label class="form-label">Thời gian tư vấn</label>
+                <input asp-for="AppointmentTime" type="datetime-local" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ghi chú</label>
+                <textarea asp-for="Note" class="form-control" rows="4"
+                          placeholder="Mô tả sơ bộ vấn đề của bạn"></textarea>
+            </div>
+
+            <div class="text-center">
+
+                <button class="btn btn-primary">
+                    Đặt lịch
+                </button>
+
+                <a asp-controller="Consultants"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Quay lại
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

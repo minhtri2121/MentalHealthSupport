@@ -81,12 +81,32 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png",
+      "PackagePath": "staticwebassets\\images\\682e14c6-4668-4f1d-8dcc-c240d66b945b_empathy.png"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg",
+      "PackagePath": "staticwebassets\\images\\7ca26584-eeef-4c3f-8cdc-d7c1f0b93052_lethihoa.jpg"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\Logo.png",
       "PackagePath": "staticwebassets\\images\\Logo.png"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png",
+      "PackagePath": "staticwebassets\\images\\a02c3ae6-07a3-4c12-9f94-43313ef4b798_sunnydangduong.png"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg",
+      "PackagePath": "staticwebassets\\images\\ac79b150-34d6-4ac4-92b1-936b3aee129b_tranthiyennhi.jpg"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\avt.jpg",
       "PackagePath": "staticwebassets\\images\\avt.jpg"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png",
+      "PackagePath": "staticwebassets\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg",
@@ -99,6 +119,10 @@
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\empathy-Photoroom.png",
       "PackagePath": "staticwebassets\\images\\empathy-Photoroom.png"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg",
+      "PackagePath": "staticwebassets\\images\\fbe78efa-1efc-4d40-94bd-95cb9f52012b_tranhuubinh.jpg"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\hodiavar.jpg",

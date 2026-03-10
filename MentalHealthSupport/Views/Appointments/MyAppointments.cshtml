@@ -1,0 +1,95 @@
+@model List<MentalHealthSupport.Models.ViewModel.MyAppointmentViewModel>
+
+@{
+    ViewData["Title"] = "Lịch hẹn của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Lịch hẹn của tôi</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Chuyên gia</th>
+                <th>Thời gian</th>
+                <th>Trạng thái</th>
+                <th>Ghi chú</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ConsultantName</td>
+
+                    <td>@item.AppointmentTime.ToString("dd/MM/yyyy HH:mm")</td>
+
+                    <td>
+                        @if (item.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                        }
+                        else if (item.Status == "Confirmed")
+                        {
+                            <span class="badge bg-primary">Đã xác nhận</span>
+                        }
+                        else if (item.Status == "Completed")
+                        {
+                            <span class="badge bg-success">Đã hoàn thành</span>
+                        }
+                        else if (item.Status == "Cancelled")
+                        {
+                            <span class="badge bg-danger">Đã hủy</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-info">@item.Status</span>
+                        }
+                    </td>
+
+                    <td>@item.Note</td>
+
+                    <td>
+                        @if (item.Status == "Pending" || item.Status == "Confirmed")
+                        {
+                            <form asp-action="Cancel" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.AppointmentId" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Hủy
+                                </button>
+                            </form>
+                        }
+
+                        @if (item.Status == "Completed")
+                        {
+                            <a asp-controller="Reviews"
+                               asp-action="Create"
+                               asp-route-appointmentId="@item.AppointmentId"
+                               class="btn btn-warning btn-sm">
+                                Đánh giá
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
