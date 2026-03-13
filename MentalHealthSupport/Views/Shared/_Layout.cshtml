@@ -23,6 +23,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
+    <!-- Chatbot CSS -->
+    <link rel="stylesheet" href="~/css/chatbot.css" asp-append-version="true" />
+
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -247,6 +250,15 @@
                                         </li>
                                     }
 
+                                    @if (Context.Session.GetString("UserRole") == "Admin")
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Chatbot" asp-action="History">
+                                                Lịch sử chatbot
+                                            </a>
+                                        </li>
+                                    }
+
                                     @if (Context.Session.GetString("UserRole") == "Consultant")
                                     {
                                         <li>
@@ -457,5 +469,43 @@
             });
         </script>
     }
+    <div id="chatbot-toggle" class="chatbot-toggle">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <div id="chatbot-widget" class="chatbot-widget d-none">
+        <div class="chatbot-header">
+            <div>
+                <strong>Trợ lý MentalHealthSupport</strong>
+                <div class="chatbot-subtitle">Hỗ trợ thông tin nhanh</div>
+            </div>
+            <button type="button" id="chatbot-close" class="chatbot-close">&times;</button>
+        </div>
+
+        <div id="chatbot-quick-replies" class="chatbot-quick-replies">
+            <button type="button" class="chatbot-quick-btn" data-message="Tìm chuyên gia">Tìm chuyên gia</button>
+            <button type="button" class="chatbot-quick-btn" data-message="Bài viết mới">Bài viết mới</button>
+            <button type="button" class="chatbot-quick-btn" data-message="Lịch hẹn của tôi">Lịch hẹn của tôi</button>
+            <button type="button" class="chatbot-quick-btn" data-message="Cách đặt lịch">Cách đặt lịch</button>
+        </div>
+
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div class="chatbot-bot-wrapper">
+                <div class="chatbot-bot-message">
+                    Xin chào, mình là chatbot hỗ trợ. Bạn có thể hỏi về chuyên gia, đặt lịch, lịch hẹn hoặc bài viết.
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-input-area">
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Nhập câu hỏi của bạn..." />
+            <button type="button" id="chatbot-send" class="chatbot-send">Gửi</button>
+        </div>
+    </div>
+
+    <script src="~/js/chatbot.js" asp-append-version="true"></script>
+    <script>
+        window.currentChatbotUserId = '@(Context.Session.GetInt32("UserId")?.ToString() ?? "guest")';
+    </script>
 </body>
 </html>

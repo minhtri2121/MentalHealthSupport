@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\css\\chat-site.css"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css",
+      "PackagePath": "staticwebassets\\css\\chatbot.css"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createnews.css",
       "PackagePath": "staticwebassets\\css\\createnews.css"
     },
@@ -131,6 +135,10 @@
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chat.js",
       "PackagePath": "staticwebassets\\js\\chat.js"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chatbot.js",
+      "PackagePath": "staticwebassets\\js\\chatbot.js"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\site.js",

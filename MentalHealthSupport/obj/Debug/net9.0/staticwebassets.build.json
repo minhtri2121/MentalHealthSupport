@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2w9nlkklVdjl98syI0CbpXW8jfuoXSqBaFOwLmjOM+E=",
+  "Hash": "4awj4RmwvZ8PGYpq8IXRmIfCqx7fjCeni7y0u/heWg8=",
   "Source": "MentalHealthSupport",
   "BasePath": "_content/MentalHealthSupport",
   "Mode": "Default",
@@ -309,6 +309,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\5xtxsjn0br-twm520fc85.gz",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "css/chatbot#[.{fingerprint=twm520fc85}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "jlm6jb83ov",
+      "Integrity": "5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css"
     },
     {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\604ny6bkgd-2z0ns9nrw6.gz",
@@ -1676,6 +1697,27 @@
       "OriginalItemSpec": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map"
     },
     {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\xmmutxa8q8-05g0igjapd.gz",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "js/chatbot#[.{fingerprint=05g0igjapd}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chatbot.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "1ke37pjc0i",
+      "Integrity": "j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chatbot.js"
+    },
+    {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\xqwvdf97z7-b7pk76d08c.gz",
       "SourceId": "MentalHealthSupport",
       "SourceType": "Discovered",
@@ -1884,6 +1926,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\chat-site.css"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "css/chatbot#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "twm520fc85",
+      "Integrity": "w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\chatbot.css"
     },
     {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createnews.css",
@@ -2451,6 +2514,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\chat.js"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chatbot.js",
+      "SourceId": "MentalHealthSupport",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\",
+      "BasePath": "_content/MentalHealthSupport",
+      "RelativePath": "js/chatbot#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "05g0igjapd",
+      "Integrity": "tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\chatbot.js"
     },
     {
       "Identity": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\site.js",
@@ -5222,6 +5306,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-RNQEQA2Du+GMLEosdDMaW09MDNbGQVz9U7eshhaJ6v4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.css",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\5xtxsjn0br-twm520fc85.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000959692898"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.css",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.css.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\5xtxsjn0br-twm520fc85.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.twm520fc85.css",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\5xtxsjn0br-twm520fc85.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000959692898"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "twm520fc85"
+        },
+        {
+          "Name": "label",
+          "Value": "css/chatbot.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.twm520fc85.css",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "twm520fc85"
+        },
+        {
+          "Name": "label",
+          "Value": "css/chatbot.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.twm520fc85.css.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\5xtxsjn0br-twm520fc85.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "twm520fc85"
+        },
+        {
+          "Name": "label",
+          "Value": "css/chatbot.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI="
         }
       ]
     },
@@ -10676,6 +11058,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-7a8AOIctlLqSC08/4rHbtTAzQxgM5lWXWtcyvBcbhPw="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.05g0igjapd.js",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\xmmutxa8q8-05g0igjapd.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000556173526"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "05g0igjapd"
+        },
+        {
+          "Name": "label",
+          "Value": "js/chatbot.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.05g0igjapd.js",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chatbot.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8652"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "05g0igjapd"
+        },
+        {
+          "Name": "label",
+          "Value": "js/chatbot.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.05g0igjapd.js.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\xmmutxa8q8-05g0igjapd.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "05g0igjapd"
+        },
+        {
+          "Name": "label",
+          "Value": "js/chatbot.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.js",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\xmmutxa8q8-05g0igjapd.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000556173526"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.js",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\js\\chatbot.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8652"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.js.gz",
+      "AssetFile": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\obj\\Debug\\net9.0\\compressed\\xmmutxa8q8-05g0igjapd.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8="
         }
       ]
     },

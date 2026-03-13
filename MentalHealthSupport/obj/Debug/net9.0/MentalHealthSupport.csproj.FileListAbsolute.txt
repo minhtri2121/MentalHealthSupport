@@ -168,3 +168,5 @@ D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\ref\Me
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\s52lydqmkl-gaxr3l4i9o.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\251f7fdaco-u0mgxsmo8d.gz
 D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\7c99p8r8co-k3ne32s0th.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\5xtxsjn0br-twm520fc85.gz
+D:\TaiLieuHocTap\MentalHealthSupport\MentalHealthSupport\obj\Debug\net9.0\compressed\xmmutxa8q8-05g0igjapd.gz

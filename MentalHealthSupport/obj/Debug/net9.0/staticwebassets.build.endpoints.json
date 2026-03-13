@@ -1791,6 +1791,304 @@
       ]
     },
     {
+      "Route": "css/chatbot.css",
+      "AssetFile": "css/chatbot.css.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000959692898"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.css",
+      "AssetFile": "css/chatbot.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.css.gz",
+      "AssetFile": "css/chatbot.css.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI="
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.twm520fc85.css",
+      "AssetFile": "css/chatbot.css.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000959692898"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "twm520fc85"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        },
+        {
+          "Name": "label",
+          "Value": "css/chatbot.css"
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.twm520fc85.css",
+      "AssetFile": "css/chatbot.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "twm520fc85"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-w8r/ABvidDv7DLu+Kj3xnmRmbwCHKjtnfwm7SlTp0p4="
+        },
+        {
+          "Name": "label",
+          "Value": "css/chatbot.css"
+        }
+      ]
+    },
+    {
+      "Route": "css/chatbot.twm520fc85.css.gz",
+      "AssetFile": "css/chatbot.css.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1041"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:34 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "twm520fc85"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5/YHUZ4rulQkLZUQheMth62eBsRiO4eO3j/8wzbYsPI="
+        },
+        {
+          "Name": "label",
+          "Value": "css/chatbot.css.gz"
+        }
+      ]
+    },
+    {
       "Route": "css/createnews.6ijb5lodxp.css",
       "AssetFile": "css/createnews.css.gz",
       "Selectors": [
@@ -7241,6 +7539,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-7a8AOIctlLqSC08/4rHbtTAzQxgM5lWXWtcyvBcbhPw="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.05g0igjapd.js",
+      "AssetFile": "js/chatbot.js.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000556173526"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "05g0igjapd"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        },
+        {
+          "Name": "label",
+          "Value": "js/chatbot.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.05g0igjapd.js",
+      "AssetFile": "js/chatbot.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8652"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "05g0igjapd"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        },
+        {
+          "Name": "label",
+          "Value": "js/chatbot.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.05g0igjapd.js.gz",
+      "AssetFile": "js/chatbot.js.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "05g0igjapd"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8="
+        },
+        {
+          "Name": "label",
+          "Value": "js/chatbot.js.gz"
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.js",
+      "AssetFile": "js/chatbot.js.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000556173526"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.js",
+      "AssetFile": "js/chatbot.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8652"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tJNRucxFzP5ZxadCwgb00IaWkIfPEJCySzCRMkOle9w="
+        }
+      ]
+    },
+    {
+      "Route": "js/chatbot.js.gz",
+      "AssetFile": "js/chatbot.js.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1797"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Mar 2026 13:45:21 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-j/hejPdnc5nsEANqr27sHmhTv7cJAQPRZJ7YcHu9BM8="
         }
       ]
     },

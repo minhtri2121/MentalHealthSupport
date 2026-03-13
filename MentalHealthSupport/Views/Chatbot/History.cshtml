@@ -1,0 +1,45 @@
+@model List<MentalHealthSupport.Models.ViewModel.ChatbotHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Lịch sử chatbot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Lịch sử chatbot</h2>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            Chưa có dữ liệu lịch sử chatbot.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Người dùng</th>
+                        <th>Câu hỏi</th>
+                        <th>Trả lời của bot</th>
+                        <th>Thời gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.UserName</td>
+                            <td>@item.UserMessage</td>
+                            <td>@item.BotReply</td>
+                            <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

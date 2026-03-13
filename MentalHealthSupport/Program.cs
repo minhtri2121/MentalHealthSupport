@@ -1,6 +1,10 @@
 using MentalHealthSupport.Hubs;
+using MentalHealthSupport.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cấu hình dịch vụ
+builder.Services.AddScoped<MentalHealthSupport.Services.ChatbotService>();
 
 // Cấu hình Session
 builder.Services.AddDistributedMemoryCache();
