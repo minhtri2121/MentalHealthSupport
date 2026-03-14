@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("chatbot-input");
     const messages = document.getElementById("chatbot-messages");
     const quickReplies = document.getElementById("chatbot-quick-replies");
+    const resetBtn = document.getElementById("chatbot-reset");
 
     const currentUserId = window.currentChatbotUserId || "guest";
     const STORAGE_KEY = `mentalhealth_chatbot_history_${currentUserId}`;
@@ -13,8 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!toggle || !widget || !closeBtn || !sendBtn || !input || !messages) return;
 
-    restoreMessages();
-    restoreWidgetState();
+    initializeChatbot();
 
     toggle.addEventListener("click", function () {
         widget.classList.remove("d-none");
@@ -46,6 +46,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    if (resetBtn) {
+        resetBtn.addEventListener("click", async function () {
+            await resetConversation();
+        });
+    }
+
+    async function initializeChatbot() {
+        restoreWidgetState();
+        await restoreMessagesFromServer();
+    }
+
     async function sendMessage() {
         const text = input.value.trim();
         if (!text) return;
@@ -71,6 +82,92 @@ document.addEventListener("DOMContentLoaded", function () {
             appendBotText("Hiện tại chatbot đang tạm gián đoạn. Vui lòng thử lại sau.", true);
             console.error(error);
         }
+    }
+
+    async function restoreMessagesFromServer() {
+        messages.innerHTML = "";
+
+        try {
+            const response = await fetch("/Chatbot/GetConversation");
+            const history = await response.json();
+
+            if (Array.isArray(history) && history.length > 0) {
+                history.forEach(item => {
+                    if (item.role === "user") {
+                        appendUserMessage(item.text, false);
+                    } else if (item.role === "bot") {
+                        renderBotResponse({
+                            reply: item.reply,
+                            type: item.type || "text",
+                            items: item.items || null
+                        }, false);
+                    }
+                });
+
+                scrollBottom();
+                return;
+            }
+        } catch (error) {
+            console.error("Không tải được lịch sử từ server:", error);
+        }
+
+        restoreMessagesFromLocal();
+    }
+
+    function restoreMessagesFromLocal() {
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+        messages.innerHTML = "";
+
+        if (history.length === 0) {
+            const wrapper = document.createElement("div");
+            wrapper.className = "chatbot-bot-wrapper";
+            wrapper.innerHTML = `
+                <div class="chatbot-bot-message">
+                    Xin chào, mình là chatbot hỗ trợ. Bạn có thể hỏi về chuyên gia, đặt lịch, lịch hẹn hoặc bài viết.
+                </div>
+            `;
+            messages.appendChild(wrapper);
+            return;
+        }
+
+        history.forEach(item => {
+            if (item.role === "user") {
+                appendUserMessage(item.text, false);
+            } else if (item.role === "bot") {
+                renderBotResponse({
+                    reply: item.reply,
+                    type: item.type,
+                    items: item.items
+                }, false);
+            }
+        });
+
+        scrollBottom();
+    }
+
+    async function resetConversation() {
+        try {
+            await fetch("/Chatbot/ResetConversation", {
+                method: "POST"
+            });
+        } catch (error) {
+            console.error("Không reset được conversation trên server:", error);
+        }
+
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(WIDGET_STATE_KEY);
+
+        messages.innerHTML = `
+            <div class="chatbot-bot-wrapper">
+                <div class="chatbot-bot-message">
+                    Xin chào, mình là chatbot hỗ trợ. Bạn có thể hỏi về chuyên gia, đặt lịch, lịch hẹn hoặc bài viết.
+                </div>
+            </div>
+        `;
+
+        widget.classList.add("d-none");
+        toggle.style.display = "flex";
     }
 
     function appendUserMessage(text, save = false) {
@@ -147,17 +244,15 @@ document.addEventListener("DOMContentLoaded", function () {
             list.className = "chatbot-card-list";
 
             data.items.forEach(item => {
-                const url = item.sourceType === "News"
-                    ? `/News/Details/${item.id}`
-                    : `/News/Index`;
+                const url = `/News/Detail/${item.id}`;
 
                 const card = document.createElement("div");
                 card.className = "chatbot-card";
 
                 card.innerHTML = `
                     <div class="chatbot-card-title">${escapeHtml(item.title || "")}</div>
-                    <div class="chatbot-card-meta">${formatDate(item.createdAt)} • ${escapeHtml(item.sourceType || "")}</div>
-                    <a class="chatbot-card-btn" href="${url}">Xem thêm</a>
+                    <div class="chatbot-card-meta">${formatDate(item.createdAt)} • ${escapeHtml(item.sourceType || "News")}</div>
+                    <a class="chatbot-card-btn" href="${url}">Xem chi tiết</a>
                 `;
 
                 list.appendChild(card);
@@ -263,38 +358,6 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
     }
 
-    function restoreMessages() {
-        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-
-        messages.innerHTML = "";
-
-        if (history.length === 0) {
-            const wrapper = document.createElement("div");
-            wrapper.className = "chatbot-bot-wrapper";
-            wrapper.innerHTML = `
-                <div class="chatbot-bot-message">
-                    Xin chào, mình là chatbot hỗ trợ. Bạn có thể hỏi về chuyên gia, đặt lịch, lịch hẹn hoặc bài viết.
-                </div>
-            `;
-            messages.appendChild(wrapper);
-            return;
-        }
-
-        history.forEach(item => {
-            if (item.role === "user") {
-                appendUserMessage(item.text, false);
-            } else if (item.role === "bot") {
-                renderBotResponse({
-                    reply: item.reply,
-                    type: item.type,
-                    items: item.items
-                }, false);
-            }
-        });
-
-        scrollBottom();
-    }
-
     function restoreWidgetState() {
         const state = localStorage.getItem(WIDGET_STATE_KEY);
 
@@ -332,12 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .replaceAll("'", "&#039;");
     }
 
-    // Hàm để xóa lịch sử chatbot nếu bạn muốn gọi từ nút nào đó sau này
-    window.clearChatbotHistory = function () {
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(WIDGET_STATE_KEY);
-        restoreMessages();
-        widget.classList.add("d-none");
-        toggle.style.display = "flex";
+    window.clearChatbotHistory = async function () {
+        await resetConversation();
     };
 });

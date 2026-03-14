@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using MentalHealthSupport.Models.ViewModel;
 using MentalHealthSupport.Services;
-using Microsoft.Data.SqlClient;
 
 namespace MentalHealthSupport.Controllers
 {
@@ -29,57 +29,86 @@ namespace MentalHealthSupport.Controllers
             }
 
             int? userId = HttpContext.Session.GetInt32("UserId");
-            ChatbotResponseViewModel response = _chatbotService.GetResponse(request.Message, userId);
 
-            _chatbotService.SaveChatHistory(userId, request.Message, response.Reply);
+            string? conversationId = HttpContext.Session.GetString("ChatbotConversationId");
+            if (string.IsNullOrWhiteSpace(conversationId))
+            {
+                conversationId = Guid.NewGuid().ToString();
+                HttpContext.Session.SetString("ChatbotConversationId", conversationId);
+            }
+
+            var response = _chatbotService.GetResponse(request.Message, userId, conversationId);
+            _chatbotService.SaveChatHistory(userId, conversationId, request.Message, response.Reply);
 
             return Json(response);
         }
 
         [HttpGet]
-        public IActionResult History()
+        public IActionResult GetConversation()
         {
-            string? role = HttpContext.Session.GetString("UserRole");
-            if (role != "Admin")
-                return RedirectToAction("Index", "Home");
+            string? conversationId = HttpContext.Session.GetString("ChatbotConversationId");
 
-            var list = new List<ChatbotHistoryViewModel>();
+            if (string.IsNullOrWhiteSpace(conversationId))
+            {
+                return Json(new List<object>());
+            }
+
+            var history = new List<object>();
 
             try
             {
-                string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
                 conn.Open();
 
                 string query = @"
-                    SELECT TOP 100 cm.Id, cm.UserId, ISNULL(u.FullName, N'Khách'), cm.UserMessage, cm.BotReply, cm.CreatedAt
-                    FROM ChatbotMessages cm
-                    LEFT JOIN Users u ON cm.UserId = u.UserId
-                    ORDER BY cm.CreatedAt DESC";
+                    SELECT UserMessage, BotReply, CreatedAt
+                    FROM ChatbotMessages
+                    WHERE ConversationId = @ConversationId
+                    ORDER BY CreatedAt ASC";
 
                 using SqlCommand cmd = new SqlCommand(query, conn);
-                using SqlDataReader reader = cmd.ExecuteReader();
+                cmd.Parameters.AddWithValue("@ConversationId", conversationId);
 
+                using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    list.Add(new ChatbotHistoryViewModel
+                    string userMessage = reader.IsDBNull(0) ? "" : reader.GetString(0);
+                    string botReply = reader.IsDBNull(1) ? "" : reader.GetString(1);
+
+                    if (!string.IsNullOrWhiteSpace(userMessage))
                     {
-                        Id = reader.GetInt32(0),
-                        UserId = reader.IsDBNull(1) ? null : reader.GetInt32(1),
-                        UserName = reader.GetString(2),
-                        UserMessage = reader.GetString(3),
-                        BotReply = reader.GetString(4),
-                        CreatedAt = reader.GetDateTime(5)
-                    });
+                        history.Add(new
+                        {
+                            role = "user",
+                            type = "text",
+                            text = userMessage
+                        });
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(botReply))
+                    {
+                        history.Add(new
+                        {
+                            role = "bot",
+                            type = "text",
+                            reply = botReply
+                        });
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Chatbot History error: " + ex.Message);
+                Console.WriteLine("Chatbot GetConversation error: " + ex.Message);
             }
 
-            return View(list);
+            return Json(history);
+        }
+
+        [HttpPost]
+        public IActionResult ResetConversation()
+        {
+            HttpContext.Session.Remove("ChatbotConversationId");
+            return Json(new { success = true });
         }
     }
 
