@@ -29,6 +29,12 @@ namespace MentalHealthSupport.Services
             text = NormalizeSemanticText(text);
             string textNoAccent = RemoveVietnameseAccents(text);
 
+            Console.WriteLine($"RAW: {rawText}");
+            Console.WriteLine($"TEXT: {text}");
+            Console.WriteLine($"NO ACCENT: {textNoAccent}");
+            Console.WriteLine($"INTENT: {DetectIntent(text, textNoAccent)}");
+
+
             var context = LoadConversationContext(conversationId, userId);
 
             // 1. Ưu tiên tình huống khẩn cấp
@@ -230,7 +236,6 @@ namespace MentalHealthSupport.Services
             var replacements = new Dictionary<string, string>
             {
                 { "ko", "không" },
-                { "k ", "không " },
                 { "khum", "không" },
                 { "hong", "không" },
                 { "mk", "mình" },
@@ -249,7 +254,8 @@ namespace MentalHealthSupport.Services
 
             foreach (var item in replacements)
             {
-                text = text.Replace(item.Key, item.Value);
+                string pattern = $@"\b{Regex.Escape(item.Key)}\b";
+                text = Regex.Replace(text, pattern, item.Value);
             }
 
             return text;
@@ -429,43 +435,70 @@ namespace MentalHealthSupport.Services
 
         private string DetectIntent(string text, string textNoAccent)
         {
-            var scores = new Dictionary<string, int>
+            if (
+                text.Contains("stress") || text.Contains("căng thẳng") || text.Contains("áp lực") ||
+                text.Contains("lo âu") || text.Contains("lo lắng") || text.Contains("hồi hộp") ||
+                text.Contains("trầm cảm") || text.Contains("chán nản") || text.Contains("trống rỗng") ||
+                text.Contains("mất ngủ") || text.Contains("khó ngủ") || text.Contains("kiệt sức") ||
+                textNoAccent.Contains("stress") || textNoAccent.Contains("cang thang") || textNoAccent.Contains("ap luc") ||
+                textNoAccent.Contains("lo au") || textNoAccent.Contains("lo lang") || textNoAccent.Contains("hoi hop") ||
+                textNoAccent.Contains("tram cam") || textNoAccent.Contains("chan nan") || textNoAccent.Contains("trong rong") ||
+                textNoAccent.Contains("mat ngu") || textNoAccent.Contains("kho ngu") || textNoAccent.Contains("kiet suc")
+            )
             {
-                { "greeting", 0 },
-                { "appointment_check", 0 },
-                { "booking_help", 0 },
-                { "consultant_search", 0 },
-                { "article_search", 0 },
-                { "symptom_support", 0 },
-                { "unknown", 0 }
-            };
+                return "symptom_support";
+            }
 
-            AddScore(scores, "greeting", text, textNoAccent,
-                "xin chào", "chào", "hello", "hi", "hey");
+            if (
+                text.Contains("lịch hẹn") || text.Contains("lịch của tôi") || text.Contains("tôi có lịch") ||
+                text.Contains("đã đặt lịch") || text.Contains("xem lịch hẹn") ||
+                textNoAccent.Contains("lich hen") || textNoAccent.Contains("lich cua toi")
+            )
+            {
+                return "appointment_check";
+            }
 
-            AddScore(scores, "appointment_check", text, textNoAccent,
-                "lịch hẹn", "lịch của tôi", "tôi có lịch", "đã đặt lịch", "xem lịch hẹn");
+            if (
+                text.Contains("đặt lịch") || text.Contains("đặt hẹn") || text.Contains("cách đặt lịch") ||
+                text.Contains("đăng ký tư vấn") || text.Contains("book lịch") ||
+                textNoAccent.Contains("dat lich") || textNoAccent.Contains("dat hen")
+            )
+            {
+                return "booking_help";
+            }
 
-            AddScore(scores, "booking_help", text, textNoAccent,
-                "đặt lịch", "đặt hẹn", "cách đặt lịch", "đăng ký tư vấn", "book lịch");
+            if (
+                text.Contains("chuyên gia") || text.Contains("tư vấn viên") || text.Contains("bác sĩ") ||
+                text.Contains("nhà tâm lý") || text.Contains("ai phù hợp") || text.Contains("tìm chuyên gia") ||
+                text.Contains("muốn tìm người nói chuyện") || text.Contains("ai tư vấn ổn") ||
+                textNoAccent.Contains("chuyen gia") || textNoAccent.Contains("tu van vien") ||
+                textNoAccent.Contains("nha tam ly") || textNoAccent.Contains("tim chuyen gia")
+            )
+            {
+                return "consultant_search";
+            }
 
-            AddScore(scores, "consultant_search", text, textNoAccent,
-                "chuyên gia", "tư vấn viên", "bác sĩ", "nhà tâm lý", "ai phù hợp",
-                "người phù hợp", "chuyên viên", "tìm chuyên gia", "tư vấn", "hỗ trợ");
+            if (
+                text.Contains("bài viết") || text.Contains("tin tức") || text.Contains("bài báo") ||
+                text.Contains("đọc thêm") || text.Contains("kiến thức") || text.Contains("xem bài") ||
+                text.Contains("bài mới") || text.Contains("tin mới") || text.Contains("bài liên quan") ||
+                textNoAccent.Contains("bai viet") || textNoAccent.Contains("tin tuc") ||
+                textNoAccent.Contains("bai bao") || textNoAccent.Contains("xem bai")
+            )
+            {
+                return "article_search";
+            }
 
-            AddScore(scores, "article_search", text, textNoAccent,
-                "bài viết", "tin tức", "bài báo", "đọc thêm", "kiến thức",
-                "xem bài", "bài mới", "tin mới", "bài liên quan", "bài đọc");
+            if (
+                text.Contains("xin chào") || text.Contains("chào") || text.Contains("hello") ||
+                text.Contains("hi") || text.Contains("hey") ||
+                textNoAccent.Contains("xin chao") || textNoAccent.Contains("chao")
+            )
+            {
+                return "greeting";
+            }
 
-            AddScore(scores, "symptom_support", text, textNoAccent,
-                "stress", "căng thẳng", "lo âu", "lo lắng", "trầm cảm",
-                "mất ngủ", "kiệt sức", "áp lực", "khó ngủ", "hồi hộp",
-                "bất an", "chán nản", "trống rỗng", "mệt mỏi", "bí bách");
-
-            int maxScore = scores.Max(x => x.Value);
-            if (maxScore == 0) return "unknown";
-
-            return scores.OrderByDescending(x => x.Value).First().Key;
+            return "unknown";
         }
 
         private void AddScore(Dictionary<string, int> scores, string intent, string text, string textNoAccent, params string[] patterns)

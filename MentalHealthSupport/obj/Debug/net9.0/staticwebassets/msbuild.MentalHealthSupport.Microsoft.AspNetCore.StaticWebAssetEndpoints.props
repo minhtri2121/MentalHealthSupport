@@ -336,17 +336,17 @@
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-u1mrTQKcEcZF52K0EmMYN6V4ewUTvroIiB9iMMrljJU="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"12100"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022u1mrTQKcEcZF52K0EmMYN6V4ewUTvroIiB9iMMrljJU=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 21:23:04 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/js/chatbot.95y24i27j4.js">
+    <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/js/chatbot.f5yrgpcryh.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\chatbot.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"95y24i27j4"},{"Name":"integrity","Value":"sha256-o/qCn81WTaXFST20sojJmiuBPbqfWXfKPre\u002BzdlyGFY="},{"Name":"label","Value":"_content/MentalHealthSupport/js/chatbot.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11714"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022o/qCn81WTaXFST20sojJmiuBPbqfWXfKPre\u002BzdlyGFY=\u0022"},{"Name":"Last-Modified","Value":"Fri, 13 Mar 2026 13:57:30 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"f5yrgpcryh"},{"Name":"integrity","Value":"sha256-o3kjpMXlmDVQiaaB38SkzvNraWPTOdLif7Vs4KimSh8="},{"Name":"label","Value":"_content/MentalHealthSupport/js/chatbot.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"13541"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022o3kjpMXlmDVQiaaB38SkzvNraWPTOdLif7Vs4KimSh8=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Mar 2026 18:39:44 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/js/chatbot.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\chatbot.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-o/qCn81WTaXFST20sojJmiuBPbqfWXfKPre\u002BzdlyGFY="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11714"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022o/qCn81WTaXFST20sojJmiuBPbqfWXfKPre\u002BzdlyGFY=\u0022"},{"Name":"Last-Modified","Value":"Fri, 13 Mar 2026 13:57:30 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-o3kjpMXlmDVQiaaB38SkzvNraWPTOdLif7Vs4KimSh8="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"13541"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022o3kjpMXlmDVQiaaB38SkzvNraWPTOdLif7Vs4KimSh8=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Mar 2026 18:39:44 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MentalHealthSupport/js/site.3r8b2a0bt1.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>
