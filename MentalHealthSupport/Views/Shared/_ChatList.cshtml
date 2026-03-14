@@ -1,101 +1,49 @@
 @model List<ChatSessionViewModel>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách trò chuyện</title>
-    <link rel="stylesheet" href="~/css/chat-list.css" asp-append-version="true" />
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="chat-list-container">
-        @if (ViewBag.ErrorMessage != null)
-        {
-            <div class="alert-error">
-                @ViewBag.ErrorMessage
-            </div>
-        }
-        <header class="chat-list-header">
-            <div class="header-content">
-                <a href="@Url.Action("Index", "Home")" class="back-btn">
-                    <i class="bx bx-arrow-back"></i>
-                </a>
-                <h1>Trò chuyện</h1>
-            </div>
-        </header>
-        <main class="chat-list">
-            @foreach (var session in Model)
-            {
-                <a asp-controller="Chat" asp-action="Detail" asp-route-id="@session.ChatSessionId" class="chat-item">
-                    <div class="chat-item-content">
-                        <div class="avatar">
-                            <i class="bx bx-user"></i>
-                        </div>
-                        <div class="chat-info">
-                            <div class="chat-title">
-                                <span class="username">@session.OtherUserName</span>
-                                @if (session.UnreadCount > 0)
-                                {
-                                    <span id="chat-badge-@session.ChatSessionId" class="badge-unread">
-                                        @session.UnreadCount
-                                    </span>
-                                }
-                            </div>
-                            <div class="chat-meta">
-                                <span class="start-time">
-                                    @session.StartTime.ToString("HH:mm dd/MM/yyyy")
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            }
-        </main>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="bi bi-chat-square-text"></i>
+        </div>
+        <h5 class="fw-bold">Chưa có cuộc trò chuyện nào</h5>
+        <p class="mb-0">Danh sách hội thoại sẽ xuất hiện tại đây khi bạn bắt đầu nhắn tin.</p>
     </div>
+}
+else
+{
+    <div class="chat-session-list">
+        @foreach (var session in Model)
+        {
+            <a asp-controller="Chat"
+               asp-action="Detail"
+               asp-route-id="@session.ChatSessionId"
+               class="chat-session-item text-decoration-none">
+                <div class="chat-session-avatar">
+                    <i class="bi bi-person"></i>
+                </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chatHub")
-            .withAutomaticReconnect()
-            .build();
+                <div class="chat-session-main">
+                    <div class="chat-session-top">
+                        <h5 class="chat-session-name mb-0">
+                            @session.OtherUserName
+                        </h5>
 
-        connection.on("UpdateChatSession", function (chatSessionId, receiverId) {
-            const currentUserId = @Context.Session.GetInt32("UserId");
-            if (receiverId == currentUserId) {
-                const badge = document.querySelector(`#chat-badge-${chatSessionId}`);
-                if (badge) {
-                    let count = parseInt(badge.innerText || "0") + 1;
-                    badge.innerText = count;
-                    badge.style.display = "inline-block";
-                    badge.classList.add("animate-pulse");
-                    setTimeout(() => badge.classList.remove("animate-pulse"), 1000);
-                } else {
-                    const chatItem = document.querySelector(`a[asp-route-id="${chatSessionId}"] .chat-title`);
-                    if (chatItem) {
-                        chatItem.insertAdjacentHTML("beforeend", 
-                            `<span id="chat-badge-${chatSessionId}" class="badge-unread animate-pulse">1</span>`);
-                        setTimeout(() => {
-                            const newBadge = document.querySelector(`#chat-badge-${chatSessionId}`);
-                            if (newBadge) newBadge.classList.remove("animate-pulse");
-                        }, 1000);
-                    }
-                }
-            }
-        });
+                        @if (session.UnreadCount > 0)
+                        {
+                            <span class="chat-session-badge">
+                                @session.UnreadCount
+                            </span>
+                        }
+                    </div>
 
-        connection.on("ClearBadge", function (chatSessionId) {
-            const badge = document.querySelector(`#chat-badge-${chatSessionId}`);
-            if (badge) {
-                badge.innerText = "0";
-                badge.style.display = "none";
-            }
-        });
-
-        connection.start().then(() => {
-            console.log("SignalR kết nối thành công");
-        }).catch(err => console.error("SignalR kết nối thất bại: ", err));
-    </script>
-</body>
-</html>
+                    <div class="chat-session-bottom">
+                        <p class="chat-session-preview mb-0">
+                            Nhấn để mở cuộc trò chuyện
+                        </p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}

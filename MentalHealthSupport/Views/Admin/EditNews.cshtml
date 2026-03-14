@@ -1,45 +1,151 @@
 @model MentalHealthSupport.Models.News
 
 @{
-    ViewData["Title"] = "Sửa Tin Tức";
-    Layout = null;
+    ViewData["Title"] = "Chỉnh sửa bài viết";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/editnews.css" />
+<section class="admin-edit-news-page">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-pencil-square"></i>
+                    Cập nhật nội dung tin tức
+                </span>
+                <h2 class="fw-bold mb-3">Chỉnh sửa bài viết</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Cập nhật tiêu đề, nội dung, tác giả và thời gian của bài viết trong hệ thống.
+                </p>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="form-title">Sửa Tin Tức</h2>
-            <a asp-controller="Admin" asp-action="NewsList" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight h-100">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-info-circle"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Lưu ý</h5>
+                    <p class="mb-0">
+                        Hãy kiểm tra kỹ nội dung trước khi lưu để bài viết hiển thị rõ ràng và nhất quán trên website.
+                    </p>
+                </div>
+            </div>
         </div>
-        <form asp-action="EditNews" method="post" class="needs-validation" novalidate>
+    </div>
+
+    <div class="admin-form-card">
+        <form asp-action="EditNews" method="post">
+            @Html.AntiForgeryToken()
+
             <input asp-for="Id" type="hidden" />
-            <div class="form-group">
-                <label asp-for="Title" class="form-label">Tiêu đề</label>
-                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề tin tức" required />
-                <span asp-validation-for="Title" class="text-danger"></span>
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="form-section-block mb-4">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-card-text"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Thông tin bài viết</h5>
+                                <p class="section-subtitle mb-0">
+                                    Cập nhật các trường nội dung chính của bài viết.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Title" class="form-label">Tiêu đề</label>
+                                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết" />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Author" class="form-label">Tác giả</label>
+                                <input asp-for="Author" class="form-control" placeholder="Nhập tên tác giả" />
+                                <span asp-validation-for="Author" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="CreatedDate" class="form-label">Ngày tạo</label>
+                                <input asp-for="CreatedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="CreatedDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Content" class="form-label">Nội dung</label>
+                                <textarea asp-for="Content"
+                                          class="form-control admin-news-content-input"
+                                          rows="10"
+                                          placeholder="Nhập nội dung bài viết..."></textarea>
+                                <span asp-validation-for="Content" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="appointment-help-panel h-100 admin-side-panel">
+                        <div class="mb-4">
+                            <span class="badge-soft primary mb-3">
+                                <i class="bi bi-eye"></i>
+                                Xem nhanh
+                            </span>
+
+                            <div class="admin-news-preview-card">
+                                <div class="admin-news-preview-icon">
+                                    <i class="bi bi-newspaper"></i>
+                                </div>
+
+                                <h5 class="fw-bold mb-2">
+                                    @(string.IsNullOrWhiteSpace(Model.Title) ? "Chưa có tiêu đề" : Model.Title)
+                                </h5>
+
+                                <p class="section-subtitle mb-2">
+                                    @(string.IsNullOrWhiteSpace(Model.Author) ? "Chưa có tác giả" : Model.Author)
+                                </p>
+
+                                <p class="section-subtitle mb-3">
+                                    @Model.CreatedDate.ToString("dd/MM/yyyy")
+                                </p>
+
+                                <div class="content-preview admin-news-excerpt mx-auto">
+                                    @(string.IsNullOrWhiteSpace(Model.Content) ? "Chưa có nội dung" : Model.Content)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appointment-tip-box">
+                            <h6 class="fw-bold mb-2">
+                                <i class="bi bi-lightbulb me-2"></i>Gợi ý chỉnh sửa
+                            </h6>
+                            <p class="mb-2">- Tiêu đề nên ngắn gọn, rõ ý.</p>
+                            <p class="mb-2">- Nội dung nên chia đoạn để dễ đọc.</p>
+                            <p class="mb-2">- Tác giả nên thống nhất cách ghi giữa các bài.</p>
+                            <p class="mb-0">- Ngày tạo nên phản ánh đúng thời điểm bài viết được tạo hoặc công bố.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Content" class="form-label">Nội dung</label>
-                <textarea asp-for="Content" class="form-control" rows="8" placeholder="Nhập nội dung tin tức" required></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu</button>
-                <a asp-action="NewsList" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-2"></i>Lưu thay đổi
+                </button>
+
+                <a asp-controller="Admin" asp-action="NewsList" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
             </div>
         </form>
     </div>
-</div>
+</section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

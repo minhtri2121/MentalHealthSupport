@@ -1,70 +1,118 @@
 @model List<MentalHealthSupport.Models.News>
+
 @{
-    ViewData["Title"] = "Tin Tức";
+    ViewData["Title"] = "Tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/css/news.css" />
 
-<div class="container-fluid px-4 py-5">
-    <!-- Header báo -->
-    <div class="newspaper-header text-center mb-5">
-        <h1 class="newspaper-title">SỨC KHỎE TÂM LÝ</h1>
-        <div class="newspaper-subtitle">Tin tức - Thông tin - Kiến thức</div>
-        <div class="newspaper-date">@DateTime.Now.ToString("dddd, dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))</div>
-        <hr class="newspaper-divider">
-    </div>
-
-    <!-- Nút thêm tin tức (chỉ hiển thị cho Admin) -->
-    @if (Context.Session.GetString("Role") == "Admin")
-    {
-        <div class="admin-controls mb-4">
-            <a asp-action="CreateNews" asp-controller="Admin" class="btn btn-admin">
-                <i class="fas fa-plus"></i> Thêm Tin Tức Mới
-            </a>
-        </div>
-    }
-
-    @if (Model.Count > 0)
-    {
-        <!-- Danh sách tin tức -->
-        <div class="news-list">
-            @foreach (var news in Model)
-            {
-                <div class="news-article mb-5">
-                    <div class="article-header">
-                        <h2 class="article-title">@news.Title</h2>
-                        <div class="article-meta">
-                            <span class="author">Bởi @news.Author</span>
-                            <span class="date">@news.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
-                        </div>
-                    </div>
-                    <div class="article-content">
-                        <p class="article-text">@news.Content</p>
-                    </div>
-                    @if (Context.Session.GetString("Role") == "Admin")
-                    {
-                        <div class="article-actions">
-                            <div class="admin-actions">
-                                <a asp-action="EditNews" asp-controller="Admin" asp-route-id="@news.Id" class="btn-edit">Sửa</a>
-                                <a asp-action="DeleteNews" asp-controller="Admin" asp-route-id="@news.Id" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
-                            </div>
-                        </div>
-                    }
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero news-page-hero mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-newspaper"></i>
+                        Tin tức và kiến thức
+                    </span>
+                    <h1 class="mb-3">Sức khỏe tâm lý</h1>
+                    <p class="mb-0">
+                        Cập nhật thông tin, kiến thức và những nội dung hữu ích giúp người dùng hiểu hơn về sức khỏe tinh thần và cách chăm sóc bản thân.
+                    </p>
                 </div>
-                @if (!Model.Last().Equals(news))
+
+                <div class="col-lg-4">
+                    <div class="news-side-note">
+                        <div class="news-date-label">Hôm nay</div>
+                        <h5 class="mb-2">@DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("vi-VN"))</h5>
+                        <p class="mb-0">@DateTime.Now.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Context.Session.GetString("UserRole") == "Admin")
+        {
+            <div class="d-flex justify-content-end mb-4">
+                <a asp-action="CreateNews" asp-controller="Admin" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Thêm tin tức mới
+                </a>
+            </div>
+        }
+
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="row g-4">
+                @foreach (var news in Model)
                 {
-                    <hr class="article-divider">
+                    <div class="col-12">
+                        <article class="app-card news-article-card p-4 p-lg-5">
+                            <div class="news-article-header mb-3">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                                    <div>
+                                        <h2 class="news-article-title mb-2">@news.Title</h2>
+                                        <div class="news-article-meta">
+                                            <span><i class="bi bi-person-circle me-1"></i>@news.Author</span>
+                                            <span><i class="bi bi-clock-history me-1"></i>@news.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
+                                        </div>
+                                    </div>
+
+                                    <span class="badge-soft primary">
+                                        <i class="bi bi-journal-text"></i>
+                                        Bài viết
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="news-article-content">
+                                @foreach (var paragraph in (news.Content ?? string.Empty)
+                                    .Split(new[] { "\r\n\r\n", "\n\n" }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <p>@paragraph</p>
+                                }
+                            </div>
+
+                            @if (Context.Session.GetString("UserRole") == "Admin")
+                            {
+                                <div class="news-article-actions mt-4 pt-3">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <a asp-action="EditNews"
+                                           asp-controller="Admin"
+                                           asp-route-id="@news.Id"
+                                           class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil-square me-1"></i>Sửa
+                                        </a>
+
+                                        <form asp-action="DeleteNews"
+                                              asp-controller="Admin"
+                                              asp-route-id="@news.Id"
+                                              method="post"
+                                              class="m-0"
+                                              onsubmit="return confirm('Bạn có chắc muốn xóa bài viết này?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="bi bi-trash me-1"></i>Xóa
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </article>
+                    </div>
                 }
-            }
-        </div>
-    }
-    else
-    {
-        <div class="no-news text-center">
-            <h4>Chưa có tin tức nào</h4>
-            <p class="text-muted">Hiện tại chưa có tin tức nào để hiển thị.</p>
-        </div>
-    }
-</div>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-newspaper"></i>
+                </div>
+                <h5 class="fw-bold">Chưa có tin tức nào</h5>
+                <p class="mb-0">Hiện tại chưa có tin tức để hiển thị.</p>
+            </div>
+        }
+    </div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

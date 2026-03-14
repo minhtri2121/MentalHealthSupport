@@ -1,32 +1,76 @@
 @model MentalHealthSupport.Models.TermsAndPolicy
+
 @{
     ViewData["Title"] = "Điều khoản dịch vụ";
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=sw ap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/privacy.css" />
 
-<div class="container">
-    <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="page-title">📜 Điều khoản dịch vụ</h1>
-            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero legal-page-hero mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-file-earmark-check"></i>
+                        Quy định sử dụng
+                    </span>
+                    <h1 class="mb-3">Điều khoản dịch vụ</h1>
+                    <p class="mb-0">
+                        Các điều khoản này giúp người dùng hiểu rõ quyền lợi, trách nhiệm và phạm vi sử dụng dịch vụ trên nền tảng.
+                    </p>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="legal-side-note">
+                        <h5>Lưu ý</h5>
+                        <p class="mb-0">
+                            Vui lòng đọc kỹ điều khoản trước khi sử dụng để đảm bảo trải nghiệm an toàn và phù hợp.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <p>@Html.Raw(Model.Content)</p>
-            <br><br><br>
-            <div class="meta-info">
-                @if (Model.LastModifiedDate.HasValue)
+
+        <div class="app-card legal-content-card p-4 p-lg-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h4 class="fw-bold mb-1">Nội dung điều khoản</h4>
+                    <p class="section-subtitle mb-0">
+                        Các quy định áp dụng khi người dùng truy cập và sử dụng hệ thống.
+                    </p>
+                </div>
+
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
+            </div>
+
+            <div class="legal-content-body">
+                @if (Model == null || string.IsNullOrWhiteSpace(Model.Content))
                 {
-                    <p>Ngày chỉnh sửa: @Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")</p>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <h5 class="fw-bold">Chưa có nội dung điều khoản</h5>
+                        <p class="mb-0">Hiện tại chưa có dữ liệu để hiển thị.</p>
+                    </div>
+                }
+                else
+                {
+                    @Html.Raw(Model.Content)
+                }
+            </div>
+
+            <div class="legal-meta mt-4 pt-4">
+                @if (Model?.LastModifiedDate.HasValue == true)
+                {
+                    <div class="legal-meta-item">
+                        <i class="bi bi-clock-history"></i>
+                        <span>Cập nhật lần cuối: @Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")</span>
+                    </div>
                 }
             </div>
         </div>
     </div>
-</div>
+</section>

@@ -1,54 +1,231 @@
-@model List<MentalHealthSupport.Models.User>
+@model IEnumerable<MentalHealthSupport.Models.User>
 
 @{
-    ViewData["Title"] = "Danh Sách Người Dùng";
-    Layout = null;
+    ViewData["Title"] = "Quản lý người dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/newslist.css" />
+<section class="admin-user-list-page">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-people"></i>
+                    Quản lý tài khoản hệ thống
+                </span>
+                <h2 class="fw-bold mb-3">Danh sách người dùng</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Theo dõi, chỉnh sửa và quản lý các tài khoản đang hoạt động trong hệ thống MentalHealthSupport.
+                </p>
+            </div>
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="page-title">📋 Danh Sách Người Dùng</h1>
-        <div>
-            <a asp-controller="Admin" asp-action="Index" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
-            <a asp-action="CreateUser" class="btn btn-primary ms-2"><i class="fas fa-plus me-2"></i>Thêm Người Dùng Mới</a>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight h-100">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-person-plus"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Tạo tài khoản mới</h5>
+                    <p class="mb-3">
+                        Thêm nhanh người dùng mới để mở rộng dữ liệu hệ thống.
+                    </p>
+                    <a asp-controller="Admin" asp-action="CreateUser" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm người dùng
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var user in Model)
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success rounded-4 mb-4">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger rounded-4 mb-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="admin-card">
+        <div class="admin-toolbar">
+            <div>
+                <h4 class="admin-section-title mb-1">Toàn bộ tài khoản</h4>
+                <p class="admin-section-subtitle">
+                    Tổng số: <strong>@(Model?.Count() ?? 0)</strong> người dùng
+                </p>
+            </div>
+
+            <a asp-controller="Admin" asp-action="CreateUser" class="btn btn-primary">
+                <i class="bi bi-person-plus me-2"></i>Thêm mới
+            </a>
+        </div>
+
+        @if (Model == null || !Model.Any())
         {
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">@user.FullName</h5>
-                        <p class="card-text mb-2"><i class="fas fa-envelope me-2"></i>Email: @user.Email</p>
-                        <p class="card-text"><i class="fas fa-phone me-2"></i>Số điện thoại: @(user.Phone ?? "Không có")</p>
-                        <p class="card-text"><i class="fas fa-user-tag me-2"></i>Vai trò: @user.Role</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 text-end">
-                        <a asp-action="EditUser" asp-route-id="@user.UserId" class="btn btn-warning btn-sm ms-2"><i class="fas fa-edit me-1"></i>Sửa</a>
-                        <a asp-action="DeleteUser" asp-route-id="@user.UserId" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Bạn có chắc muốn xóa?')"><i class="fas fa-trash me-1"></i>Xóa</a>
-                    </div>
+            <div class="admin-empty-state">
+                <i class="bi bi-people"></i>
+                <h5 class="fw-bold">Chưa có người dùng nào</h5>
+                <p class="mb-3">Hãy thêm tài khoản đầu tiên để bắt đầu quản lý dữ liệu người dùng.</p>
+                <a asp-controller="Admin" asp-action="CreateUser" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Tạo người dùng
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="app-table-shell admin-table-shell desktop-user-table">
+                <div class="table-responsive">
+                    <table class="table table-modern align-middle admin-user-table">
+                        <thead>
+                            <tr>
+                                <th>Người dùng</th>
+                                <th>Email</th>
+                                <th>Vai trò</th>
+                                <th>Số điện thoại</th>
+                                <th>Ngày tạo</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                var roleClass = user.Role == "Admin"
+                                    ? "danger"
+                                    : user.Role == "Consultant"
+                                        ? "primary"
+                                        : "success";
+
+                                <tr>
+                                    <td>
+                                        <div class="admin-user-cell">
+                                            <div class="admin-user-cell-avatar">
+                                                <i class="bi bi-person-circle"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">@user.FullName</div>
+                                                <div class="section-subtitle small">ID: @user.UserId</div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="admin-email-cell">@user.Email</div>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge-soft @roleClass">
+                                            @user.Role
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="admin-phone-cell">
+                                            @(string.IsNullOrWhiteSpace(user.Phone) ? "Chưa cập nhật" : user.Phone)
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="admin-date-cell">
+                                            @user.CreatedAt.ToString("dd/MM/yyyy")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <a asp-controller="Admin"
+                                               asp-action="EditUser"
+                                               asp-route-id="@user.UserId"
+                                               class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-pencil-square me-1"></i>Sửa
+                                            </a>
+
+                                            <form asp-controller="Admin"
+                                                  asp-action="DeleteUser"
+                                                  asp-route-id="@user.UserId"
+                                                  method="post"
+                                                  class="m-0"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash me-1"></i>Xóa
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+
+            <div class="admin-user-mobile-list d-md-none mt-4">
+                @foreach (var user in Model)
+                {
+                    var roleClass = user.Role == "Admin"
+                        ? "danger"
+                        : user.Role == "Consultant"
+                            ? "primary"
+                            : "success";
+
+                    <div class="admin-mobile-card">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="admin-user-cell-avatar">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">@user.FullName</h6>
+                                    <div class="section-subtitle small">@user.Email</div>
+                                </div>
+                            </div>
+
+                            <span class="badge-soft @roleClass">@user.Role</span>
+                        </div>
+
+                        <div class="admin-mobile-info-grid mb-3">
+                            <div>
+                                <div class="admin-mobile-label">Số điện thoại</div>
+                                <div class="admin-mobile-value">
+                                    @(string.IsNullOrWhiteSpace(user.Phone) ? "Chưa cập nhật" : user.Phone)
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="admin-mobile-label">Ngày tạo</div>
+                                <div class="admin-mobile-value">
+                                    @user.CreatedAt.ToString("dd/MM/yyyy")
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <a asp-controller="Admin"
+                               asp-action="EditUser"
+                               asp-route-id="@user.UserId"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil-square me-1"></i>Sửa
+                            </a>
+
+                            <form asp-controller="Admin"
+                                  asp-action="DeleteUser"
+                                  asp-route-id="@user.UserId"
+                                  method="post"
+                                  class="m-0"
+                                  onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash me-1"></i>Xóa
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
             </div>
         }
     </div>
-    @if (Model.Count == 0)
-    {
-        <div class="text-center mt-4">
-            <p class="no-data"><i class="fas fa-exclamation-circle me-2"></i>Không có người dùng nào để hiển thị.</p>
-        </div>
-    }
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+</section>

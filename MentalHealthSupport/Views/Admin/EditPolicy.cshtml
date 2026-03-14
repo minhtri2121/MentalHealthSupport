@@ -1,65 +1,166 @@
 @model MentalHealthSupport.Models.TermsAndPolicy
 
 @{
-    ViewData["Title"] = "Chỉnh sửa Điều khoản/Chính sách";
-    Layout = null;
+    ViewData["Title"] = "Chỉnh sửa chính sách";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/editpolicy.css" />
+<section class="admin-edit-policy-page">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-pencil-square"></i>
+                    Cập nhật nội dung chính sách
+                </span>
+                <h2 class="fw-bold mb-3">Chỉnh sửa chính sách</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Cập nhật loại chính sách, nội dung, trạng thái hiển thị và thời gian chỉnh sửa trong hệ thống.
+                </p>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="form-title">Chỉnh sửa Điều khoản/Chính sách</h2>
-            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
-        </div>
-        <form asp-action="EditPolicy" asp-controller="Admin" method="post" class="needs-validation" novalidate>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CreatedDate" />
-            <div class="form-group">
-                <label asp-for="PolicyType" class="form-label">Loại</label>
-                <input asp-for="PolicyType" class="form-control" readonly />
-                <span asp-validation-for="PolicyType" class="text-danger"></span>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight h-100">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-info-circle"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Lưu ý</h5>
+                    <p class="mb-0">
+                        Hãy kiểm tra kỹ nội dung trước khi lưu để các chính sách hiển thị rõ ràng, chính xác và nhất quán.
+                    </p>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Content" class="form-label">Nội dung</label>
-                <textarea asp-for="Content" class="form-control" rows="8" placeholder="Nhập nội dung" required></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsActive" class="form-label">Trạng thái</label>
-                <select asp-for="IsActive" class="form-select" required>
-                    @{
-                    var isActiveSelected = Model.IsActive ? "selected" : "";
-                    var isInactiveSelected = !Model.IsActive ? "selected" : "";
-                }
-                <option value="true" isActiveSelected>Hoạt động</option>
-                <option value="false" isInactiveSelected>Không hoạt động</option>
-                </select>
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Cập nhật</button>
-                <a asp-action="PolicyList" asp-controller="Admin" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
-            </div>
-        </form>
-        <div class="meta-info">
-            <p>Ngày tạo: @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
-            @if (Model.LastModifiedDate.HasValue)
-            {
-                <p>Ngày chỉnh sửa: @Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")</p>
-            }
         </div>
     </div>
-</div>
+
+    <div class="admin-form-card">
+        <form asp-action="EditPolicy" method="post">
+            @Html.AntiForgeryToken()
+
+            <input asp-for="Id" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="form-section-block mb-4">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Thông tin chính sách</h5>
+                                <p class="section-subtitle mb-0">
+                                    Cập nhật loại chính sách, nội dung và thông tin thời gian.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="PolicyType" class="form-label">Loại chính sách</label>
+                                <input asp-for="PolicyType" class="form-control" placeholder="Ví dụ: Privacy Policy, Terms of Service..." />
+                                <span asp-validation-for="PolicyType" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="CreatedDate" class="form-label">Ngày tạo</label>
+                                <input asp-for="CreatedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="CreatedDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastModifiedDate" class="form-label">Cập nhật lần cuối</label>
+                                <input asp-for="LastModifiedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="LastModifiedDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check form-switch mt-3">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                    <label asp-for="IsActive" class="form-check-label">Hiển thị chính sách này</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Content" class="form-label">Nội dung</label>
+                                <textarea asp-for="Content"
+                                          class="form-control admin-policy-content-input"
+                                          rows="12"
+                                          placeholder="Nhập nội dung chính sách..."></textarea>
+                                <span asp-validation-for="Content" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="appointment-help-panel h-100 admin-side-panel">
+                        <div class="mb-4">
+                            <span class="badge-soft primary mb-3">
+                                <i class="bi bi-eye"></i>
+                                Xem nhanh
+                            </span>
+
+                            <div class="admin-policy-preview-card">
+                                <div class="admin-policy-preview-icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+
+                                <h5 class="fw-bold mb-2">
+                                    @(string.IsNullOrWhiteSpace(Model.PolicyType) ? "Chưa có loại chính sách" : Model.PolicyType)
+                                </h5>
+
+                                <p class="section-subtitle mb-2">
+                                    @Model.CreatedDate.ToString("dd/MM/yyyy")
+                                </p>
+
+                                <p class="section-subtitle mb-3">
+                                    @(Model.LastModifiedDate.HasValue
+                                        ? "Cập nhật: " + Model.LastModifiedDate.Value.ToString("dd/MM/yyyy")
+                                        : "Chưa cập nhật lần nào")
+                                </p>
+
+                                <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                                    <span class="badge-soft @(Model.IsActive ? "success" : "warning")">
+                                        @(Model.IsActive ? "Đang hiển thị" : "Đang ẩn")
+                                    </span>
+                                </div>
+
+                                <div class="content-preview admin-policy-excerpt mx-auto">
+                                    @(string.IsNullOrWhiteSpace(Model.Content) ? "Chưa có nội dung" : Model.Content)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appointment-tip-box">
+                            <h6 class="fw-bold mb-2">
+                                <i class="bi bi-lightbulb me-2"></i>Gợi ý chỉnh sửa
+                            </h6>
+                            <p class="mb-2">- Giữ PolicyType ngắn gọn, rõ nghĩa.</p>
+                            <p class="mb-2">- Nội dung nên trình bày theo đoạn để dễ đọc.</p>
+                            <p class="mb-2">- Chỉ bật hiển thị khi nội dung đã hoàn chỉnh.</p>
+                            <p class="mb-0">- Nên cập nhật LastModifiedDate khi bạn sửa nội dung.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-2"></i>Lưu thay đổi
+                </button>
+
+                <a asp-controller="Admin" asp-action="PolicyList" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

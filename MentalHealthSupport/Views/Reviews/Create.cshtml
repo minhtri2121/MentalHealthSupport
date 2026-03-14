@@ -5,49 +5,114 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="card shadow p-4">
-        <h2 class="text-center mb-4">Đánh giá chuyên gia</h2>
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero review-page-hero mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-star-half"></i>
+                        Chia sẻ trải nghiệm
+                    </span>
+                    <h1 class="mb-3">Đánh giá chuyên gia</h1>
+                    <p class="mb-0">
+                        Ý kiến của bạn sẽ giúp hệ thống cải thiện chất lượng dịch vụ và hỗ trợ người dùng khác lựa chọn chuyên gia phù hợp hơn.
+                    </p>
+                </div>
 
-        <div class="mb-3">
-            <label class="form-label fw-bold">Chuyên gia</label>
-            <div>@Model.ConsultantName</div>
+                <div class="col-lg-4">
+                    <div class="review-side-note">
+                        <h5>Chuyên gia</h5>
+                        <p class="mb-0">@Model.ConsultantName</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <form asp-action="Create" method="post">
-            @Html.AntiForgeryToken()
-            <input type="hidden" asp-for="AppointmentId" />
-            <input type="hidden" asp-for="ConsultantId" />
-            <input type="hidden" asp-for="ConsultantName" />
+        <div class="app-card review-form-card p-4 p-lg-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h4 class="fw-bold mb-1">Gửi đánh giá</h4>
+                    <p class="section-subtitle mb-0">
+                        Chọn mức độ hài lòng và chia sẻ nhận xét sau buổi tư vấn.
+                    </p>
+                </div>
 
-            <div asp-validation-summary="All" class="alert alert-danger"></div>
-
-            <div class="mb-3">
-                <label asp-for="Rating" class="form-label">Số sao</label>
-                <select asp-for="Rating" class="form-select">
-                    <option value="">-- Chọn số sao --</option>
-                    <option value="5">5 sao - Rất hài lòng</option>
-                    <option value="4">4 sao - Hài lòng</option>
-                    <option value="3">3 sao - Bình thường</option>
-                    <option value="2">2 sao - Chưa tốt</option>
-                    <option value="1">1 sao - Không hài lòng</option>
-                </select>
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                <a asp-controller="Appointments" asp-action="MyAppointments" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Comment" class="form-label">Nhận xét</label>
-                <textarea asp-for="Comment" class="form-control" rows="5" placeholder="Chia sẻ cảm nhận của bạn sau buổi tư vấn"></textarea>
-                <span asp-validation-for="Comment" class="text-danger"></span>
-            </div>
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="AppointmentId" />
+                <input type="hidden" asp-for="ConsultantId" />
+                <input type="hidden" asp-for="ConsultantName" />
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-                <a asp-controller="Appointments" asp-action="MyAppointments" class="btn btn-secondary">Quay lại</a>
-            </div>
-        </form>
+                <div asp-validation-summary="All" class="alert alert-danger rounded-4 mb-4"></div>
+
+                <div class="form-section-block mb-4">
+                    <div class="form-section-header mb-3">
+                        <div class="form-section-icon">
+                            <i class="bi bi-stars"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Mức độ hài lòng</h5>
+                            <p class="section-subtitle mb-0">
+                                Hãy chọn số sao phản ánh đúng trải nghiệm của bạn.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-0">
+                        <label asp-for="Rating" class="form-label">Số sao</label>
+                        <select asp-for="Rating" class="form-select review-rating-select">
+                            <option value="">-- Chọn số sao --</option>
+                            <option value="5">5 sao - Rất hài lòng</option>
+                            <option value="4">4 sao - Hài lòng</option>
+                            <option value="3">3 sao - Bình thường</option>
+                            <option value="2">2 sao - Chưa tốt</option>
+                            <option value="1">1 sao - Không hài lòng</option>
+                        </select>
+                        <span asp-validation-for="Rating" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="form-section-block mb-4">
+                    <div class="form-section-header mb-3">
+                        <div class="form-section-icon">
+                            <i class="bi bi-chat-left-text"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Nhận xét của bạn</h5>
+                            <p class="section-subtitle mb-0">
+                                Viết ngắn gọn, cụ thể và chân thành để đánh giá có giá trị hơn.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-0">
+                        <label asp-for="Comment" class="form-label">Nhận xét</label>
+                        <textarea asp-for="Comment"
+                                  class="form-control review-comment-input"
+                                  rows="6"
+                                  placeholder="Chia sẻ cảm nhận của bạn sau buổi tư vấn"></textarea>
+                        <span asp-validation-for="Comment" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send-check me-2"></i>Gửi đánh giá
+                    </button>
+                    <a asp-controller="Appointments" asp-action="MyAppointments" class="btn btn-outline-primary">
+                        Xem lịch hẹn
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

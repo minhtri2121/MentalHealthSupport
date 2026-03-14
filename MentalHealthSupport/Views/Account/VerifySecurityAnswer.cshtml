@@ -1,39 +1,115 @@
 @model MentalHealthSupport.Models.ViewModel.VerifySecurityAnswerViewModel
+
 @{
-    ViewData["Title"] = "Xác minh Câu Hỏi Bảo Mật";
+    ViewData["Title"] = "Xác minh câu hỏi bảo mật";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="bg-light min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="w-100 p-4" style="max-width: 28rem;">
-        <div class="text-center mb-4">
-            <h2 class="fw-bold text-primary">Xác minh Câu Hỏi Bảo Mật</h2>
-            <p class="text-muted">Trả lời câu hỏi để đặt lại mật khẩu</p>
-        </div>
+<section class="auth-shell">
+    <div class="container">
+        <div class="row g-4 align-items-center auth-wrapper">
+            <div class="col-lg-6">
+                <div class="auth-intro">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-shield-check"></i>
+                        Xác minh tài khoản
+                    </span>
+                    <h1 class="auth-title mb-3">Trả lời câu hỏi bảo mật</h1>
+                    <p class="auth-subtitle mb-4">
+                        Đây là bước xác minh trước khi bạn được phép đặt lại mật khẩu. Hãy nhập đúng câu trả lời đã dùng khi tạo tài khoản.
+                    </p>
 
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-body p-4">
-                @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
-                {
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        @ViewData["ErrorMessage"]
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                }
+                    <div class="auth-feature-list">
+                        <div class="auth-feature-item">
+                            <div class="auth-feature-icon">
+                                <i class="bi bi-question-circle"></i>
+                            </div>
+                            <div>
+                                <h6>Xác minh đúng người dùng</h6>
+                                <p class="mb-0">Câu hỏi bảo mật giúp hệ thống nhận diện đúng chủ tài khoản.</p>
+                            </div>
+                        </div>
 
-                <form asp-action="VerifySecurityAnswer" asp-controller="Account" method="post" novalidate>
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" asp-for="Email" />
-                    <div class="mb-3">
-                        <label class="form-label">@ViewData["SecurityQuestion"]</label>
-                        <input asp-for="Answer" class="form-control" required />
-                        <span asp-validation-for="Answer" class="text-danger small"></span>
+                        <div class="auth-feature-item">
+                            <div class="auth-feature-icon">
+                                <i class="bi bi-lock"></i>
+                            </div>
+                            <div>
+                                <h6>Tăng cường bảo mật</h6>
+                                <p class="mb-0">Chỉ khi trả lời chính xác, bạn mới có thể chuyển sang bước đổi mật khẩu.</p>
+                            </div>
+                        </div>
+
+                        <div class="auth-feature-item">
+                            <div class="auth-feature-icon">
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </div>
+                            <div>
+                                <h6>Tiếp tục nhanh chóng</h6>
+                                <p class="mb-0">Sau khi xác minh thành công, bạn sẽ được chuyển sang màn hình đặt lại mật khẩu.</p>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Xác minh</button>
-                </form>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="app-card auth-card p-4 p-lg-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold mb-2">Xác minh bảo mật</h2>
+                        <p class="section-subtitle mb-0">Nhập câu trả lời để tiếp tục</p>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
+                    {
+                        <div class="alert alert-danger rounded-4 mb-4">
+                            @ViewData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+                    <form asp-action="VerifySecurityAnswer" asp-controller="Account" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" asp-for="Email" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Câu hỏi bảo mật</label>
+                            <div class="auth-question-box">
+                                <i class="bi bi-patch-question me-2"></i>
+                                <span>@ViewData["SecurityQuestion"]</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Answer" class="form-label">Câu trả lời</label>
+                            <div class="auth-input-group">
+                                <span class="auth-input-icon">
+                                    <i class="bi bi-chat-left-text"></i>
+                                </span>
+                                <input asp-for="Answer"
+                                       class="form-control auth-input"
+                                       placeholder="Nhập câu trả lời bảo mật" />
+                            </div>
+                            <span asp-validation-for="Answer" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 auth-submit-btn">
+                            <i class="bi bi-check-circle me-2"></i>Xác minh
+                        </button>
+                    </form>
+
+                    <div class="auth-footer text-center mt-4 pt-4">
+                        <a asp-action="ForgotPassword" asp-controller="Account" class="auth-text-link">
+                            <i class="bi bi-arrow-left me-1"></i>Quay lại bước trước
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

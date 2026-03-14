@@ -1,137 +1,137 @@
 @model List<MentalHealthSupport.Models.ViewModel.ConsultantViewModel>
-
 @{
-    ViewData["Title"] = "Đội Ngũ Chuyên Gia";
+    ViewData["Title"] = "Đội ngũ chuyên gia";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-4">
-    <h1 class="text-primary mb-4">Đội Ngũ Chuyên Gia Tâm Lý</h1>
-
-    @* <!-- Filter and Sort -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <form method="get" class="form-inline">
-                <div class="input-group">
-                    <select name="specialty" class="form-control">
-                        <option value="">Tất cả chuyên môn</option>
-                        @foreach (var spec in ViewBag.Specialties ?? new List<string>())
-                        {
-                            <option value="@spec" selected="@(Context.Request.Query["specialty"] == spec)">@spec</option>
-                        }
-                    </select>
-                    <button type="submit" class="btn btn-primary">Lọc</button>
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero consultant-page-hero">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-person-heart"></i>
+                        Đội ngũ tư vấn đồng hành cùng bạn
+                    </span>
+                    <h1 class="mb-3">Đội ngũ chuyên gia tâm lý</h1>
+                    <p class="mb-0">
+                        Chọn chuyên gia theo chuyên môn, số năm kinh nghiệm và mức độ phù hợp
+                        với nhu cầu của bạn để bắt đầu hành trình hỗ trợ hiệu quả hơn.
+                    </p>
                 </div>
-            </form>
-        </div>
-    </div> *@
-
-    <!-- Consultant List -->
-    @if (Model == null || !Model.Any())
-    {
-        <div class="text-center text-secondary py-10 bg-light rounded">
-            <svg class="mx-auto h-12 w-12 text-secondary mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <p class="text-lg">Hiện chưa có chuyên gia nào được hiển thị.</p>
-        </div>
-    }
-    else
-    {
-        <div class="consultant-cards-container">
-            @foreach (var consultant in Model)
-            {
-                <div class="consultant-card-wrapper">
-                    <div class="card consultant-card border-0 shadow-sm">
-                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 line-clamp-1">@consultant.FullName</h5>
-                            @if (consultant.IsVerified)
-                            {
-                                <span class="badge badge-light">Đã xác minh</span>
-                            }
+                <div class="col-lg-4">
+                    <div class="consultant-summary-box">
+                        <div class="consultant-summary-item">
+                            <h3>@(Model?.Count ?? 0)</h3>
+                            <p>Chuyên gia hiện có</p>
                         </div>
-                        <div class="card-body text-center consultant-card-body">
-                            <img 
-                                src="@(string.IsNullOrEmpty(consultant.AvatarUrl) ? "~/images/default-avatar.png" : Url.Content("~/images/" + consultant.AvatarUrl))"
-                                alt="Ảnh đại diện của @consultant.FullName"
-                                class="rounded-circle img-thumbnail mb-3"
-                                style="width: 120px; height: 120px; object-fit: cover;"
-                                loading="lazy"
-                            />
-                            <h6 class="card-subtitle mb-2 text-muted line-clamp-1">@consultant.Specialty</h6>
-                            <p class="text-sm"><strong>Kinh nghiệm:</strong> @consultant.ExperienceYears năm</p>
-                            <p class="text-sm"><strong>Bằng cấp:</strong> @consultant.CertificateUrl</p>
-                            <div class="consultant-description">
-                                <p class="text-sm"><i>@(consultant.Description?.Length > 150 ? consultant.Description.Substring(0, 100) + "..." : consultant.Description)</i></p>
-                            </div>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <div class="d-flex gap-2">
-                                <form asp-action="StartChat" asp-controller="Chat" method="post" class="flex-grow">
-                                    <input type="hidden" name="consultantId" value="@consultant.ConsultantId" />
-                                    <button type="submit" class="btn btn-primary w-100" aria-label="Liên hệ với @consultant.FullName">
-                                        Liên Hệ
-                                    </button>
-                                </form>
-                                <a 
-                                    href="@Url.Action("Details", "Consultants", new { id = consultant.ConsultantId})" 
-                                    class="btn btn-outline-primary flex-grow"
-                                    aria-label="Xem hồ sơ của @consultant.FullName"
-                                >
-                                    Chi Tiết
-                                </a>
-                            </div>
+                        <div class="consultant-summary-item">
+                            <h3>Nhanh</h3>
+                            <p>Kết nối thuận tiện</p>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         </div>
-    }
-</div>
 
-<style>
-/* Container cho tất cả cards */
-.consultant-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon"><i class="bi bi-search"></i></div>
+                <h5 class="fw-bold">Hiện chưa có chuyên gia nào</h5>
+                <p class="mb-0">
+                    Vui lòng quay lại sau khi hệ thống được cập nhật thêm hồ sơ mới.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var consultant in Model)
+                {
+                    var shortDescription = string.IsNullOrWhiteSpace(consultant.Description)
+                        ? "Chuyên gia sẵn sàng lắng nghe và đồng hành cùng bạn trong quá trình hỗ trợ tâm lý."
+                        : (consultant.Description.Length > 135
+                            ? consultant.Description.Substring(0, 135) + "..."
+                            : consultant.Description);
 
-/* Wrapper cho mỗi card */
-.consultant-card-wrapper {
-    display: flex;
-    height: 100%;
-}
+                    <div class="col-md-6 col-xl-4">
+                        <div class="consultant-card consultant-list-card p-4 h-100 d-flex flex-column">
+                            <div class="consultant-card-top mb-3">
+                                <div class="d-flex align-items-start gap-3">
+                                    <img src="@(string.IsNullOrEmpty(consultant.AvatarUrl)
+                                                    ? Url.Content("~/images/default-avatar.png")
+                                                    : Url.Content("~/images/" + consultant.AvatarUrl))"
+                                         alt="@consultant.FullName"
+                                         class="consultant-avatar consultant-avatar-list" />
 
-/* Card styling */
-.consultant-card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    min-height: 480px; /* Đặt chiều cao tối thiểu */
-}
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-start mb-2">
+                                            <h5 class="fw-bold mb-0 consultant-name">@consultant.FullName</h5>
 
-/* Card body - phần chính của card */
-.consultant-card-body {
-    flex: 1; /* Cho phép body mở rộng để fill không gian */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1.5rem;
-}
+                                            @if (consultant.IsVerified)
+                                            {
+                                                <span class="badge-soft success">
+                                                    <i class="bi bi-patch-check-fill"></i>
+                                                    Đã xác minh
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-soft warning">
+                                                    <i class="bi bi-hourglass-split"></i>
+                                                    Chưa xác minh
+                                                </span>
+                                            }
+                                        </div>
 
-/* Đảm bảo description có chiều cao cố định */
-.consultant-description {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    min-height: 60px; /* Đặt chiều cao tối thiểu cho description */
-}
+                                        <div class="consultant-specialty mb-2">
+                                            @consultant.Specialty
+                                        </div>
 
-/* Card footer luôn ở cuối */
-.card-footer {
-    margin-top: auto;
-}
-</style>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="badge-soft primary">
+                                                <i class="bi bi-briefcase"></i>
+                                                @consultant.ExperienceYears năm
+                                            </span>
+
+                                            @if (!string.IsNullOrWhiteSpace(consultant.CertificateUrl))
+                                            {
+                                                <span class="badge-soft">
+                                                    <i class="bi bi-award"></i>
+                                                    Có chứng chỉ
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="consultant-card-body mb-4">
+                                <p class="section-subtitle mb-0 consultant-desc">
+                                    @shortDescription
+                                </p>
+                            </div>
+
+                            <div class="consultant-card-bottom mt-auto">
+                                <div class="d-grid gap-2">
+                                    <a href="@Url.Action("Details", "Consultants", new { id = consultant.ConsultantId })"
+                                       class="btn btn-outline-primary">
+                                        <i class="bi bi-person-vcard me-2"></i>Xem chi tiết
+                                    </a>
+
+                                    <form asp-action="StartChat" asp-controller="Chat" method="post" class="m-0">
+                                        <input type="hidden" name="consultantId" value="@consultant.ConsultantId" />
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="bi bi-chat-dots me-2"></i>Liên hệ ngay
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

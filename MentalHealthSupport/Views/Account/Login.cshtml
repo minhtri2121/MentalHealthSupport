@@ -1,66 +1,140 @@
 @model MentalHealthSupport.Models.ViewModel.LoginViewModel
+
 @{
     ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="bg-light min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="w-100 p-4" style="max-width: 28rem;">
-        <div class="text-center mb-4">
-            <h2 class="fw-bold text-primary">Chào mừng trở lại</h2>
-            <p class="text-muted">Đăng nhập để tiếp tục</p>
-        </div>
+<section class="auth-shell">
+    <div class="container">
+        <div class="row g-4 align-items-center auth-wrapper">
+            <div class="col-lg-6">
+                <div class="auth-intro">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-shield-lock"></i>
+                        MentalHealthSupport
+                    </span>
+                    <h1 class="auth-title mb-3">Chào mừng bạn quay lại</h1>
+                    <p class="auth-subtitle mb-4">
+                        Đăng nhập để tiếp tục theo dõi lịch hẹn, trò chuyện với chuyên gia và sử dụng các tính năng hỗ trợ sức khỏe tinh thần.
+                    </p>
 
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-body p-4">
-                @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
-                {
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        @ViewData["ErrorMessage"]
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                }
-
-                <form asp-action="Login" asp-controller="Account" method="post" novalidate>
-                    @Html.AntiForgeryToken()
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label">Email</label>
-                        <input asp-for="Email" class="form-control" placeholder="example@email.com" required />
-                        <span asp-validation-for="Email" class="text-danger small"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="PasswordHash" class="form-label">Mật khẩu</label>
-                        <div class="input-group">
-                            <input asp-for="PasswordHash" type="password" class="form-control" id="passwordInput" placeholder="••••••••" required />
-                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </button>
+                    <div class="auth-feature-list">
+                        <div class="auth-feature-item">
+                            <div class="auth-feature-icon">
+                                <i class="bi bi-chat-heart"></i>
+                            </div>
+                            <div>
+                                <h6>Hỗ trợ riêng tư</h6>
+                                <p class="mb-0">Trao đổi an toàn và bảo mật với chuyên gia phù hợp.</p>
+                            </div>
                         </div>
-                        <span asp-validation-for="PasswordHash" class="text-danger small"></span>
-                    </div>
 
-                    <div class="d-flex justify-content-between align-items-center mb-3"> 
-                        <a asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none text-primary">Quên mật khẩu?</a>
-                    </div>
+                        <div class="auth-feature-item">
+                            <div class="auth-feature-icon">
+                                <i class="bi bi-calendar2-check"></i>
+                            </div>
+                            <div>
+                                <h6>Quản lý lịch hẹn</h6>
+                                <p class="mb-0">Theo dõi và đặt lịch tư vấn thuận tiện hơn.</p>
+                            </div>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
-                </form>
+                        <div class="auth-feature-item">
+                            <div class="auth-feature-icon">
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                            <div>
+                                <h6>Đồng hành lâu dài</h6>
+                                <p class="mb-0">Lưu trữ hành trình hỗ trợ để bạn dễ theo dõi tiến trình.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card-footer bg-white text-center py-3">
-                <span class="text-muted">Chưa có tài khoản?</span>
-                <a asp-action="Register" asp-controller="Account" class="text-primary text-decoration-none">Đăng ký</a>
+            <div class="col-lg-6">
+                <div class="app-card auth-card p-4 p-lg-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold mb-2">Đăng nhập</h2>
+                        <p class="section-subtitle mb-0">Nhập thông tin tài khoản để tiếp tục</p>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+                    {
+                        <div class="alert alert-danger rounded-4 mb-4" role="alert">
+                            @ViewData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <form asp-action="Login" asp-controller="Account" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <div class="auth-input-group">
+                                <span class="auth-input-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input asp-for="Email"
+                                       class="form-control auth-input"
+                                       placeholder="example@email.com"
+                                       required />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PasswordHash" class="form-label">Mật khẩu</label>
+                            <div class="auth-input-group">
+                                <span class="auth-input-icon">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input asp-for="PasswordHash"
+                                       type="password"
+                                       class="form-control auth-input auth-password-input"
+                                       id="passwordInput"
+                                       placeholder="••••••••"
+                                       required />
+                                <button type="button" class="auth-toggle-password" id="togglePassword" aria-label="Hiện hoặc ẩn mật khẩu">
+                                    <i class="bi bi-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="PasswordHash" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4 auth-link-row">
+                            <a asp-action="ForgotPassword" asp-controller="Account" class="auth-text-link">
+                                Quên mật khẩu?
+                            </a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 auth-submit-btn">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Đăng nhập
+                        </button>
+                    </form>
+
+                    <div class="auth-footer text-center mt-4 pt-4">
+                        <span class="section-subtitle">Chưa có tài khoản?</span>
+                        <a asp-action="Register" asp-controller="Account" class="auth-text-link ms-1">
+                            Đăng ký
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function () {
+        document.getElementById('togglePassword')?.addEventListener('click', function () {
             const input = document.getElementById('passwordInput');
             const icon = document.getElementById('eyeIcon');
+
+            if (!input || !icon) return;
+
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('bi-eye');

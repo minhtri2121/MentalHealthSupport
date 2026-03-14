@@ -1,89 +1,253 @@
 @model MentalHealthSupport.Models.ViewModel.ManageViewModel
+
 @{
     ViewData["Title"] = "Chỉnh sửa tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var avatarPath = string.IsNullOrWhiteSpace(Model.AvatarUrl)
+        ? Url.Content("~/images/default-avatar.png")
+        : Url.Content("~/images/" + Model.AvatarUrl);
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg rounded-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Chỉnh sửa thông tin tài khoản</h4>
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero account-edit-hero mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-pencil-square"></i>
+                        Cập nhật hồ sơ cá nhân
+                    </span>
+                    <h1 class="mb-3">Chỉnh sửa tài khoản</h1>
+                    <p class="mb-0">
+                        Cập nhật thông tin cá nhân và hồ sơ chuyên gia để dữ liệu của bạn luôn chính xác và đầy đủ.
+                    </p>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="account-edit-side-note">
+                        <h5>Vai trò hiện tại</h5>
+                        <p class="mb-0">@Model.Role</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <form asp-action="Edit" asp-controller="Account" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+        <div class="app-card account-edit-card p-4 p-lg-5">
+            <form asp-action="Edit"
+                  asp-controller="Account"
+                  method="post"
+                  enctype="multipart/form-data"
+                  novalidate>
+                @Html.AntiForgeryToken()
+
                 <input type="hidden" asp-for="UserId" />
                 <input type="hidden" asp-for="Role" />
                 <input type="hidden" asp-for="IsVerified" />
                 <input type="hidden" asp-for="CreatedAt" />
+                <input type="hidden" asp-for="ApprovalStatus" />
+                <input type="hidden" asp-for="AvatarUrl" />
 
-                <div class="mb-3">
-                    <label asp-for="FullName" class="form-label">Họ và tên</label>
-                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" required />
-                    <span asp-validation-for="FullName" class="text-danger"></span>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="form-section-block mb-4">
+                            <div class="form-section-header mb-3">
+                                <div class="form-section-icon">
+                                    <i class="bi bi-person-vcard"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Thông tin cá nhân</h5>
+                                    <p class="section-subtitle mb-0">
+                                        Cập nhật các thông tin cơ bản của tài khoản.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="FullName" class="form-label">Họ và tên</label>
+                                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" />
+                                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" class="form-control" placeholder="Nhập email" />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Phone" class="form-label">Số điện thoại</label>
+                                    <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Tài khoản xác minh</label>
+                                    <div class="account-edit-static-field">
+                                        <span class="badge-soft @(Model.IsVerified ? "success" : "warning")">
+                                            @(Model.IsVerified ? "Đã xác minh" : "Chưa xác minh")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Vai trò</label>
+                                    <div class="account-edit-static-field">@Model.Role</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Ngày tạo</label>
+                                    <div class="account-edit-static-field">@Model.CreatedAt.ToString("dd/MM/yyyy")</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.Role == "Consultant")
+                        {
+                            <div class="form-section-block">
+                                <div class="form-section-header mb-3">
+                                    <div class="form-section-icon">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Thông tin chuyên gia</h5>
+                                        <p class="section-subtitle mb-0">
+                                            Hồ sơ này sẽ được dùng để hiển thị cho người dùng khi xem chuyên gia.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="Specialty" class="form-label">Chuyên ngành</label>
+                                        <input asp-for="Specialty" class="form-control" placeholder="Nhập chuyên ngành" />
+                                        <span asp-validation-for="Specialty" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="ExperienceYears" class="form-label">Số năm kinh nghiệm</label>
+                                        <input asp-for="ExperienceYears" type="number" min="0" class="form-control" />
+                                        <span asp-validation-for="ExperienceYears" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="CertificateUrl" class="form-label">URL bằng cấp</label>
+                                        <input asp-for="CertificateUrl" class="form-control" placeholder="Nhập URL bằng cấp" />
+                                        <span asp-validation-for="CertificateUrl" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Trạng thái duyệt</label>
+                                        <div class="account-edit-static-field">
+                                            @if (Model.ApprovalStatus == "Approved")
+                                            {
+                                                <span class="badge-soft success">Đã duyệt</span>
+                                            }
+                                            else if (Model.ApprovalStatus == "Rejected")
+                                            {
+                                                <span class="badge-soft danger">Từ chối</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-soft warning">Chờ duyệt</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label asp-for="AvatarFile" class="form-label">Tải lên avatar mới</label>
+                                        <input asp-for="AvatarFile" type="file" accept="image/*" class="form-control" id="accountAvatarInput" />
+                                        <span asp-validation-for="AvatarFile" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="appointment-help-panel h-100 admin-side-panel">
+                            <div class="mb-4">
+                                <span class="badge-soft primary mb-3">
+                                    <i class="bi bi-eye"></i>
+                                    Xem nhanh hồ sơ
+                                </span>
+
+                                <div class="account-edit-preview-card">
+                                    <img src="@avatarPath"
+                                         alt="@Model.FullName"
+                                         class="preview-image mb-3"
+                                         id="accountAvatarPreview" />
+
+                                    <h5 class="fw-bold mb-1">@Model.FullName</h5>
+                                    <p class="section-subtitle mb-2">@Model.Email</p>
+
+                                    <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+                                        <span class="badge-soft primary">@Model.Role</span>
+                                        <span class="badge-soft @(Model.IsVerified ? "success" : "warning")">
+                                            @(Model.IsVerified ? "Đã xác minh" : "Chưa xác minh")
+                                        </span>
+                                    </div>
+
+                                    @if (Model.Role == "Consultant")
+                                    {
+                                        <div class="account-preview-meta">
+                                            <div>
+                                                <span>Chuyên ngành</span>
+                                                <strong>@(string.IsNullOrWhiteSpace(Model.Specialty) ? "Chưa cập nhật" : Model.Specialty)</strong>
+                                            </div>
+                                            <div>
+                                                <span>Kinh nghiệm</span>
+                                                <strong>@Model.ExperienceYears năm</strong>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="appointment-tip-box">
+                                <h6 class="fw-bold mb-2">
+                                    <i class="bi bi-lightbulb me-2"></i>Gợi ý cập nhật
+                                </h6>
+                                <p class="mb-2">- Email và số điện thoại nên luôn chính xác.</p>
+                                <p class="mb-2">- Ảnh avatar nên rõ mặt, sáng và vuông tỉ lệ.</p>
+                                <p class="mb-2">- Chuyên gia nên cập nhật chuyên ngành và kinh nghiệm đầy đủ.</p>
+                                <p class="mb-0">- Bằng cấp nên dùng link rõ ràng, dễ kiểm tra.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Email" class="form-label">Email</label>
-                    <input asp-for="Email" class="form-control" placeholder="Nhập email" required />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-2"></i>Lưu thay đổi
+                    </button>
 
-                <div class="mb-3">
-                    <label asp-for="Phone" class="form-label">Số điện thoại</label>
-                    <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
-                    <span asp-validation-for="Phone" class="text-danger"></span>
-                </div>
-
-                @if (Model.Role == "Consultant")
-                {
-                    <hr />
-                    <h5 class="text-primary">Thông tin chuyên gia</h5>
-
-                    <div class="mb-3">
-                        <label asp-for="Specialty" class="form-label">Chuyên ngành</label>
-                        <input asp-for="Specialty" class="form-control" placeholder="Nhập chuyên ngành" required />
-                        <span asp-validation-for="Specialty" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="CertificateUrl" class="form-label">URL Bằng cấp</label>
-                        <input asp-for="CertificateUrl" class="form-control" placeholder="Nhập URL bằng cấp" />
-                        <span asp-validation-for="CertificateUrl" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="ApprovalStatus" class="form-label">Trạng thái duyệt</label>
-                        <select asp-for="ApprovalStatus" class="form-control" disabled>
-                            <option value="Pending" selected>Chờ duyệt</option>
-                            <option value="Approved">Đã duyệt</option>
-                            <option value="Rejected">Từ chối</option>
-                        </select>
-                        <span asp-validation-for="ApprovalStatus" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="ExperienceYears" class="form-label">Số năm kinh nghiệm</label>
-                        <input asp-for="ExperienceYears" type="number" class="form-control" min="0" required />
-                        <span asp-validation-for="ExperienceYears" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="AvatarFile" class="form-label">Tải lên Avatar</label>
-                        <input asp-for="AvatarFile" type="file" accept="image/*" class="form-control" />
-                        <span asp-validation-for="AvatarFile" class="text-danger"></span>
-                    </div>
-                }
-
-                <div class="row">
-                    <div class="col text-end">
-                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                        <a href="@Url.Action("Manage", "Account")" class="btn btn-secondary ms-2">Hủy</a>
-                    </div>
+                    <a asp-action="Manage" asp-controller="Account" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Hủy
+                    </a>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("accountAvatarInput")?.addEventListener("change", function (event) {
+            const file = event.target.files && event.target.files[0];
+            const preview = document.getElementById("accountAvatarPreview");
+
+            if (!file || !preview) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
 }

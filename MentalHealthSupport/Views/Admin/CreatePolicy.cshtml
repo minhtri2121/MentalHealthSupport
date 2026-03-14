@@ -1,56 +1,149 @@
 @model MentalHealthSupport.Models.TermsAndPolicy
 
 @{
-    ViewData["Title"] = "Thêm mới Điều khoản/Chính sách";
-    Layout = null;
+    ViewData["Title"] = "Thêm chính sách";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/createpolicy.css" />
+<section class="admin-create-policy-page">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-journal-plus"></i>
+                    Tạo nội dung chính sách mới
+                </span>
+                <h2 class="fw-bold mb-3">Thêm chính sách</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Tạo mới nội dung điều khoản, chính sách hoặc tài liệu hệ thống để hiển thị trên website.
+                </p>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="form-title">Thêm mới Điều khoản/Chính sách</h2>
-            <a href="javascript:history.back()" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight h-100">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-info-circle"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Lưu ý</h5>
+                    <p class="mb-0">
+                        Chọn đúng loại chính sách, nhập nội dung rõ ràng và kiểm tra trạng thái hiển thị trước khi lưu.
+                    </p>
+                </div>
+            </div>
         </div>
-        <form asp-action="CreatePolicy" asp-controller="Admin" method="post" class="needs-validation" novalidate>
-            <div class="form-group">
-                <label asp-for="PolicyType" class="form-label">Loại</label>
-                <select asp-for="PolicyType" class="form-select" required>
-                    <option value="">Chọn loại</option>
-                    <option value="Terms">Điều khoản dịch vụ</option>
-                    <option value="Privacy">Chính sách bảo mật</option>
-                </select>
-                <span asp-validation-for="PolicyType" class="text-danger"></span>
+    </div>
+
+    <div class="admin-form-card">
+        <form asp-action="CreatePolicy" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="form-section-block mb-4">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Thông tin chính sách</h5>
+                                <p class="section-subtitle mb-0">
+                                    Nhập loại chính sách, nội dung và thông tin thời gian.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="PolicyType" class="form-label">Loại chính sách</label>
+                                <input asp-for="PolicyType" class="form-control" placeholder="Ví dụ: Privacy Policy, Terms of Service..." />
+                                <span asp-validation-for="PolicyType" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="CreatedDate" class="form-label">Ngày tạo</label>
+                                <input asp-for="CreatedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="CreatedDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastModifiedDate" class="form-label">Cập nhật lần cuối</label>
+                                <input asp-for="LastModifiedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="LastModifiedDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check form-switch mt-3">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                    <label asp-for="IsActive" class="form-check-label">Hiển thị chính sách này</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Content" class="form-label">Nội dung</label>
+                                <textarea asp-for="Content"
+                                          class="form-control admin-policy-content-input"
+                                          rows="12"
+                                          placeholder="Nhập nội dung chính sách..."></textarea>
+                                <span asp-validation-for="Content" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="appointment-help-panel h-100 admin-side-panel">
+                        <div class="mb-4">
+                            <span class="badge-soft primary mb-3">
+                                <i class="bi bi-eye"></i>
+                                Xem nhanh
+                            </span>
+
+                            <div class="admin-policy-preview-card">
+                                <div class="admin-policy-preview-icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2">Chính sách mới</h5>
+                                <p class="section-subtitle mb-3">
+                                    Nội dung sau khi lưu sẽ xuất hiện trong khu vực quản lý chính sách.
+                                </p>
+
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    <span class="badge-soft primary">Rõ loại</span>
+                                    <span class="badge-soft success">Nội dung đầy đủ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appointment-tip-box">
+                            <h6 class="fw-bold mb-2">
+                                <i class="bi bi-lightbulb me-2"></i>Gợi ý nhập liệu
+                            </h6>
+                            <p class="mb-2">- PolicyType nên đặt ngắn gọn, dễ phân biệt.</p>
+                            <p class="mb-2">- Nội dung nên chia đoạn rõ ràng để dễ đọc.</p>
+                            <p class="mb-2">- Chỉ bật hiển thị khi nội dung đã hoàn chỉnh.</p>
+                            <p class="mb-0">- LastModifiedDate có thể để trống nếu đây là bản tạo mới.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Content" class="form-label">Nội dung</label>
-                <textarea asp-for="Content" class="form-control" rows="8" placeholder="Nhập nội dung" required></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsActive" class="form-label">Trạng thái</label>
-                <select asp-for="IsActive" class="form-select" required>
-                    <option value="true">Hoạt động</option>
-                    <option value="false">Không hoạt động</option>
-                </select>
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Thêm</button>
-                <a asp-action="PolicyList" asp-controller="Admin" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-2"></i>Tạo chính sách
+                </button>
+
+                <a asp-controller="Admin" asp-action="PolicyList" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
             </div>
         </form>
     </div>
-</div>
+</section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -1,95 +1,226 @@
 @model List<MentalHealthSupport.Models.ViewModel.MyAppointmentViewModel>
-
 @{
     ViewData["Title"] = "Lịch hẹn của tôi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <h2 class="mb-4">Lịch hẹn của tôi</h2>
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero my-appointments-hero mb-4">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-calendar-week"></i>
+                        Quản lý lịch hẹn
+                    </span>
+                    <h1 class="mb-3">Lịch hẹn của tôi</h1>
+                    <p class="mb-0">
+                        Theo dõi tình trạng các lịch hẹn, hủy lịch khi cần thiết và gửi đánh giá sau khi buổi tư vấn hoàn tất.
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="appointment-summary-box">
+                        <div class="appointment-summary-item">
+                            <h3>@(Model?.Count ?? 0)</h3>
+                            <p>Tổng lịch hẹn</p>
+                        </div>
+                        <div class="appointment-summary-item">
+                            <h3>Trực quan</h3>
+                            <p>Theo dõi dễ dàng</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    }
 
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success rounded-4 mb-4">
+                <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            </div>
+        }
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>Chuyên gia</th>
-                <th>Thời gian</th>
-                <th>Trạng thái</th>
-                <th>Ghi chú</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger rounded-4 mb-4">
+                <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            </div>
+        }
 
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.ConsultantName</td>
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon"><i class="bi bi-calendar-x"></i></div>
+                <h5 class="fw-bold">Bạn chưa có lịch hẹn nào</h5>
+                <p class="mb-3">
+                    Hãy chọn một chuyên gia phù hợp để bắt đầu đặt lịch tư vấn.
+                </p>
+                <a asp-controller="Consultants" asp-action="Index" class="btn btn-primary">
+                    <i class="bi bi-search me-2"></i>Tìm chuyên gia
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="app-table-shell my-appointments-table-shell">
+                <div class="table-responsive">
+                    <table class="table table-modern align-middle my-appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Chuyên gia</th>
+                                <th>Thời gian</th>
+                                <th>Trạng thái</th>
+                                <th>Ghi chú</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var statusClass = item.Status == "Pending"
+                                    ? "warning"
+                                    : item.Status == "Confirmed"
+                                        ? "primary"
+                                        : item.Status == "Completed"
+                                            ? "success"
+                                            : "danger";
 
-                    <td>@item.AppointmentTime.ToString("dd/MM/yyyy HH:mm")</td>
+                                var statusText = item.Status == "Pending"
+                                    ? "Chờ xác nhận"
+                                    : item.Status == "Confirmed"
+                                        ? "Đã xác nhận"
+                                        : item.Status == "Completed"
+                                            ? "Đã hoàn thành"
+                                            : item.Status == "Cancelled"
+                                                ? "Đã hủy"
+                                                : item.Status;
 
-                    <td>
-                        @if (item.Status == "Pending")
-                        {
-                            <span class="badge bg-warning text-dark">Chờ xác nhận</span>
-                        }
-                        else if (item.Status == "Confirmed")
-                        {
-                            <span class="badge bg-primary">Đã xác nhận</span>
-                        }
-                        else if (item.Status == "Completed")
-                        {
-                            <span class="badge bg-success">Đã hoàn thành</span>
-                        }
-                        else if (item.Status == "Cancelled")
-                        {
-                            <span class="badge bg-danger">Đã hủy</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-info">@item.Status</span>
-                        }
-                    </td>
+                                <tr>
+                                    <td>
+                                        <div class="appointment-consultant-cell">
+                                            <div class="appointment-consultant-icon">
+                                                <i class="bi bi-person-heart"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">@item.ConsultantName</div>
+                                                <div class="section-subtitle small">Chuyên gia tư vấn</div>
+                                            </div>
+                                        </div>
+                                    </td>
 
-                    <td>@item.Note</td>
+                                    <td>
+                                        <div class="appointment-time-block">
+                                            <div class="fw-bold">@item.AppointmentTime.ToString("dd/MM/yyyy")</div>
+                                            <div class="section-subtitle">@item.AppointmentTime.ToString("HH:mm")</div>
+                                        </div>
+                                    </td>
 
-                    <td>
-                        @if (item.Status == "Pending" || item.Status == "Confirmed")
-                        {
-                            <form asp-action="Cancel" method="post" style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@item.AppointmentId" />
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    Hủy
-                                </button>
-                            </form>
-                        }
+                                    <td>
+                                        <span class="badge-soft @statusClass">
+                                            @statusText
+                                        </span>
+                                    </td>
 
-                        @if (item.Status == "Completed")
-                        {
-                            <a asp-controller="Reviews"
-                               asp-action="Create"
-                               asp-route-appointmentId="@item.AppointmentId"
-                               class="btn btn-warning btn-sm">
-                                Đánh giá
-                            </a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                                    <td>
+                                        <div class="appointment-note-cell">
+                                            @(string.IsNullOrWhiteSpace(item.Note)
+                                                ? "Không có ghi chú"
+                                                : item.Note)
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @if (item.Status == "Pending" || item.Status == "Confirmed")
+                                            {
+                                                <form asp-action="Cancel" method="post" class="m-0">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.AppointmentId" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="bi bi-x-circle me-1"></i>Hủy
+                                                    </button>
+                                                </form>
+                                            }
+
+                                            @if (item.Status == "Completed")
+                                            {
+                                                <a asp-controller="Reviews"
+                                                   asp-action="Create"
+                                                   asp-route-appointmentId="@item.AppointmentId"
+                                                   class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-star me-1"></i>Đánh giá
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="my-appointments-mobile-list d-md-none mt-4">
+                @foreach (var item in Model)
+                {
+                    var statusClass = item.Status == "Pending"
+                        ? "warning"
+                        : item.Status == "Confirmed"
+                            ? "primary"
+                            : item.Status == "Completed"
+                                ? "success"
+                                : "danger";
+
+                    var statusText = item.Status == "Pending"
+                        ? "Chờ xác nhận"
+                        : item.Status == "Confirmed"
+                            ? "Đã xác nhận"
+                            : item.Status == "Completed"
+                                ? "Đã hoàn thành"
+                                : item.Status == "Cancelled"
+                                    ? "Đã hủy"
+                                    : item.Status;
+
+                    <div class="appointment-mobile-card">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <div>
+                                <h6 class="fw-bold mb-1">@item.ConsultantName</h6>
+                                <div class="section-subtitle">
+                                    @item.AppointmentTime.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                            </div>
+                            <span class="badge-soft @statusClass">@statusText</span>
+                        </div>
+
+                        <div class="appointment-mobile-note mb-3">
+                            @(string.IsNullOrWhiteSpace(item.Note) ? "Không có ghi chú" : item.Note)
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (item.Status == "Pending" || item.Status == "Confirmed")
+                            {
+                                <form asp-action="Cancel" method="post" class="m-0">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.AppointmentId" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-x-circle me-1"></i>Hủy
+                                    </button>
+                                </form>
+                            }
+
+                            @if (item.Status == "Completed")
+                            {
+                                <a asp-controller="Reviews"
+                                   asp-action="Create"
+                                   asp-route-appointmentId="@item.AppointmentId"
+                                   class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-star me-1"></i>Đánh giá
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

@@ -25,40 +25,12 @@
       "PackagePath": "staticwebassets\\css\\chat-site.css"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot-history.css",
+      "PackagePath": "staticwebassets\\css\\chatbot-history.css"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\chatbot.css",
       "PackagePath": "staticwebassets\\css\\chatbot.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createnews.css",
-      "PackagePath": "staticwebassets\\css\\createnews.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createpolicy.css",
-      "PackagePath": "staticwebassets\\css\\createpolicy.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\createuser.css",
-      "PackagePath": "staticwebassets\\css\\createuser.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\editaboutus.css",
-      "PackagePath": "staticwebassets\\css\\editaboutus.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\editconsultant.css",
-      "PackagePath": "staticwebassets\\css\\editconsultant.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\editnews.css",
-      "PackagePath": "staticwebassets\\css\\editnews.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\editpolicy.css",
-      "PackagePath": "staticwebassets\\css\\editpolicy.css"
-    },
-    {
-      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\edituser.css",
-      "PackagePath": "staticwebassets\\css\\edituser.css"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\css\\news.css",
@@ -109,8 +81,16 @@
       "PackagePath": "staticwebassets\\images\\avt.jpg"
     },
     {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\c58e52cd-72e9-451d-9ab9-da8aeb806e64_avt-minhtri.png",
+      "PackagePath": "staticwebassets\\images\\c58e52cd-72e9-451d-9ab9-da8aeb806e64_avt-minhtri.png"
+    },
+    {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png",
       "PackagePath": "staticwebassets\\images\\ccdc7015-1a22-4cdf-be36-754b4f41de14_Tran-Thi-Hanh-Dung.png"
+    },
+    {
+      "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\default-avatar.png",
+      "PackagePath": "staticwebassets\\images\\default-avatar.png"
     },
     {
       "Id": "D:\\TaiLieuHocTap\\MentalHealthSupport\\MentalHealthSupport\\wwwroot\\images\\e2236856-a551-40bc-86ce-d2e224fd9dc2_KimCaoThamAvt.jpg",

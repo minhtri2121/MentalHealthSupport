@@ -1,0 +1,129 @@
+@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin | MentalHealthSupport</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="admin-shell">
+    @functions {
+        bool IsAdminActive(string action)
+        {
+            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+            return currentController == "Admin" && currentAction == action;
+        }
+    }
+
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div>
+                <a asp-controller="Admin" asp-action="Index" class="admin-brand text-decoration-none">
+                    <div class="admin-brand-icon">
+                        <i class="bi bi-heart-pulse"></i>
+                    </div>
+                    <div>
+                        <strong>MHS Admin</strong>
+                        <div class="small text-white-50">Bảng điều khiển</div>
+                    </div>
+                </a>
+
+                <div class="admin-user-box mt-4">
+                    <div class="admin-user-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div>
+                        <div class="admin-user-name">@Context.Session.GetString("FullName")</div>
+                        <div class="admin-user-role">Quản trị viên</div>
+                    </div>
+                </div>
+
+                <nav class="admin-nav mt-4">
+                    <a class="@(IsAdminActive("Index") ? "active" : "")"
+                       asp-controller="Admin" asp-action="Index">
+                        <i class="bi bi-grid"></i>
+                        <span>Tổng quan</span>
+                    </a>
+
+                    <a class="@(IsAdminActive("NewsList") || IsAdminActive("CreateNews") || IsAdminActive("EditNews") ? "active" : "")"
+                       asp-controller="Admin" asp-action="NewsList">
+                        <i class="bi bi-newspaper"></i>
+                        <span>Tin tức</span>
+                    </a>
+
+                    <a class="@(IsAdminActive("UserList") || IsAdminActive("CreateUser") || IsAdminActive("EditUser") ? "active" : "")"
+                       asp-controller="Admin" asp-action="UserList">
+                        <i class="bi bi-people"></i>
+                        <span>Người dùng</span>
+                    </a>
+
+                    <a class="@(IsAdminActive("ConsultantList") || IsAdminActive("CreateConsultant") || IsAdminActive("EditConsultant") ? "active" : "")"
+                       asp-controller="Admin" asp-action="ConsultantList">
+                        <i class="bi bi-person-badge"></i>
+                        <span>Chuyên gia</span>
+                    </a>
+
+                    <a class="@(IsAdminActive("PolicyList") || IsAdminActive("CreatePolicy") || IsAdminActive("EditPolicy") ? "active" : "")"
+                       asp-controller="Admin" asp-action="PolicyList">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Chính sách</span>
+                    </a>
+
+                    <a class="@(IsAdminActive("EditAboutUs") ? "active" : "")"
+                       asp-controller="Admin" asp-action="EditAboutUs">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Về chúng tôi</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="admin-sidebar-footer">
+                <a asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house-door"></i>
+                    <span>Về trang chủ</span>
+                </a>
+
+                <a asp-controller="Account" asp-action="Logout" class="text-danger-emphasis">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="admin-content-wrapper">
+            <header class="admin-topbar">
+                <div>
+                    <h1 class="admin-page-title mb-1">@ViewData["Title"]</h1>
+                    <p class="admin-page-subtitle mb-0">
+                        Quản lý hệ thống MentalHealthSupport
+                    </p>
+                </div>
+
+                <div class="admin-topbar-actions">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-up-right-circle me-2"></i>Xem website
+                    </a>
+                </div>
+            </header>
+
+            <main class="admin-main-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

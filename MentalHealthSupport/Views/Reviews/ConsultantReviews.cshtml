@@ -5,50 +5,91 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Đánh giá chuyên gia</h2>
-        <a asp-controller="Consultants" asp-action="Details" asp-route-id="@ViewBag.ConsultantId" class="btn btn-outline-secondary">
-            Quay lại
-        </a>
-    </div>
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero review-page-hero mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-chat-quote"></i>
+                        Phản hồi từ người dùng
+                    </span>
+                    <h1 class="mb-3">Đánh giá chuyên gia</h1>
+                    <p class="mb-0">
+                        Những phản hồi này giúp người dùng có thêm góc nhìn trước khi lựa chọn chuyên gia đồng hành.
+                    </p>
+                </div>
 
-    @if (Model == null || Model.Count == 0)
-    {
-        <div class="alert alert-info">Chuyên gia này chưa có đánh giá nào.</div>
-    }
-    else
-    {
-        <div class="row g-3">
-            @foreach (var item in Model)
-            {
-                <div class="col-12">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <strong>@item.UserName</strong>
-                                <small class="text-muted">@item.RatedAt.ToString("dd/MM/yyyy HH:mm")</small>
-                            </div>
-
-                            <div class="mb-2">
-                                @for (int i = 1; i <= 5; i++)
-                                {
-                                    if (i <= item.Rating)
-                                    {
-                                        <span class="text-warning fs-5">★</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-secondary fs-5">☆</span>
-                                    }
-                                }
-                            </div>
-
-                            <p class="mb-0">@item.Comment</p>
-                        </div>
+                <div class="col-lg-4">
+                    <div class="review-side-note">
+                        <h5>Tổng đánh giá</h5>
+                        <p class="mb-0">@(Model?.Count ?? 0) phản hồi</p>
                     </div>
                 </div>
-            }
+            </div>
         </div>
-    }
-</div>
+
+        <div class="d-flex justify-content-end mb-4">
+            <a asp-controller="Consultants"
+               asp-action="Details"
+               asp-route-id="@ViewBag.ConsultantId"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Quay lại hồ sơ
+            </a>
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-chat-square-heart"></i>
+                </div>
+                <h5 class="fw-bold">Chuyên gia này chưa có đánh giá nào</h5>
+                <p class="mb-0">Hãy quay lại sau khi có thêm phản hồi từ người dùng.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var item in Model)
+                {
+                    <div class="col-12">
+                        <div class="app-card review-item-card p-4">
+                            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="review-user-avatar">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">@item.UserName</h5>
+                                        <div class="section-subtitle">
+                                            @item.RatedAt.ToString("dd/MM/yyyy HH:mm")
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="review-stars">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= item.Rating)
+                                        {
+                                            <span class="review-star active">★</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="review-star">☆</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="review-comment">
+                                <p class="mb-0">@item.Comment</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

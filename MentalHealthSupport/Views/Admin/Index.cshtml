@@ -1,67 +1,192 @@
 @{
-    ViewData["Title"] = "Admin Dashboard";
-    Layout = null;
+    ViewData["Title"] = "Tổng quan quản trị";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom Admin CSS -->
-<link rel="stylesheet" href="~/css/admin.css" />
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-center dashboard-title">📊 Bảng Điều Khiển Quản Lý</h1>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card card-admin text-center p-4 shadow">
-                <i class="fas fa-newspaper mb-3"></i>
-                <h5>Tin Tức</h5>
-                <p>Quản lý bài viết tin tức.</p>
-                <a asp-action="NewsList" class="btn btn-primary">Xem</a>
+<section class="admin-dashboard">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-speedometer2"></i>
+                    Bảng điều khiển quản trị
+                </span>
+                <h2 class="fw-bold mb-3">Chào mừng bạn quay lại với khu vực quản trị</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Tại đây bạn có thể quản lý người dùng, chuyên gia, tin tức, chính sách
+                    và các nội dung quan trọng của hệ thống MentalHealthSupport.
+                </p>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card card-admin text-center p-4 shadow">
-                <i class="fas fa-users mb-3"></i>
-                <h5>Người Dùng</h5>
-                <p>Quản lý tài khoản người dùng.</p>
-                <a asp-action="UserList" class="btn btn-primary">Xem</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card card-admin text-center p-4 shadow">
-                <i class="fas fa-user-tie mb-3"></i>
-                <h5>Chuyên Gia</h5>
-                <p>Quản lý hồ sơ chuyên gia.</p>
-                <a asp-action="ConsultantList" class="btn btn-primary">Xem</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card card-admin text-center p-4 shadow">
-                <i class="fas fa-lock mb-3"></i>
-                <h5>Điều khoản dịch vụ</h5>
-                <p>Quản lý Điều khoản dịch vụ và Chính sách bảo mật.</p>
-                <a asp-action="PolicyList" class="btn btn-primary">Xem</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card card-admin text-center p-4 shadow">
-                <i class="fas fa-info-circle mb-3"></i>
-                <h5>Quản lý thông tin về chúng tôi</h5>
-                <p>Quản lý Điều khoản dịch vụ và Chính sách bảo mật.</p>
-                <a asp-action="EditAboutUs" class="btn btn-primary">Xem</a>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Quản lý tập trung</h5>
+                    <p class="mb-0">
+                        Giao diện được tối ưu để thao tác nhanh, rõ ràng và đồng bộ hơn.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="stats-grid mb-4">
+        <div class="admin-stat-card admin-card">
+            <div class="metric-icon">
+                <i class="bi bi-people"></i>
+            </div>
+            <h3>Người dùng</h3>
+            <p>Quản lý tài khoản trong hệ thống</p>
+            <a asp-controller="Admin" asp-action="UserList" class="btn btn-outline-primary mt-3">
+                Xem danh sách
+            </a>
+        </div>
+
+        <div class="admin-stat-card admin-card">
+            <div class="metric-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <h3>Chuyên gia</h3>
+            <p>Quản lý hồ sơ chuyên gia tư vấn</p>
+            <a asp-controller="Admin" asp-action="ConsultantList" class="btn btn-outline-primary mt-3">
+                Xem danh sách
+            </a>
+        </div>
+
+        <div class="admin-stat-card admin-card">
+            <div class="metric-icon">
+                <i class="bi bi-newspaper"></i>
+            </div>
+            <h3>Tin tức</h3>
+            <p>Quản lý bài viết và nội dung truyền thông</p>
+            <a asp-controller="Admin" asp-action="NewsList" class="btn btn-outline-primary mt-3">
+                Xem danh sách
+            </a>
+        </div>
+
+        <div class="admin-stat-card admin-card">
+            <div class="metric-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <h3>Chính sách</h3>
+            <p>Quản lý điều khoản và nội dung chính sách</p>
+            <a asp-controller="Admin" asp-action="PolicyList" class="btn btn-outline-primary mt-3">
+                Xem danh sách
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-card mb-4">
+        <div class="admin-toolbar">
+            <div>
+                <h4 class="admin-section-title mb-1">Lối tắt quản trị</h4>
+                <p class="admin-section-subtitle">Đi nhanh đến các chức năng được dùng nhiều nhất.</p>
+            </div>
+        </div>
+
+        <div class="data-list-grid">
+            <a asp-controller="Admin" asp-action="CreateUser" class="dashboard-link-card text-decoration-none">
+                <div class="icon-badge">
+                    <i class="bi bi-person-plus"></i>
+                </div>
+                <div class="dashboard-link-title">Thêm người dùng</div>
+                <div class="dashboard-link-desc">Tạo nhanh tài khoản mới cho hệ thống.</div>
+            </a>
+
+            <a asp-controller="Admin" asp-action="CreateConsultant" class="dashboard-link-card text-decoration-none">
+                <div class="icon-badge">
+                    <i class="bi bi-person-vcard"></i>
+                </div>
+                <div class="dashboard-link-title">Thêm chuyên gia</div>
+                <div class="dashboard-link-desc">Tạo hồ sơ chuyên gia tư vấn mới.</div>
+            </a>
+
+            <a asp-controller="Admin" asp-action="CreateNews" class="dashboard-link-card text-decoration-none">
+                <div class="icon-badge">
+                    <i class="bi bi-file-earmark-plus"></i>
+                </div>
+                <div class="dashboard-link-title">Thêm tin tức</div>
+                <div class="dashboard-link-desc">Tạo bài viết hoặc nội dung truyền thông mới.</div>
+            </a>
+
+            <a asp-controller="Admin" asp-action="CreatePolicy" class="dashboard-link-card text-decoration-none">
+                <div class="icon-badge">
+                    <i class="bi bi-journal-check"></i>
+                </div>
+                <div class="dashboard-link-title">Thêm chính sách</div>
+                <div class="dashboard-link-desc">Quản lý điều khoản và tài liệu hệ thống.</div>
+            </a>
+
+            <a asp-controller="Admin" asp-action="EditAboutUs" class="dashboard-link-card text-decoration-none">
+                <div class="icon-badge">
+                    <i class="bi bi-info-circle"></i>
+                </div>
+                <div class="dashboard-link-title">Sửa giới thiệu</div>
+                <div class="dashboard-link-desc">Cập nhật nội dung trang Về chúng tôi.</div>
+            </a>
+
+            <a asp-controller="Home" asp-action="Index" class="dashboard-link-card text-decoration-none">
+                <div class="icon-badge">
+                    <i class="bi bi-globe2"></i>
+                </div>
+                <div class="dashboard-link-title">Xem website</div>
+                <div class="dashboard-link-desc">Mở nhanh giao diện người dùng của hệ thống.</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <h4 class="admin-section-title mb-3">Gợi ý vận hành</h4>
+                <div class="admin-note-list">
+                    <div class="admin-note-item">
+                        <div class="admin-note-icon">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div>
+                            <h6>Kiểm tra nội dung thường xuyên</h6>
+                            <p class="mb-0">Đảm bảo các bài viết, chính sách và hồ sơ chuyên gia luôn được cập nhật.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-note-item">
+                        <div class="admin-note-icon">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div>
+                            <h6>Chuẩn hóa dữ liệu hiển thị</h6>
+                            <p class="mb-0">Avatar, mô tả, chuyên môn và nội dung trang nên được trình bày nhất quán.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-note-item">
+                        <div class="admin-note-icon">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div>
+                            <h6>Ưu tiên trải nghiệm người dùng</h6>
+                            <p class="mb-0">Mỗi thay đổi ở khu admin nên giúp khu vực ngoài trang web trực quan và dễ dùng hơn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="admin-info-panel">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-lightning-charge"></i>
+                        Mục tiêu hiện tại
+                    </span>
+                    <h5 class="fw-bold mb-2">Đồng bộ toàn bộ giao diện admin</h5>
+                    <p class="mb-0">
+                        Sau dashboard này, bước tiếp theo nên là chuẩn hóa các trang danh sách như
+                        UserList, ConsultantList, NewsList và PolicyList để toàn bộ hệ thống có cùng phong cách.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

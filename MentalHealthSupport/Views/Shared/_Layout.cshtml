@@ -1,184 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MentalHealthSupport</title>
 
-    <!-- Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
 
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
-    <!-- Chatbot CSS -->
     <link rel="stylesheet" href="~/css/chatbot.css" asp-append-version="true" />
-
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        #preloader {
-            position: fixed;
-            inset: 0;
-            background: #fff;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #preloader .loader {
-            text-align: center;
-        }
-
-        #preloader .heart {
-            width: 60px;
-            height: 60px;
-            fill: #0d6efd;
-            animation: pulse 1s infinite;
-        }
-
-        @@keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: .8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .navbar {
-            background-color: rgba(255,255,255,0.95);
-            transition: all 0.3s ease;
-        }
-
-        .navbar.navbar-scrolled {
-            background-color: #ffffff;
-            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
-        }
-
-        .navbar .nav-link.active {
-            color: #0d6efd !important;
-            font-weight: 600;
-        }
-
-        .chat-icon {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #0d6efd;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3);
-            cursor: pointer;
-            z-index: 1050;
-            transition: transform 0.2s ease;
-        }
-
-        .chat-icon:hover {
-            transform: scale(1.08);
-        }
-
-        .chat-icon i {
-            font-size: 24px;
-        }
-
-        .chat-badge {
-            position: absolute;
-            top: -6px;
-            right: -2px;
-            min-width: 22px;
-            height: 22px;
-            padding: 0 6px;
-            border-radius: 999px;
-            background: #dc3545;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            line-height: 22px;
-            text-align: center;
-            border: 2px solid #fff;
-        }
-
-        .animate-pulse {
-            animation: badgePulse 1s ease;
-        }
-
-        @@keyframes badgePulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.25); }
-            100% { transform: scale(1); }
-        }
-
-        .toast-message {
-            position: fixed;
-            right: 24px;
-            bottom: 95px;
-            background: #212529;
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,.2);
-            z-index: 2000;
-            max-width: 300px;
-            font-size: 14px;
-        }
-
-        .footer-link,
-        .footer-bottom-link,
-        .footer-contact-link {
-            color: rgba(255,255,255,.7);
-            text-decoration: none;
-            transition: .2s ease;
-        }
-
-        .footer-link:hover,
-        .footer-bottom-link:hover,
-        .footer-contact-link:hover {
-            color: #fff;
-        }
-
-        .social-icons a {
-            font-size: 18px;
-        }
-
-        main {
-            margin-top: 100px;
-            min-height: 60vh;
-        }
-    </style>
 </head>
-<body>
-    <!-- Pre-loader -->
-    <div id="preloader">
-        <div class="loader">
-            <svg class="heart" viewBox="0 0 32 32">
-                <path d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
-                    C30,20.335,16,28.261,16,28.261z" />
-            </svg>
-            <p>Đang tải...</p>
-        </div>
-    </div>
-
+<body class="app-shell">
     @functions {
         bool IsActive(string controller, string? action = null)
         {
@@ -188,24 +27,31 @@
         }
     }
 
-    <!-- Header -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+    <div id="preloader" class="app-preloader">
+        <div class="loader-content text-center">
+            <div class="loader-heart-wrap">
+                <i class="bi bi-heart-pulse-fill loader-heart"></i>
+            </div>
+            <p class="loader-text mb-0">Đang tải trải nghiệm tốt hơn...</p>
+        </div>
+    </div>
+
+    <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top app-navbar">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="/">
-                    <img src="@Url.Content("~/images/Logo.png")" alt="Logo" height="40" />
-                    <span class="ms-2 fw-bold text-primary">MentalHealthSupport</span>
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content("~/images/Logo.png")" alt="Logo" class="brand-logo" />
+                    <span class="brand-text">MentalHealthSupport</span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
+                    <ul class="navbar-nav mx-auto app-nav-list">
                         <li class="nav-item">
-                            <a class="nav-link @(IsActive("Home") ? "active" : "")"
+                            <a class="nav-link @(IsActive("Home", "Index") ? "active" : "")"
                                asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
@@ -213,48 +59,50 @@
                                asp-controller="Consultants" asp-action="Index">Chuyên gia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(IsActive("News", "Index") ? "active" : "")"
+                            <a class="nav-link @(IsActive("News") ? "active" : "")"
                                asp-controller="News" asp-action="Index">Tin tức</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(IsActive("About", "Index") ? "active" : "")"
+                            <a class="nav-link @(IsActive("About") ? "active" : "")"
                                asp-controller="About" asp-action="Index">Về chúng tôi</a>
                         </li>
                     </ul>
 
-                    <ul class="navbar-nav ms-auto align-items-center">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                         @if (Context.Session.GetInt32("UserId") == null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link btn btn-outline-primary px-3"
-                                   asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                                <a class="btn btn-app-outline" asp-controller="Account" asp-action="Login">
+                                    Đăng nhập
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" href="#"
+                                <a class="nav-link dropdown-toggle user-menu-trigger" href="#"
                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @Context.Session.GetString("FullName")
-                                    <i class="bi bi-chevron-down ms-1"></i>
+                                    <span class="user-avatar"><i class="bi bi-person"></i></span>
+                                    <span>@Context.Session.GetString("FullName")</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 app-dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Manage">Hồ sơ</a>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Manage">
+                                            <i class="bi bi-person-circle me-2"></i>Hồ sơ
+                                        </a>
                                     </li>
 
                                     @if (Context.Session.GetString("UserRole") == "Admin")
                                     {
                                         <li>
-                                            <a class="dropdown-item" asp-controller="Admin" asp-action="Index">Quản lý</a>
+                                            <a class="dropdown-item" asp-controller="Admin" asp-action="Index">
+                                                <i class="bi bi-grid me-2"></i>Quản lý
+                                            </a>
                                         </li>
-                                    }
-
-                                    @if (Context.Session.GetString("UserRole") == "Admin")
-                                    {
                                         <li>
                                             <a class="dropdown-item" asp-controller="Chatbot" asp-action="History">
-                                                Lịch sử chatbot
+                                                <i class="bi bi-clock-history me-2"></i>Lịch sử chatbot
                                             </a>
                                         </li>
                                     }
@@ -263,7 +111,7 @@
                                     {
                                         <li>
                                             <a class="dropdown-item" asp-controller="Appointments" asp-action="ConsultantAppointments">
-                                                Lịch tư vấn
+                                                <i class="bi bi-calendar2-check me-2"></i>Lịch tư vấn
                                             </a>
                                         </li>
                                     }
@@ -272,13 +120,17 @@
                                     {
                                         <li>
                                             <a class="dropdown-item" asp-controller="Appointments" asp-action="MyAppointments">
-                                                Lịch hẹn của tôi
+                                                <i class="bi bi-calendar-week me-2"></i>Lịch hẹn của tôi
                                             </a>
                                         </li>
                                     }
 
+                                    <li><hr class="dropdown-divider"></li>
+
                                     <li>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+                                        <a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -289,186 +141,70 @@
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="flex-grow-1 pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main class="app-main">
+        @RenderBody()
+    </main>
 
-    <!-- Chat Icon -->
     @if (Context.Session.GetInt32("UserId") != null)
     {
-        <div class="chat-icon" id="openChatModal" title="Mở chat">
+        <button class="chat-icon" id="openChatModal" type="button" title="Mở chat">
             <i class="fas fa-comments"></i>
             <span id="chat-icon-badge" class="chat-badge">0</span>
-        </div>
+        </button>
     }
 
-    <!-- Footer -->
-    <footer class="footer bg-dark text-white py-5">
-        <div class="container py-5">
-            <div class="row d-flex flex-wrap justify-content-between">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h4 class="fw-bold mb-4">MentalHealthSupport</h4>
-                    <div class="social-icons">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+    <footer class="app-footer">
+        <div class="container">
+            <div class="row g-4 footer-top">
+                <div class="col-lg-4">
+                    <div class="footer-brand d-flex align-items-center gap-2 mb-3">
+                        <img src="@Url.Content("~/images/Logo.png")" alt="Logo" class="footer-logo" />
+                        <span class="brand-text text-white">MentalHealthSupport</span>
+                    </div>
+                    <p class="footer-desc">
+                        Không chỉ kết nối với chuyên gia, chúng tôi còn đồng hành để người dùng cảm thấy an toàn,
+                        được lắng nghe và được hỗ trợ đúng lúc.
+                    </p>
+                    <div class="social-list d-flex gap-3 mt-3">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5 class="fw-bold mb-4">Liên Kết Nhanh</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2">
-                            <a asp-controller="Home" asp-action="Index" class="footer-link">Trang Chủ</a>
-                        </li>
-                        <li class="mb-2">
-                            <a asp-controller="About" asp-action="Index" class="footer-link">Về Chúng Tôi</a>
-                        </li>
-                        <li class="mb-2">
-                            <a asp-controller="Consultants" asp-action="Index" class="footer-link">Chuyên Gia</a>
-                        </li>
-                        <li class="mb-2">
-                            <a asp-controller="News" asp-action="Index" class="footer-link">Tin tức</a>
-                        </li>
-                        <li>
-                            <a href="#" class="footer-link">Liên Hệ</a>
-                        </li>
+                <div class="col-lg-4">
+                    <h5 class="footer-title">Điều hướng</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li><a asp-controller="Consultants" asp-action="Index">Chuyên gia</a></li>
+                        <li><a asp-controller="News" asp-action="Index">Tin tức</a></li>
+                        <li><a asp-controller="About" asp-action="Index">Về chúng tôi</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy">Chính sách bảo mật</a></li>
                     </ul>
                 </div>
 
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5 class="fw-bold mb-4">Liên Hệ</h5>
-                    <ul class="list-unstyled footer-contact">
-                        <li class="d-flex mb-3">
-                            <i class="fas fa-map-marker-alt text-primary me-3 mt-1"></i>
-                            <span class="text-white-50">123 Đường Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh</span>
-                        </li>
-                        <li class="d-flex mb-3">
-                            <i class="fas fa-phone-alt text-primary me-3 mt-1"></i>
-                            <a href="tel:+842812345678" class="footer-contact-link">+84 28 1234 5678</a>
-                        </li>
-                        <li class="d-flex mb-3">
-                            <i class="fas fa-envelope text-primary me-3 mt-1"></i>
-                            <a href="mailto:info@tamlyvn.com" class="footer-contact-link">info@tamlyvn.com</a>
-                        </li>
-                        <li class="d-flex">
-                            <i class="fas fa-clock text-primary me-3 mt-1"></i>
-                            <span class="text-white-50">Hỗ trợ: 24/7</span>
-                        </li>
+                <div class="col-lg-4">
+                    <h5 class="footer-title">Liên hệ</h5>
+                    <ul class="footer-contact list-unstyled">
+                        <li><i class="bi bi-geo-alt"></i><span>123 Nguyễn Văn Linh, TP. Hồ Chí Minh</span></li>
+                        <li><i class="bi bi-telephone"></i><a href="tel:+842812345678">+84 28 1234 5678</a></li>
+                        <li><i class="bi bi-envelope"></i><a href="mailto:info@tamlyvn.com">info@tamlyvn.com</a></li>
+                        <li><i class="bi bi-clock"></i><span>Hỗ trợ trực tuyến 24/7</span></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-top border-secondary mt-4">
-                <div class="container">
-                    <div class="row py-4">
-                        <div class="col-md-6 text-center text-md-start">
-                            <p class="mb-md-0 text-white-50">© 2025 MentalHealthSupport. Tất cả quyền được bảo lưu.</p>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <a asp-controller="Home" asp-action="Privacy" class="footer-bottom-link me-4">Chính Sách Bảo Mật</a>
-                            <a asp-controller="Home" asp-action="Terms" class="footer-bottom-link">Điều Khoản Dịch Vụ</a>
-                        </div>
-                    </div>
+            <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <p class="mb-0">© 2025 MentalHealthSupport. Tất cả quyền được bảo lưu.</p>
+                <div class="d-flex gap-3">
+                    <a asp-controller="Home" asp-action="Privacy">Chính sách bảo mật</a>
+                    <a asp-controller="Home" asp-action="Terms">Điều khoản dịch vụ</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
-
-    @await RenderSectionAsync("Scripts", required: false)
-
-    <script>
-        // Preloader
-        $(window).on('load', function () {
-            $('#preloader').fadeOut(500);
-        });
-
-        // Navbar scroll
-        $(window).on('scroll', function () {
-            if ($(window).scrollTop() > 50) {
-                $('.navbar').addClass('navbar-scrolled');
-            } else {
-                $('.navbar').removeClass('navbar-scrolled');
-            }
-        });
-
-        function showToast(text) {
-            const toast = document.createElement("div");
-            toast.className = "toast-message animate__animated animate__fadeInUp";
-            toast.innerText = text.length > 50 ? text.substring(0, 47) + "..." : text;
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.remove("animate__fadeInUp");
-                toast.classList.add("animate__fadeOutDown");
-            }, 3000);
-
-            setTimeout(() => toast.remove(), 4000);
-        }
-    </script>
-
-    @if (Context.Session.GetInt32("UserId") != null)
-    {
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const chatIcon = document.getElementById("openChatModal");
-                const badge = document.getElementById("chat-icon-badge");
-
-                if (chatIcon) {
-                    chatIcon.addEventListener("click", function () {
-                        if (badge) {
-                            badge.innerText = "0";
-                            badge.style.display = "none";
-                        }
-                        window.location.href = "/Chat/Index";
-                    });
-                }
-
-                const connection = new signalR.HubConnectionBuilder()
-                    .withUrl("/chatHub")
-                    .withAutomaticReconnect()
-                    .build();
-
-                connection.on("NotifyNewMessage", function (senderName, message, chatSessionId) {
-                    showToast(`${senderName}: ${message}`);
-
-                    if (badge) {
-                        let current = parseInt(badge.innerText || "0");
-                        if (isNaN(current)) current = 0;
-                        current++;
-
-                        badge.innerText = current.toString();
-                        badge.style.display = "inline-block";
-                        badge.classList.add("animate-pulse");
-
-                        setTimeout(() => {
-                            badge.classList.remove("animate-pulse");
-                        }, 1000);
-                    }
-
-                    try {
-                        const audio = new Audio("/sounds/notification.mp3");
-                        audio.play().catch(err => console.error("Audio play failed:", err));
-                    } catch (err) {
-                        console.error("Audio error:", err);
-                    }
-                });
-
-                connection.start()
-                    .then(() => console.log("SignalR connected"))
-                    .catch(err => console.error("SignalR connection failed:", err));
-            });
-        </script>
-    }
     <div id="chatbot-toggle" class="chatbot-toggle">
         <i class="fas fa-robot"></i>
     </div>
@@ -503,9 +239,70 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
     <script src="~/js/chatbot.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
     <script>
         window.currentChatbotUserId = '@(Context.Session.GetInt32("UserId")?.ToString() ?? "guest")';
+
+        $(window).on('load', function () {
+            $('#preloader').fadeOut(300);
+        });
+
+        $(window).on('scroll', function () {
+            $('.app-navbar').toggleClass('navbar-scrolled', $(window).scrollTop() > 20);
+        });
+
+        function showToast(text) {
+            const toast = document.createElement("div");
+            toast.className = "toast-message";
+            toast.innerText = text.length > 50 ? text.substring(0, 47) + "..." : text;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
     </script>
+
+    @if (Context.Session.GetInt32("UserId") != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const chatIcon = document.getElementById("openChatModal");
+                const badge = document.getElementById("chat-icon-badge");
+
+                if (chatIcon) {
+                    chatIcon.addEventListener("click", function () {
+                        if (badge) {
+                            badge.innerText = "0";
+                            badge.style.display = "none";
+                        }
+                        window.location.href = "/Chat/Index";
+                    });
+                }
+
+                const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("/chatHub")
+                    .withAutomaticReconnect()
+                    .build();
+
+                connection.on("NotifyNewMessage", function (senderName, message) {
+                    showToast(`${senderName}: ${message}`);
+
+                    if (badge) {
+                        let current = parseInt(badge.innerText || "0");
+                        if (isNaN(current)) current = 0;
+                        current++;
+                        badge.innerText = current.toString();
+                        badge.style.display = "inline-flex";
+                    }
+                });
+
+                connection.start().catch(err => console.error(err.toString()));
+            });
+        </script>
+    }
 </body>
 </html>

@@ -1,108 +1,229 @@
 @model MentalHealthSupport.Models.ViewModel.AboutUsViewModel
 
 @{
-    ViewData["Title"] = "Chỉnh Sửa Về Chúng Tôi";
-    Layout = null;
+    ViewData["Title"] = "Chỉnh sửa Về chúng tôi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/editaboutus.css" />
+<section class="admin-edit-aboutus-page">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-info-circle"></i>
+                    Cập nhật nội dung giới thiệu
+                </span>
+                <h2 class="fw-bold mb-3">Chỉnh sửa trang Về chúng tôi</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Cập nhật tiêu đề, nội dung hero, thông điệp chính và hình ảnh đại diện cho trang giới thiệu hệ thống.
+                </p>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="form-title">Chỉnh Sửa Về Chúng Tôi</h2>
-            <a asp-controller="Admin" asp-action="Index" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight h-100">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Lưu ý</h5>
+                    <p class="mb-0">
+                        Nội dung nên ngắn gọn, truyền cảm hứng và đồng nhất với phong cách tổng thể của website.
+                    </p>
+                </div>
+            </div>
         </div>
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                @Html.ValidationSummary(false, "Có lỗi xảy ra:")
+    </div>
+
+    <div class="admin-form-card">
+        <form asp-action="EditAboutUs" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <input asp-for="Id" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="form-section-block mb-4">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-layout-text-window"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Thông tin chung</h5>
+                                <p class="section-subtitle mb-0">
+                                    Cập nhật tiêu đề và phần hiển thị đầu trang.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Title" class="form-label">Tiêu đề trang</label>
+                                <input asp-for="Title" class="form-control" placeholder="Ví dụ: Về Chúng Tôi" />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="HeroHeading" class="form-label">Tiêu đề Hero</label>
+                                <input asp-for="HeroHeading" class="form-control" placeholder="Ví dụ: Về Chúng Tôi" />
+                                <span asp-validation-for="HeroHeading" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="HeroDescription" class="form-label">Mô tả Hero</label>
+                                <textarea asp-for="HeroDescription"
+                                          class="form-control admin-aboutus-textarea"
+                                          rows="5"
+                                          placeholder="Nhập mô tả hiển thị ở phần đầu trang..."></textarea>
+                                <span asp-validation-for="HeroDescription" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-block mb-4">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-bullseye"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Thông điệp chính</h5>
+                                <p class="section-subtitle mb-0">
+                                    Cập nhật tiêu đề cho các phần nội dung cốt lõi.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="MissionHeading" class="form-label">Tiêu đề sứ mệnh</label>
+                                <input asp-for="MissionHeading" class="form-control" />
+                                <span asp-validation-for="MissionHeading" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ValuesHeading" class="form-label">Tiêu đề giá trị cốt lõi</label>
+                                <input asp-for="ValuesHeading" class="form-control" />
+                                <span asp-validation-for="ValuesHeading" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="CallToActionHeading" class="form-label">Tiêu đề kêu gọi hành động</label>
+                                <input asp-for="CallToActionHeading" class="form-control" />
+                                <span asp-validation-for="CallToActionHeading" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="CallToActionDescription" class="form-label">Mô tả kêu gọi hành động</label>
+                                <textarea asp-for="CallToActionDescription"
+                                          class="form-control admin-aboutus-textarea"
+                                          rows="6"
+                                          placeholder="Nhập nội dung kêu gọi hành động..."></textarea>
+                                <span asp-validation-for="CallToActionDescription" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-block">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-image"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Hình ảnh Hero</h5>
+                                <p class="section-subtitle mb-0">
+                                    Cập nhật ảnh minh họa cho phần đầu trang.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="HeroImageFile" class="form-label">Tải ảnh lên</label>
+                                <input asp-for="HeroImageFile" type="file" class="form-control" accept="image/*" id="heroImageInput" />
+                                <span asp-validation-for="HeroImageFile" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="HeroImageUrl" class="form-label">Đường dẫn / tên file ảnh hiện tại</label>
+                                <input asp-for="HeroImageUrl" class="form-control" placeholder="Ví dụ: about-hero.jpg" />
+                                <span asp-validation-for="HeroImageUrl" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="appointment-help-panel h-100 admin-side-panel">
+                        <div class="mb-4">
+                            <span class="badge-soft primary mb-3">
+                                <i class="bi bi-eye"></i>
+                                Xem nhanh
+                            </span>
+
+                            <div class="admin-aboutus-preview-card">
+                                <img id="heroPreview"
+                                     src="@(string.IsNullOrWhiteSpace(Model.HeroImageUrl) ? Url.Content("~/images/default-banner.jpg") : Url.Content("~/images/" + Model.HeroImageUrl))"
+                                     alt="Hero Preview"
+                                     class="preview-image mb-3" />
+
+                                <h5 class="fw-bold mb-2">
+                                    @(string.IsNullOrWhiteSpace(Model.HeroHeading) ? "Chưa có tiêu đề" : Model.HeroHeading)
+                                </h5>
+
+                                <p class="section-subtitle mb-3">
+                                    @(string.IsNullOrWhiteSpace(Model.HeroDescription) ? "Chưa có mô tả" : Model.HeroDescription)
+                                </p>
+
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    <span class="badge-soft primary">Hero</span>
+                                    <span class="badge-soft success">Nội dung thương hiệu</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appointment-tip-box">
+                            <h6 class="fw-bold mb-2">
+                                <i class="bi bi-lightbulb me-2"></i>Gợi ý nội dung
+                            </h6>
+                            <p class="mb-2">- Tiêu đề nên ngắn gọn và truyền cảm hứng.</p>
+                            <p class="mb-2">- Mô tả hero nên dễ hiểu, chạm đúng cảm xúc người dùng.</p>
+                            <p class="mb-2">- Ảnh hero nên sáng, rõ và phù hợp chủ đề tâm lý.</p>
+                            <p class="mb-0">- CTA nên khuyến khích người dùng hành động ngay.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        }
-        <form asp-action="EditAboutUs" asp-controller="Admin" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-            <input type="hidden" asp-for="Id" value="1" />
-            <div class="form-group">
-                <label asp-for="Title" class="form-label">Tiêu đề trang</label>
-                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề trang" required />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HeroHeading" class="form-label">Tiêu đề Hero</label>
-                <input asp-for="HeroHeading" class="form-control" placeholder="Nhập tiêu đề hero" required />
-                <span asp-validation-for="HeroHeading" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HeroDescription" class="form-label">Mô tả Hero</label>
-                <textarea asp-for="HeroDescription" class="form-control" rows="4" placeholder="Nhập mô tả hero" required></textarea>
-                <span asp-validation-for="HeroDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HeroImageFile" class="form-label">Tải lên ảnh Hero</label>
-                <input asp-for="HeroImageFile" type="file" accept="image/*" class="form-control" />
-                @if (!string.IsNullOrEmpty(Model.HeroImageUrl))
-                {
-                    <img src="~/images/@Model.HeroImageUrl" class="preview-img show" id="heroImagePreview" alt="Hero Image Preview" />
-                }
-                else
-                {
-                    <img id="heroImagePreview" class="preview-img" alt="Hero Image Preview" />
-                }
-                <span asp-validation-for="HeroImageFile" class="text-danger" id="heroImageError"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MissionHeading" class="form-label">Tiêu đề Sứ Mệnh</label>
-                <input asp-for="MissionHeading" class="form-control" placeholder="Nhập tiêu đề sứ mệnh" required />
-                <span asp-validation-for="MissionHeading" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ValuesHeading" class="form-label">Tiêu đề Giá Trị Cốt Lõi</label>
-                <input asp-for="ValuesHeading" class="form-control" placeholder="Nhập tiêu đề giá trị cốt lõi" required />
-                <span asp-validation-for="ValuesHeading" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CallToActionHeading" class="form-label">Tiêu đề Call to Action</label>
-                <input asp-for="CallToActionHeading" class="form-control" placeholder="Nhập tiêu đề call to action" required />
-                <span asp-validation-for="CallToActionHeading" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CallToActionDescription" class="form-label">Mô tả Call to Action</label>
-                <textarea asp-for="CallToActionDescription" class="form-control" rows="4" placeholder="Nhập mô tả call to action" required></textarea>
-                <span asp-validation-for="CallToActionDescription" class="text-danger"></span>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu Thay Đổi</button>
-                <a asp-action="Index" asp-controller="Admin" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-2"></i>Lưu thay đổi
+                </button>
+
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
             </div>
         </form>
     </div>
-</div>
+</section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
     <script>
-        document.getElementById('HeroImageFile').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('heroImagePreview');
-            const error = document.getElementById('heroImageError');
-            
-            if (file) {
-                if (file.type.startsWith('image/')) {
-                    preview.src = URL.createObjectURL(file);
-                    preview.classList.add('show');
-                    error.textContent = '';
-                } else {
-                    error.textContent = 'Vui lòng chọn một tệp hình ảnh.';
-                    preview.classList.remove('show');
-                    this.value = '';
-                }
-            }
+        document.getElementById("heroImageInput")?.addEventListener("change", function (event) {
+            const file = event.target.files && event.target.files[0];
+            const preview = document.getElementById("heroPreview");
+
+            if (!file || !preview) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         });
     </script>
 }

@@ -1,79 +1,174 @@
 @model MentalHealthSupport.Models.ViewModel.ManageViewModel
+
 @{
     ViewData["Title"] = "Quản lý tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg rounded-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Thông tin tài khoản</h4>
-        </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">Họ và tên</dt>
-                <dd class="col-sm-8">@Model.FullName</dd>
+<section class="section-shell">
+    <div class="container">
+        <div class="page-hero account-manage-hero mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-person-gear"></i>
+                        Tài khoản của bạn
+                    </span>
+                    <h1 class="mb-3">Quản lý tài khoản</h1>
+                    <p class="mb-0">
+                        Xem nhanh thông tin cá nhân, trạng thái xác minh và hồ sơ chuyên gia của bạn trong hệ thống.
+                    </p>
+                </div>
 
-                <dt class="col-sm-4">Email</dt>
-                <dd class="col-sm-8">@Model.Email</dd>
-
-                <dt class="col-sm-4">Số điện thoại</dt>
-                <dd class="col-sm-8">@Model.Phone</dd>
-
-                <dt class="col-sm-4">Vai trò</dt>
-                <dd class="col-sm-8">@Model.Role</dd>
-
-                <dt class="col-sm-4">Tài khoản xác minh</dt>
-                <dd class="col-sm-8">
-                    @if (Model.IsVerified)
-                    {
-                        <span class="badge bg-success">Đã xác minh</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">Chưa xác minh</span>
-                    }
-                </dd>
-
-                <dt class="col-sm-4">Ngày tạo</dt>
-                <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy")</dd>
-            </dl>
-
-            @if (Model.Role == "Consultant")
-            {
-                <hr />
-                <h5 class="text-primary">Thông tin chuyên gia</h5>
-                <dl class="row">
-                    <dt class="col-sm-4">Chuyên ngành</dt>
-                    <dd class="col-sm-8">@Model.Specialty</dd>
-
-                    <dt class="col-sm-4">Bằng cấp</dt>
-                    <dd class="col-sm-8">@Model.CertificateUrl</dd>
-
-                    <dt class="col-sm-4">Trạng thái duyệt</dt>
-                    <dd class="col-sm-8">
-                        @if (Model.ApprovalStatus == "Approved")
-                        {
-                            <span class="badge bg-success">Đã duyệt</span>
-                        }
-                        else if (Model.ApprovalStatus == "Rejected")
-                        {
-                            <span class="badge bg-danger">Từ chối</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
-                        }
-                    </dd>
-
-                    <dt class="col-sm-4">Số năm kinh nghiệm</dt>
-                    <dd class="col-sm-8">@Model.ExperienceYears năm</dd>
-                </dl>
-            }
-            <div class="row">
-                <div class="col text-end">
-                    <a href="@Url.Action("Edit", "Account")" class="btn btn-outline-primary">Chỉnh sửa</a>
+                <div class="col-lg-4">
+                    <div class="account-manage-side-note">
+                        <h5>Trạng thái tài khoản</h5>
+                        <p class="mb-0">
+                            @(Model.IsVerified ? "Đã xác minh" : "Chưa xác minh")
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="app-card account-manage-card p-4 p-lg-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h4 class="fw-bold mb-1">Thông tin cá nhân</h4>
+                    <p class="section-subtitle mb-0">
+                        Các thông tin cơ bản được dùng trong quá trình sử dụng hệ thống.
+                    </p>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a asp-action="Edit" asp-controller="Account" class="btn btn-primary">
+                        <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa
+                    </a>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Quay lại
+                    </a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="account-info-grid">
+                        <div class="account-info-item">
+                            <div class="account-info-label">Họ và tên</div>
+                            <div class="account-info-value">@Model.FullName</div>
+                        </div>
+
+                        <div class="account-info-item">
+                            <div class="account-info-label">Email</div>
+                            <div class="account-info-value">@Model.Email</div>
+                        </div>
+
+                        <div class="account-info-item">
+                            <div class="account-info-label">Số điện thoại</div>
+                            <div class="account-info-value">
+                                @(string.IsNullOrWhiteSpace(Model.Phone) ? "Chưa cập nhật" : Model.Phone)
+                            </div>
+                        </div>
+
+                        <div class="account-info-item">
+                            <div class="account-info-label">Vai trò</div>
+                            <div class="account-info-value">@Model.Role</div>
+                        </div>
+
+                        <div class="account-info-item">
+                            <div class="account-info-label">Tài khoản xác minh</div>
+                            <div class="account-info-value">
+                                <span class="badge-soft @(Model.IsVerified ? "success" : "warning")">
+                                    @(Model.IsVerified ? "Đã xác minh" : "Chưa xác minh")
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="account-info-item">
+                            <div class="account-info-label">Ngày tạo</div>
+                            <div class="account-info-value">@Model.CreatedAt.ToString("dd/MM/yyyy")</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="account-profile-summary">
+                        <div class="account-profile-avatar">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h4 class="fw-bold mb-1">@Model.FullName</h4>
+                        <p class="section-subtitle mb-3">@Model.Email</p>
+
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <span class="badge-soft primary">@Model.Role</span>
+                            <span class="badge-soft @(Model.IsVerified ? "success" : "warning")">
+                                @(Model.IsVerified ? "Đã xác minh" : "Chưa xác minh")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Role == "Consultant")
+            {
+                <div class="account-consultant-section mt-5 pt-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                        <div>
+                            <h4 class="fw-bold mb-1">Thông tin chuyên gia</h4>
+                            <p class="section-subtitle mb-0">
+                                Hồ sơ chuyên môn hiển thị cho người dùng khi xem thông tin chuyên gia.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="account-info-item h-100">
+                                <div class="account-info-label">Chuyên ngành</div>
+                                <div class="account-info-value">
+                                    @(string.IsNullOrWhiteSpace(Model.Specialty) ? "Chưa cập nhật" : Model.Specialty)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="account-info-item h-100">
+                                <div class="account-info-label">Bằng cấp</div>
+                                <div class="account-info-value">
+                                    @(string.IsNullOrWhiteSpace(Model.CertificateUrl) ? "Chưa cập nhật" : Model.CertificateUrl)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="account-info-item h-100">
+                                <div class="account-info-label">Trạng thái duyệt</div>
+                                <div class="account-info-value">
+                                    @if (Model.ApprovalStatus == "Approved")
+                                    {
+                                        <span class="badge-soft success">Đã duyệt</span>
+                                    }
+                                    else if (Model.ApprovalStatus == "Rejected")
+                                    {
+                                        <span class="badge-soft danger">Từ chối</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-soft warning">Chờ duyệt</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="account-info-item h-100">
+                                <div class="account-info-label">Số năm kinh nghiệm</div>
+                                <div class="account-info-value">@Model.ExperienceYears năm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-</div>
+</section>

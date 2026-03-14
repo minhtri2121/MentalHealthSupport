@@ -1,43 +1,142 @@
 @model MentalHealthSupport.Models.News
 
 @{
-    ViewData["Title"] = "Đăng Tin Tức";
-    Layout = null;
+    ViewData["Title"] = "Thêm bài viết";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-<!-- Custom CSS -->
-<link rel="stylesheet" href="~/css/createnews.css" />
+<section class="admin-create-news-page">
+    <div class="admin-card mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-file-earmark-plus"></i>
+                    Tạo nội dung tin tức mới
+                </span>
+                <h2 class="fw-bold mb-3">Thêm bài viết</h2>
+                <p class="admin-section-subtitle mb-0">
+                    Tạo bài viết mới để cập nhật thông tin, chia sẻ kiến thức và nội dung hữu ích cho người dùng.
+                </p>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="form-title">Đăng Tin Tức Mới</h2>
-            <a asp-controller="Admin" asp-action="NewsList" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Trở Về</a>
+            <div class="col-lg-4">
+                <div class="admin-dashboard-highlight h-100">
+                    <div class="admin-dashboard-highlight-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Gợi ý nội dung</h5>
+                    <p class="mb-0">
+                        Tiêu đề nên rõ ràng, nội dung mạch lạc, và tên tác giả nên được nhập nhất quán để dễ quản lý.
+                    </p>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <div class="admin-form-card">
         <form asp-action="CreateNews" method="post">
-            <div class="form-group">
-                <label asp-for="Title">Tiêu đề</label>
-                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề tin tức" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 mb-4"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="form-section-block mb-4">
+                        <div class="form-section-header mb-3">
+                            <div class="form-section-icon">
+                                <i class="bi bi-card-text"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Thông tin bài viết</h5>
+                                <p class="section-subtitle mb-0">
+                                    Nhập tiêu đề, nội dung và tác giả cho bài viết mới.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Title" class="form-label">Tiêu đề</label>
+                                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết" />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Author" class="form-label">Tác giả</label>
+                                <input asp-for="Author" class="form-control" placeholder="Nhập tên tác giả" />
+                                <span asp-validation-for="Author" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="CreatedDate" class="form-label">Ngày tạo</label>
+                                <input asp-for="CreatedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="CreatedDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Content" class="form-label">Nội dung</label>
+                                <textarea asp-for="Content"
+                                          class="form-control admin-news-content-input"
+                                          rows="10"
+                                          placeholder="Nhập nội dung bài viết..."></textarea>
+                                <span asp-validation-for="Content" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="appointment-help-panel h-100 admin-side-panel">
+                        <div class="mb-4">
+                            <span class="badge-soft primary mb-3">
+                                <i class="bi bi-eye"></i>
+                                Xem nhanh
+                            </span>
+
+                            <div class="admin-news-preview-card">
+                                <div class="admin-news-preview-icon">
+                                    <i class="bi bi-newspaper"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2">Bài viết mới</h5>
+                                <p class="section-subtitle mb-3">
+                                    Sau khi lưu, bài viết sẽ xuất hiện trong danh sách quản lý tin tức.
+                                </p>
+
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    <span class="badge-soft primary">Tiêu đề rõ ràng</span>
+                                    <span class="badge-soft success">Nội dung đầy đủ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appointment-tip-box">
+                            <h6 class="fw-bold mb-2">
+                                <i class="bi bi-info-circle me-2"></i>Mẹo viết bài
+                            </h6>
+                            <p class="mb-2">- Tiêu đề nên ngắn gọn và dễ hiểu.</p>
+                            <p class="mb-2">- Nội dung nên chia đoạn rõ ràng.</p>
+                            <p class="mb-2">- Tên tác giả nên nhập thống nhất giữa các bài.</p>
+                            <p class="mb-0">- Ngày tạo nên để đúng thời điểm đăng hoặc tạo nội dung.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Content">Nội dung</label>
-                <textarea asp-for="Content" class="form-control" rows="8" placeholder="Nhập nội dung tin tức"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Đăng bài</button>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-2"></i>Tạo bài viết
+                </button>
+
+                <a asp-controller="Admin" asp-action="NewsList" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
             </div>
         </form>
     </div>
-</div>
+</section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

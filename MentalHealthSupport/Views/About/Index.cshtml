@@ -1,183 +1,197 @@
 @model MentalHealthSupport.Models.ViewModel.AboutUsViewModel
+
 @{
     ViewData["Title"] = Model?.Title ?? "Về Chúng Tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/css/about-us.css" />
 
-<!-- Hero Section -->
-<section class="hero-section bg-primary text-white py-5 position-relative overflow-hidden">
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 1;"></div>
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8">
-                <div class="brain-icon d-inline-flex align-items-center justify-content-center rounded-circle mb-4" 
-                     style="width: 80px; height: 80px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); font-size: 2.5rem; animation: pulse 2s infinite;">
-                    🧠
+<section class="section-shell">
+    <div class="container">
+        <div class="hero-card p-4 p-lg-5 mb-5 about-hero-card">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <span class="badge-soft primary mb-3">
+                        <i class="bi bi-heart-pulse"></i>
+                        Đồng hành cùng sức khỏe tinh thần
+                    </span>
+
+                    <h1 class="display-5 fw-bold mb-3">
+                        @(string.IsNullOrWhiteSpace(Model?.HeroHeading) ? "Về Chúng Tôi" : Model!.HeroHeading)
+                    </h1>
+
+                    <p class="fs-5 section-subtitle mb-4">
+                        @(string.IsNullOrWhiteSpace(Model?.HeroDescription)
+                            ? "Chúng tôi tin rằng mọi người đều xứng đáng có được sức khỏe tinh thần tốt và sự hỗ trợ chuyên nghiệp khi cần thiết."
+                            : Model!.HeroDescription)
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <a asp-controller="Consultants" asp-action="Index" class="btn btn-primary btn-lg">
+                            Tìm chuyên gia
+                        </a>
+                        <a asp-controller="Appointments" asp-action="MyAppointments" class="btn btn-outline-primary btn-lg">
+                            Xem lịch hẹn
+                        </a>
+                    </div>
+
+                    <div class="row g-3 about-mini-stats">
+                        <div class="col-6 col-md-4">
+                            <div class="hero-stat-card">
+                                <h4>24/7</h4>
+                                <p>Hỗ trợ liên tục</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="hero-stat-card">
+                                <h4>99,9%</h4>
+                                <p>Bảo mật thông tin</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="hero-stat-card">
+                                <h4>30+</h4>
+                                <p>Chuyên gia tâm lý</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="display-4 fw-bold mb-4">@Model?.HeroHeading</h1>
-                <p class="lead fs-5 opacity-90">
-                    @Model?.HeroDescription
-                </p>
-                @if (Model != null && !string.IsNullOrEmpty(Model.HeroImageUrl))
-                {
-                    <img src="~/images/@Model.HeroImageUrl" alt="Hero Image" style="max-width: 100%; margin-top: 20px;" />
-                }
+
+                <div class="col-lg-6 text-center">
+                    <div class="about-hero-image-wrap">
+                        @if (Model != null && !string.IsNullOrWhiteSpace(Model.HeroImageUrl))
+                        {
+                            <img src="~/images/@Model.HeroImageUrl"
+                                 asp-append-version="true"
+                                 alt="Về chúng tôi"
+                                 class="img-fluid about-hero-image" />
+                        }
+                        else
+                        {
+                            <div class="about-hero-placeholder">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Mission Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center mb-5">
-                <h2 class="display-5 fw-bold text-primary position-relative d-inline-block">
-                    @Model?.MissionHeading
-                    <span class="position-absolute start-50 translate-middle-x" 
-                          style="bottom: -15px; width: 80px; height: 4px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4); border-radius: 2px;"></span>
+        <div class="page-hero d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <h2 class="section-title mb-2">
+                    @(string.IsNullOrWhiteSpace(Model?.MissionHeading) ? "Sứ Mệnh Của Chúng Tôi" : Model!.MissionHeading)
                 </h2>
-            </div>
-        </div>
-        <div class="row g-2">
-            <div class="col-lg-2 col-md-6">
-                <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden mission-card" 
-                     style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%); border-left: 5px solid #667eea !important;">
-                    <div class="position-absolute top-0 end-0 rounded-circle" 
-                         style="width: 100px; height: 100px; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 107, 0.1)); transform: translate(30px, -30px);"></div>
-                    <div class="card-body p-4 position-relative">
-                        <div class="text-primary mb-3" style="font-size: 3rem;">🤝</div>
-                        <h4 class="card-title fw-bold mb-3">Kết Nối & Hỗ Trợ</h4>
-                        <p class="card-text text-muted">
-                            Tạo cầu nối giữa những người có nhu cầu tâm lý với các chuyên gia hàng đầu Việt Nam, 
-                            mang đến sự hỗ trợ kịp thời và chuyên nghiệp.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-6">
-                <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden mission-card" 
-                     style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%); border-left: 5px solid #667eea !important;">
-                    <div class="position-absolute top-0 end-0 rounded-circle" 
-                         style="width: 100px; height: 100px; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 107, 0.1)); transform: translate(30px, -30px);"></div>
-                    <div class="card-body p-4 position-relative">
-                        <div class="text-primary mb-3" style="font-size: 3rem;">🔒</div>
-                        <h4 class="card-title fw-bold mb-3">Bảo Mật & Ẩn Danh</h4>
-                        <p class="card-text text-muted">
-                            Đảm bảo tính riêng tư tuyệt đối cho người dùng với hệ thống tư vấn ẩn danh, 
-                            giúp bạn thoải mái chia sẻ mà không lo lắng.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Stats Section -->
-<section class="py-5 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center mb-5">
-                <h2 class="display-5 fw-bold">Tác Động Của Chúng Tôi</h2>
-            </div>
-        </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 text-center">
-            <div class="col">
-                <div class="p-4 h-100 bg-dark bg-opacity-25 rounded-4 shadow-sm">
-                    <div class="display-3 fw-bold mb-2" style="color: #4ecdc4;" data-stat="24/7">24/7</div>
-                    <div class="fs-5">Hỗ trợ liên tục</div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="p-4 h-100 bg-dark bg-opacity-25 rounded-4 shadow-sm">
-                    <div class="display-3 fw-bold mb-2" style="color: #4ecdc4;" data-stat="99,9%">99,9%</div>
-                    <div class="fs-5">Bảo mật thông tin</div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="p-4 h-100 bg-dark bg-opacity-25 rounded-4 shadow-sm">
-                    <div class="display-3 fw-bold mb-2" style="color: #4ecdc4;" data-stat="30+">30+</div>
-                    <div class="fs-5">Chuyên gia tâm lý</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Values Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center mb-5">
-                <h2 class="display-5 fw-bold text-primary position-relative d-inline-block">
-                    @Model?.ValuesHeading
-                    <span class="position-absolute start-50 translate-middle-x" 
-                          style="bottom: -15px; width: 80px; height: 4px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4); border-radius: 2px;"></span>
-                </h2>
-            </div>
-        </div>
-        <div class="row row-cols-lg-4 g-3">
-            <div class="col-lg-3 col-md-6">
-                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #ff6b6b !important;">
-                    <div class="card-body p-4">
-                        <div class="mb-3" style="font-size: 3rem;">❤️</div>
-                        <h5 class="card-title fw-bold mb-3">Tính Nhân Văn</h5>
-                        <p class="card-text text-muted small">
-                            Đặt con người là trung tâm, thấu hiểu và đồng cảm với mọi khó khăn tâm lý
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #4ecdc4 !important;">
-                    <div class="card-body p-4">
-                        <div class="mb-3" style="font-size: 3rem;">🛡️</div>
-                        <h5 class="card-title fw-bold mb-3">Chuyên Nghiệp</h5>
-                        <p class="card-text text-muted small">
-                            Đội ngũ chuyên gia tâm lý được đào tạo bài bản, có chứng chỉ hành nghề
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #45b7d1 !important;">
-                    <div class="card-body p-4">
-                        <div class="mb-3" style="font-size: 3rem;">🔐</div>
-                        <h5 class="card-title fw-bold mb-3">Bảo Mật</h5>
-                        <p class="card-text text-muted small">
-                            Cam kết bảo vệ thông tin cá nhân và quyền riêng tư của người dùng
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card h-100 border-0 shadow-sm text-center value-card" style="border-top: 4px solid #f9ca24 !important;">
-                    <div class="card-body p-4">
-                        <div class="mb-3" style="font-size: 3rem;">🚀</div>
-                        <h5 class="card-title fw-bold mb-3">Đổi Mới</h5>
-                        <p class="card-text text-muted small">
-                            Không ngừng cập nhật công nghệ và phương pháp tư vấn hiện đại
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Call to Action Section -->
-<section class="py-5 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8">
-                <h2 class="display-5 fw-bold mb-4">@Model?.CallToActionHeading</h2>
-                <p class="lead fs-5 mb-4 opacity-90">
-                    @Model?.CallToActionDescription
+                <p class="section-subtitle mb-0">
+                    Những định hướng cốt lõi giúp nền tảng mang đến trải nghiệm hỗ trợ tâm lý an toàn và hiệu quả.
                 </p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="@Url.Action("Index", "Consultants")" class="btn btn-white btn-lg px-4 py-3 rounded-pill fw-bold">
-                        Tìm Chuyên Gia
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <div class="feature-card p-4 h-100 about-mission-card">
+                    <div class="about-icon-circle mb-3">🤝</div>
+                    <h5 class="fw-bold">Kết nối và hỗ trợ</h5>
+                    <p class="section-subtitle mb-0">
+                        Tạo cầu nối giữa người cần hỗ trợ tâm lý và đội ngũ chuyên gia phù hợp, mang đến sự đồng hành đúng lúc.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="feature-card p-4 h-100 about-mission-card">
+                    <div class="about-icon-circle mb-3">🧠</div>
+                    <h5 class="fw-bold">Chăm sóc tinh thần</h5>
+                    <p class="section-subtitle mb-0">
+                        Hướng đến một môi trường hỗ trợ tích cực, nơi người dùng có thể cải thiện sức khỏe tinh thần bền vững hơn.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="feature-card p-4 h-100 about-mission-card">
+                    <div class="about-icon-circle mb-3">🔒</div>
+                    <h5 class="fw-bold">Bảo mật và ẩn danh</h5>
+                    <p class="section-subtitle mb-0">
+                        Đảm bảo tính riêng tư trong quá trình trao đổi, giúp người dùng yên tâm chia sẻ và tìm kiếm sự hỗ trợ.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-hero mb-4">
+            <h2 class="section-title mb-2">
+                @(string.IsNullOrWhiteSpace(Model?.ValuesHeading) ? "Giá Trị Cốt Lõi" : Model!.ValuesHeading)
+            </h2>
+            <p class="section-subtitle mb-0">
+                Những nguyên tắc định hình cách chúng tôi xây dựng trải nghiệm cho người dùng.
+            </p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card p-4 text-center h-100 about-value-card">
+                    <div class="about-value-emoji mb-3">❤️</div>
+                    <h5 class="fw-bold">Tính nhân văn</h5>
+                    <p class="section-subtitle mb-0">
+                        Đặt con người là trung tâm, thấu hiểu và đồng cảm với mọi khó khăn tâm lý.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card p-4 text-center h-100 about-value-card">
+                    <div class="about-value-emoji mb-3">🛡️</div>
+                    <h5 class="fw-bold">Chuyên nghiệp</h5>
+                    <p class="section-subtitle mb-0">
+                        Đội ngũ chuyên gia được đào tạo bài bản, có chuyên môn và kinh nghiệm hỗ trợ thực tế.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card p-4 text-center h-100 about-value-card">
+                    <div class="about-value-emoji mb-3">🔐</div>
+                    <h5 class="fw-bold">Bảo mật</h5>
+                    <p class="section-subtitle mb-0">
+                        Cam kết bảo vệ thông tin cá nhân và quyền riêng tư trong suốt quá trình sử dụng hệ thống.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card p-4 text-center h-100 about-value-card">
+                    <div class="about-value-emoji mb-3">🚀</div>
+                    <h5 class="fw-bold">Đổi mới</h5>
+                    <p class="section-subtitle mb-0">
+                        Không ngừng cập nhật công nghệ và cách tiếp cận hiện đại để nâng cao chất lượng hỗ trợ.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-cta-section">
+            <div class="app-card p-4 p-lg-5 text-center about-cta-card">
+                <span class="badge-soft primary mb-3">
+                    <i class="bi bi-stars"></i>
+                    Bắt đầu ngay hôm nay
+                </span>
+                <h2 class="section-title mb-3">
+                    @(string.IsNullOrWhiteSpace(Model?.CallToActionHeading)
+                        ? "Bắt Đầu Hành Trình Chăm Sóc Tâm Lý"
+                        : Model!.CallToActionHeading)
+                </h2>
+                <p class="section-subtitle mb-4 mx-auto home-cta-text">
+                    @(string.IsNullOrWhiteSpace(Model?.CallToActionDescription)
+                        ? "Đừng để những khó khăn tâm lý cản trở cuộc sống của bạn. Hãy để chúng tôi đồng hành cùng bạn trên con đường tìm lại sự cân bằng và hạnh phúc."
+                        : Model!.CallToActionDescription)
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a asp-controller="Consultants" asp-action="Index" class="btn btn-primary btn-lg">
+                        Tìm chuyên gia
+                    </a>
+                    <a asp-controller="News" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                        Xem bài viết
                     </a>
                 </div>
             </div>

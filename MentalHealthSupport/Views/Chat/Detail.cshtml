@@ -1,53 +1,82 @@
 @model List<ChatMessageViewModel>
+
 @{
-    Layout = null;
+    ViewData["Title"] = "Chi tiết trò chuyện";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUserId = Context.Session.GetInt32("UserId");
 }
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết trò chuyện</title>
-    <link rel="stylesheet" href="~/css/chat-detail.css" asp-append-version="true" />
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="chat-container">
-        <header class="chat-header">
-            <div class="header-content">
-                <a href="@Url.Action("Index", "Chat")" class="back-btn">
-                    <i class="bx bx-arrow-back"></i>
-                </a>
-                <div class="user-info">
-                    <i class="bx bx-message-dots"></i>
-                    <span>@ViewBag.OtherUserName</span>
+
+<section class="section-shell chat-detail-shell">
+    <div class="container">
+        <div class="app-card chat-detail-card p-0 overflow-hidden">
+            <div class="chat-detail-topbar">
+                <div class="d-flex align-items-center gap-3">
+                    <a href="@Url.Action("Index", "Chat")" class="chat-detail-back">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+
+                    <div class="chat-detail-user">
+                        <div class="chat-detail-avatar">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <div>
+                            <div class="chat-detail-name">@ViewBag.OtherUserName</div>
+                            <div class="chat-detail-status">Đang mở cuộc trò chuyện</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </header>
-        <main class="chat-body" id="chatMessages">
-            @foreach (var msg in Model)
-            {
-                <div class="message @(msg.SenderId == Context.Session.GetInt32("UserId") ? "user-message" : "system-message")">
-                    <div class="message-meta">
-                        <span class="sender-name">@msg.SenderName</span>
-                    </div>
-                    <div class="message-content">
-                        <span class="message-text">@msg.Message</span>
-                        <span class="message-time">@msg.Timestamp.ToLocalTime().ToString("HH:mm")</span>
-                    </div>
-                </div>
-            }
-        </main>
-        <footer class="chat-footer">
-            <input type="text" id="messageInput" class="message-input" placeholder="Nhập tin nhắn..." />
-            <button class="send-btn" onclick="sendMessage()">
-                <i class="bx bx-send"></i>
-            </button>
-        </footer>
-    </div>
 
+            <div class="chat-detail-body" id="chatMessages">
+                @if (Model == null || Model.Count == 0)
+                {
+                    <div class="chat-empty-state">
+                        <div class="empty-icon">
+                            <i class="bi bi-chat-square-dots"></i>
+                        </div>
+                        <h5 class="fw-bold">Chưa có tin nhắn nào</h5>
+                        <p class="mb-0">Hãy bắt đầu cuộc trò chuyện bằng tin nhắn đầu tiên.</p>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var msg in Model)
+                    {
+                        var isCurrentUser = msg.SenderId == currentUserId;
+                        <div class="chat-message-row @(isCurrentUser ? "mine" : "other")">
+                            <div class="chat-message @(isCurrentUser ? "mine" : "other")">
+                                <div class="chat-message-meta">
+                                    <span class="sender-name">@(isCurrentUser ? "Bạn" : msg.SenderName)</span>
+                                    <span class="message-time">@msg.Timestamp.ToLocalTime().ToString("HH:mm")</span>
+                                </div>
+                                <div class="chat-message-text">@msg.Message</div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="chat-detail-footer">
+                <div class="chat-input-wrap">
+                    <input type="text"
+                           id="messageInput"
+                           class="chat-message-input"
+                           placeholder="Nhập tin nhắn..." />
+                    <button type="button" class="chat-send-btn" onclick="sendMessage()">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
     <script>
+        const currentUserId = "@Context.Session.GetInt32("UserId")";
+        const chatSessionId = @ViewBag.ChatSessionId;
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")
             .withAutomaticReconnect()
@@ -55,18 +84,22 @@
 
         connection.on("ReceiveMessage", function (userId, message, timestamp) {
             const chatBox = document.getElementById("chatMessages");
-            const isCurrentUser = userId == "@Context.Session.GetInt32("UserId")";
-            const messageClass = isCurrentUser ? "user-message" : "system-message";
+            const isCurrentUser = userId == currentUserId;
+
             const msgHtml = `
-                <div class="message ${messageClass} animate-slide-in">
-                    <div class="message-meta">
-                        <span class="sender-name">${isCurrentUser ? "Bạn" : "Người khác"}</span>
-                    </div>
-                    <div class="message-content">
-                        <span class="message-text">${message}</span>
-                        <span class="message-time">${timestamp}</span>
+                <div class="chat-message-row ${isCurrentUser ? "mine" : "other"}">
+                    <div class="chat-message ${isCurrentUser ? "mine" : "other"} animate-slide-in">
+                        <div class="chat-message-meta">
+                            <span class="sender-name">${isCurrentUser ? "Bạn" : "Người khác"}</span>
+                            <span class="message-time">${timestamp}</span>
+                        </div>
+                        <div class="chat-message-text">${message}</div>
                     </div>
                 </div>`;
+
+            const emptyState = chatBox.querySelector(".chat-empty-state");
+            if (emptyState) emptyState.remove();
+
             chatBox.insertAdjacentHTML("beforeend", msgHtml);
             chatBox.scrollTop = chatBox.scrollHeight;
         });
@@ -76,10 +109,14 @@
             alert("Lỗi: " + error);
         });
 
+        connection.on("NotifyNewMessage", function (senderName, message, sessionId) {
+            if (sessionId != chatSessionId) {
+                showToast(`${senderName}: ${message}`);
+            }
+        });
+
         connection.start().then(() => {
-            console.log("SignalR connected");
-            connection.invoke("JoinSession", @ViewBag.ChatSessionId).catch(err => console.error(err));
-            // Cuộn xuống tin nhắn mới nhất khi tải trang
+            connection.invoke("JoinSession", chatSessionId).catch(err => console.error(err));
             const chatBox = document.getElementById("chatMessages");
             chatBox.scrollTop = chatBox.scrollHeight;
         }).catch(err => console.error(err));
@@ -87,11 +124,12 @@
         function sendMessage() {
             const input = document.getElementById("messageInput");
             const message = input.value.trim();
-            const chatSessionId = @ViewBag.ChatSessionId;
+
             if (message) {
-                connection.invoke("SendMessage", "@Context.Session.GetInt32("UserId")", message, chatSessionId)
+                connection.invoke("SendMessage", currentUserId, message, chatSessionId)
                     .catch(err => console.error(err));
                 input.value = "";
+                input.focus();
             }
         }
 
@@ -101,36 +139,20 @@
             }
         });
 
-        connection.on("NotifyNewMessage", function (senderName, message, chatSessionId) {
-            if (chatSessionId != @ViewBag.ChatSessionId) {
-                showToast(`${senderName}: ${message}`);
-                console.log(`Received NotifyNewMessage for session ${chatSessionId}`);
-            }
-        });
-
-        function showToast(text) {
-            const toast = document.createElement("div");
-            toast.className = "toast-message";
-            toast.innerText = text;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
-        }
-
         setInterval(() => {
-        fetch(window.location.href)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newMessages = doc.querySelector('#chatMessages');
-                const currentMessages = document.querySelector('#chatMessages');
+            fetch(window.location.href)
+                .then(res => res.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const newMessages = doc.querySelector("#chatMessages");
+                    const currentMessages = document.querySelector("#chatMessages");
 
-                if (newMessages && currentMessages) {
-                    currentMessages.innerHTML = newMessages.innerHTML;
-                    currentMessages.scrollTop = currentMessages.scrollHeight;
-                }
-            });
-    }, 3000);
+                    if (newMessages && currentMessages) {
+                        currentMessages.innerHTML = newMessages.innerHTML;
+                        currentMessages.scrollTop = currentMessages.scrollHeight;
+                    }
+                });
+        }, 3000);
     </script>
-</body>
-</html>
+}
